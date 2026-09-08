@@ -1,0 +1,145 @@
+.qrs {
+  padding: 24px 24px calc(24px + env(safe-area-inset-bottom));
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-size: 32px;
+    font-weight: 500;
+  }
+
+  &__spacer,
+  &__close {
+    width: 48px;
+    text-align: center;
+    color: #969799;
+  }
+
+  &__formula {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    background: #fff1ea;
+    border-radius: 12px;
+  }
+
+  &__formula-tag {
+    font-size: 22px;
+    color: #ed6a0c;
+  }
+
+  &__formula-name {
+    font-size: 28px;
+    font-weight: 500;
+    color: #ed6a0c;
+  }
+
+  &__stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  &__step-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 128px;
+    height: 104px;
+    font-size: 44px;
+    background: #f7f8fa;
+    border-radius: 16px;
+  }
+
+  &__ml {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+
+    input {
+      width: 200px;
+      min-height: 80px;
+      font-size: 60px;
+      font-weight: 600;
+      text-align: center;
+    }
+  }
+
+  &__ml-unit {
+    font-size: 28px;
+    color: #969799;
+  }
+
+  &__label {
+    margin-bottom: 12px;
+    font-size: 24px;
+    color: #969799;
+  }
+
+  &__states {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__state {
+    flex: 1;
+    padding: 16px 0;
+    font-size: 26px;
+    text-align: center;
+    background: #f7f8fa;
+    border: 2px solid #ebedf0;
+    border-radius: 12px;
+    color: #646566;
+
+    &.is-on {
+      background: #fff1ea;
+      border-color: #ff6b35;
+      color: #ff6b35;
+      font-weight: 500;
+    }
+  }
+
+  &__note {
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    font-size: 26px;
+    background: #f7f8fa;
+    border-radius: 12px;
+  }
+
+  &__save {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 96px;
+    font-size: 32px;
+    font-weight: 500;
+    color: #fff;
+    background: #ff6b35;
+    border-radius: 48px;
+
+    &.is-loading {
+      opacity: 0.7;
+    }
+  }
+
+  &__full-link {
+    display: block;
+    margin-top: 20px;
+    font-size: 24px;
+    color: #969799;
+    text-align: center;
+  }
+}

@@ -1,0 +1,7 @@
+/* taroify 主题色覆盖（组件库内部通过 CSS 变量 --primary-color 取色） */
+page {
+  --primary-color: #ff6b35;
+  background-color: #f8f8f8;
+  color: #333;
+  font-size: 28px;
+}

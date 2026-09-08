@@ -1,0 +1,88 @@
+.alert-detail {
+  min-height: 100vh;
+  background: #f7f8fa;
+  padding-bottom: 60px;
+
+  &__head {
+    margin: 20px 32px;
+    padding: 28px 32px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #fffbe8;
+
+    &.is-red {
+      background: #fff0f0;
+    }
+  }
+
+  &__badge {
+    align-self: flex-start;
+    padding: 4px 16px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #fff;
+    background: #ff976a;
+    border-radius: 8px;
+  }
+
+  &__t {
+    font-size: 34px;
+    font-weight: 600;
+    color: #323233;
+  }
+
+  &__time {
+    font-size: 22px;
+    color: #ed6a0c;
+  }
+
+  &__card {
+    margin: 0 32px 20px;
+    padding: 24px 28px;
+    background: #fff;
+    border: 1px solid #ebedf0;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__card-t {
+    font-size: 28px;
+    font-weight: 500;
+  }
+
+  &__ev {
+    font-size: 26px;
+    line-height: 1.5;
+    color: #323233;
+  }
+
+  &__ac-d {
+    font-size: 26px;
+    line-height: 1.6;
+    color: #646566;
+  }
+
+  &__med {
+    padding: 16px 20px;
+    background: #fff0f0;
+    border-radius: 12px;
+    font-size: 24px;
+    color: #ee0a24;
+  }
+
+  &__disclaimer {
+    padding: 0 40px 24px;
+    font-size: 22px;
+    line-height: 1.6;
+    color: #c8c9cc;
+    text-align: center;
+  }
+
+  &__footer {
+    padding: 0 32px;
+  }
+}

@@ -1,0 +1,126 @@
+.page {
+  min-height: 100vh;
+  background: #f7f8fa;
+  padding-bottom: 60px;
+
+  &__search {
+    margin: 20px 32px;
+    padding: 18px 28px;
+    background: #fff;
+    border-radius: 999px;
+    font-size: 28px;
+  }
+
+  &__label {
+    padding: 8px 32px;
+    font-size: 24px;
+    color: #969799;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 0 32px 12px;
+  }
+
+  &__chip {
+    padding: 10px 28px;
+    font-size: 24px;
+    background: #fff;
+    border: 2px solid #ebedf0;
+    border-radius: 999px;
+    color: #646566;
+
+    &.is-on {
+      background: #fff1ea;
+      border-color: #ff6b35;
+      color: #ff6b35;
+    }
+  }
+
+  &__results {
+    margin: 8px 32px;
+    background: #fff;
+    border: 1px solid #ebedf0;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  &__card {
+    padding: 24px 28px;
+    border-bottom: 1px solid #f2f3f5;
+  }
+
+  &__card-name {
+    display: block;
+    font-size: 28px;
+    font-weight: 500;
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  &__tag {
+    padding: 4px 12px;
+    font-size: 20px;
+    border-radius: 8px;
+  }
+
+  &__ing {
+    margin-left: auto;
+    font-size: 22px;
+    color: #c8c9cc;
+  }
+
+  &__fallback {
+    padding: 28px;
+    font-size: 24px;
+    color: #576b95;
+    text-align: center;
+  }
+
+  &__note {
+    padding: 16px 32px;
+    font-size: 20px;
+    color: #c8c9cc;
+    text-align: center;
+  }
+
+  &__compare-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 32px calc(20px + env(safe-area-inset-bottom));
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  &__compare-hint {
+    font-size: 24px;
+    color: #969799;
+  }
+
+  &__compare-btn {
+    flex: 1;
+    padding: 18px 0;
+    font-size: 28px;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    background: #ff6b35;
+    border-radius: 999px;
+
+    &.is-disabled {
+      background: #c8c9cc;
+    }
+  }
+}

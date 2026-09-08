@@ -1,0 +1,30 @@
+.records-page {
+  padding-bottom: 140px; // 为 FloatingBubble 预留空间
+
+  .chart-view {
+    padding: 20px;
+    background-color: #fff;
+  }
+
+  .load-more {
+    text-align: center;
+    color: #999;
+    font-size: 24px;
+    padding: 20px;
+  }
+}
+
+.form-container {
+  padding: 24px 20px 40px;
+
+  .submit-btn {
+    margin-top: 40px;
+  }
+}
+
+.fab-plus {
+  font-size: 56px;
+  line-height: 1;
+  color: #fff;
+}
+

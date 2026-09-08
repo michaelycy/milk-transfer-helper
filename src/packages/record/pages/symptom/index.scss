@@ -1,0 +1,116 @@
+.symptom {
+  min-height: 100vh;
+  background: #f7f8fa;
+  padding-bottom: 60px;
+
+  &__date {
+    padding: 20px 32px;
+    font-size: 26px;
+    color: #969799;
+  }
+
+  &__card {
+    margin: 0 32px 20px;
+    padding: 24px 28px;
+    background: #fff;
+    border: 1px solid #ebedf0;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  &__card-h {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__card-t {
+    font-size: 28px;
+    font-weight: 500;
+  }
+
+  &__card-link {
+    font-size: 24px;
+    color: #ff6b35;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__row-l {
+    font-size: 26px;
+    color: #969799;
+  }
+
+  &__stepper {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  &__step-btn {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7f8fa;
+    border-radius: 12px;
+    font-size: 28px;
+  }
+
+  &__step-v {
+    min-width: 90px;
+    font-size: 28px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  &__chip {
+    padding: 12px 30px;
+    font-size: 26px;
+    background: #f7f8fa;
+    border: 2px solid #ebedf0;
+    border-radius: 999px;
+    color: #646566;
+
+    &.is-on {
+      background: #fff1ea;
+      border-color: #ff6b35;
+      color: #ff6b35;
+      font-weight: 500;
+    }
+  }
+
+  &__note {
+    margin: 0 32px 20px;
+    padding: 20px 28px;
+    background: #fff;
+    border: 1px solid #ebedf0;
+    border-radius: 16px;
+  }
+
+  &__footer {
+    padding: 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__skip {
+    font-size: 24px;
+    color: #969799;
+    text-align: center;
+  }
+}
