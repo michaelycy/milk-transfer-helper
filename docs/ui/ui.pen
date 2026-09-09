@@ -23876,8 +23876,9 @@
               "name": "gate-title",
               "fill": "#323233",
               "content": "登录后开启完整体验",
+              "lineHeight": 1.4,
               "fontFamily": "Inter",
-              "fontSize": 34,
+              "fontSize": 22,
               "fontWeight": "600"
             },
             {
@@ -23890,17 +23891,17 @@
               "content": "数据云端同步 · 换机不丢失 · 支持多宝宝管理",
               "textAlign": "center",
               "fontFamily": "Inter",
-              "fontSize": 26,
+              "fontSize": 14,
               "fontWeight": "normal"
             },
             {
               "type": "frame",
               "id": "txgHu",
               "name": "gate-btn",
-              "width": "fill_container",
-              "height": 96,
+              "width": 343,
+              "height": 50,
               "fill": "#FF6B35",
-              "cornerRadius": 48,
+              "cornerRadius": 25,
               "gap": 4,
               "padding": [
                 0,
@@ -23927,11 +23928,11 @@
               "name": "gate-link",
               "fill": "#576B95",
               "textGrowth": "fixed-width",
-              "width": 340,
+              "width": "fill_container",
               "content": "先逛逛（游客模式，数据不跨设备）",
               "textAlign": "center",
               "fontFamily": "Inter",
-              "fontSize": 24,
+              "fontSize": 14,
               "fontWeight": "normal"
             }
           ]

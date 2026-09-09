@@ -109,6 +109,6 @@ docs/spec/
 
 | 文档 | 关系 |
 |---|---|
-| `docs/ui/ui.pen` | UI 设计图。画板 01–15 为现有页面与状态补全（v1 实现对照）；V2-01–V2-13 为本需求设计稿（**已生成**，画板名以「V2-」开头；其中 V2-12 复用画板 09），由模块文档「UI 画板对照」章节负责映射 |
+| `docs/ui/ui.pen`（配套 `docs/ui/audit.mjs` 画布审计、`docs/ui/DESIGN-GUIDELINES.md` 工作流规范） | UI 设计图。画板 01–15 为现有页面与状态补全（v1 实现对照）；V2-01–V2-13 为本需求设计稿（**已生成**，画板名以「V2-」开头；其中 V2-12 复用画板 09），由模块文档「UI 画板对照」章节负责映射 |
 | `.trae/documents/baby-milk-transfer-tech-arch.md` | 技术架构，随里程碑更新 |
 | `supabase/migrations/` | 数据库基线与增量迁移，规范见 [03-data-model.md](03-data-model.md) |
