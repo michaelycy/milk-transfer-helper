@@ -1,0 +1,50 @@
+.splash {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 320px 60px 80px;
+  background: linear-gradient(180deg, #fff7f2 0%, #ffe9dd 100%);
+  transition: opacity 0.3s ease;
+
+  &.is-leaving {
+    opacity: 0;
+  }
+
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  &__logo {
+    width: 176px;
+    height: 176px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 88px;
+    background: linear-gradient(135deg, #ff9a62, #ff6b35);
+    border-radius: 56px;
+    box-shadow: 0 24px 48px rgba(255, 107, 53, 0.25);
+  }
+
+  &__name {
+    font-size: 44px;
+    font-weight: 600;
+    color: #323233;
+  }
+
+  &__slogan {
+    font-size: 24px;
+    color: #969799;
+    letter-spacing: 2px;
+  }
+
+  &__copyright {
+    font-size: 22px;
+    color: #c8c9cc;
+  }
+}

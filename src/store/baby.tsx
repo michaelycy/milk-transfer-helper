@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import type { PropsWithChildren } from 'react'
 import Taro from '@tarojs/taro'
 import { BabyService } from '../services/baby.service'
+import { useAuth } from './auth'
 import type { BabyRow } from '../types'
 
 /**
@@ -25,9 +26,10 @@ interface BabyContextValue {
 const BabyContext = createContext<BabyContextValue | null>(null)
 
 export function BabyProvider({ children }: PropsWithChildren) {
+  const { status } = useAuth()
   const [babies, setBabies] = useState<BabyRow[]>([])
   const [currentBaby, setCurrentBabyState] = useState<BabyRow | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(status === 'loading')
 
   const reload = useCallback(async () => {
     setLoading(true)
@@ -42,9 +44,16 @@ export function BabyProvider({ children }: PropsWithChildren) {
     }
   }, [])
 
+  // 仅在已登录（guest/wechat）时加载宝宝数据；未登录清空状态
   useEffect(() => {
-    void reload()
-  }, [reload])
+    if (status === 'guest' || status === 'wechat') {
+      void reload()
+    } else if (status === 'loggedOut') {
+      setBabies([])
+      setCurrentBabyState(null)
+      setLoading(false)
+    }
+  }, [status, reload])
 
   const switchBaby = useCallback(
     (id: string) => {

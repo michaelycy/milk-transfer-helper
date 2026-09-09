@@ -8,11 +8,14 @@ import { useBaby } from '../../store/baby'
 import { buildPlanDays, getCurrentPlanDay } from '../../utils/plan'
 import { getStageTip } from '../../utils/baby'
 import { QuickRecordSheet } from '../../components/QuickRecordSheet'
+import { LoginGate } from '../../components/LoginGate'
+import { useAuth } from '../../store/auth'
 import type { AlertRow, FeedRecordRow, TransferPlanRow } from '../../types'
 import './index.scss'
 
 /** 首页（V2-01 计划进行中 / V2-02 无计划空状态） */
 export default function Index() {
+  const { authed } = useAuth()
   const { currentBaby, babies, loading: babyLoading } = useBaby()
   const [plan, setPlan] = useState<TransferPlanRow | null>(null)
   const [planDays, setPlanDays] = useState<ReturnType<typeof buildPlanDays>>([])
@@ -21,6 +24,7 @@ export default function Index() {
   const [quickOpen, setQuickOpen] = useState(false)
 
   const load = useCallback(async () => {
+    if (!authed) return
     if (!currentBaby) {
       setPlan(null)
       setLatestRecord(null)
@@ -82,6 +86,7 @@ export default function Index() {
   // 建档引导（FR-A1 验收：未创建档案时引导至建档页）
   if (!babyLoading && !currentBaby) {
     return (
+      <LoginGate>
       <View className='home home--empty'>
         <View className='home__guide'>
           <Text className='home__guide-title'>先给宝宝建个档案</Text>
@@ -94,10 +99,12 @@ export default function Index() {
           </View>
         </View>
       </View>
+      </LoginGate>
     )
   }
 
   return (
+    <LoginGate>
     <View className='home'>
       {/* 宝宝栏（FR-A2 多宝宝切换） */}
       <View className='home__babybar'>
@@ -229,6 +236,7 @@ export default function Index() {
         onSaved={handleQuickSaved}
       />
     </View>
+    </LoginGate>
   )
 }
 

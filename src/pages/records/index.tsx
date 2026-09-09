@@ -8,6 +8,8 @@ import { FeedRecordService } from '../../services/record.service'
 import { PlanService } from '../../services/plan.service'
 import { track } from '../../services/analytics.service'
 import { useBaby } from '../../store/baby'
+import { useAuth } from '../../store/auth'
+import { LoginGate } from '../../components/LoginGate'
 import { buildDailyTrend } from '../../utils/chart'
 import { buildPlanDays, resolvePlannedFeed } from '../../utils/plan'
 import { formatDateTime, nowInputValue, parseLocalDateTime } from '../../utils/date'
@@ -28,6 +30,7 @@ const createEmptyForm = () => ({
 
 /** 转奶记录页（V2 列表/图表 + 快速记奶 + 完整表单） */
 export default function Records() {
+  const { authed } = useAuth()
   const { currentBaby } = useBaby()
   const [currentView, setCurrentView] = useState(0) // 0: 列表 1: 图表
   const [records, setRecords] = useState<FeedRecordRow[]>([])
@@ -45,7 +48,7 @@ export default function Records() {
 
   const loadRecords = useCallback(
     async (nextPage: number, mode: 'replace' | 'append') => {
-      if (!currentBaby || loadingRef.current) return
+      if (!authed || !currentBaby || loadingRef.current) return
       loadingRef.current = true
       setLoading(true)
       try {
@@ -69,7 +72,7 @@ export default function Records() {
   )
 
   const loadPlan = useCallback(async () => {
-    if (!currentBaby) {
+    if (!authed || !currentBaby) {
       setPlan(null)
       return
     }
@@ -178,6 +181,7 @@ export default function Records() {
   const timePart = formData.feed_time.split(' ')[1]
 
   return (
+    <LoginGate>
     <View className='records-page'>
       <Tabs value={currentView} onChange={(value) => setCurrentView(Number(value))}>
         <Tabs.TabPane title='列表模式'>
@@ -300,6 +304,7 @@ export default function Records() {
         </View>
       </Popup>
     </View>
+    </LoginGate>
   )
 }
 

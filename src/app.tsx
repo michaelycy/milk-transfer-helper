@@ -16,22 +16,23 @@ import '@taroify/core/popup/style'
 import '@taroify/core/search/style'
 import '@taroify/core/tabs/style'
 import '@taroify/core/textarea/style'
-import { ensureSession } from './utils/auth'
-import { toastError } from './utils/error'
 import { track } from './services/analytics.service'
+import { AuthProvider } from './store/auth'
 import { BabyProvider } from './store/baby'
 import './app.scss'
 
 function App({ children }: PropsWithChildren<any>) {
-  // 应用启动即建立匿名会话（FR-H0），后续页面可直接读写数据
+  // 开屏页负责登录态路由；这里只在冷启动埋点（FR-H4）
   useLaunch(() => {
-    ensureSession()
-      .then(() => track('app_launch', { scene: Taro.getLaunchOptionsSync()?.scene }))
-      .catch((error) => toastError(error, '初始化失败，请检查网络后重启小程序'))
+    track('app_launch', { scene: Taro.getLaunchOptionsSync()?.scene })
   })
 
-  // children 是将要渲染的页面；BabyProvider 提供全局宝宝状态（FR-A2）
-  return <BabyProvider>{children}</BabyProvider>
+  // AuthProvider → BabyProvider：宝宝数据仅在已登录（guest/wechat）时加载
+  return (
+    <AuthProvider>
+      <BabyProvider>{children}</BabyProvider>
+    </AuthProvider>
+  )
 }
 
 export default App

@@ -23696,6 +23696,247 @@
           ]
         }
       ]
+    },
+    {
+      "type": "frame",
+      "id": "elsc8",
+      "x": 16030,
+      "y": 0,
+      "name": "V2-14 开屏页",
+      "context": "FR-H5 开屏页：品牌展示 ≤1.5s 自动路由（已登录→首页 / 未登录→登录页），点击可跳过",
+      "clip": true,
+      "width": 375,
+      "height": 812,
+      "fill": {
+        "type": "gradient",
+        "gradientType": "linear",
+        "enabled": true,
+        "rotation": 180,
+        "size": {
+          "height": 1
+        },
+        "colors": [
+          {
+            "color": "#FFF7F2",
+            "position": 0
+          },
+          {
+            "color": "#FFE9DD",
+            "position": 1
+          }
+        ]
+      },
+      "layout": "vertical",
+      "padding": [
+        320,
+        0,
+        80,
+        0
+      ],
+      "justifyContent": "space_between",
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "frame",
+          "id": "yLpvl",
+          "name": "splash-brand",
+          "width": 375,
+          "layout": "vertical",
+          "gap": 24,
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "R0wppD",
+              "name": "splash-logo",
+              "width": 176,
+              "height": 176,
+              "fill": {
+                "type": "gradient",
+                "gradientType": "linear",
+                "enabled": true,
+                "rotation": 90,
+                "size": {
+                  "height": 1
+                },
+                "colors": [
+                  {
+                    "color": "#FF9A62",
+                    "position": 0
+                  },
+                  {
+                    "color": "#FF6B35",
+                    "position": 1
+                  }
+                ]
+              },
+              "cornerRadius": 56,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "x4Qd6",
+                  "name": "splash-logo-emoji",
+                  "fill": "#FFFFFF",
+                  "content": "🍼",
+                  "fontFamily": "Inter",
+                  "fontSize": 88,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "P8VXot",
+              "name": "splash-name",
+              "fill": "#323233",
+              "content": "婴儿转奶助手",
+              "fontFamily": "Inter",
+              "fontSize": 44,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "C7hFv",
+              "name": "splash-slogan",
+              "fill": "#969799",
+              "content": "有依据 · 可观察 · 能复盘",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "XLSxF",
+          "name": "splash-copy",
+          "fill": "#C8C9CC",
+          "content": "选奶 → 转奶 → 记录 → 复盘",
+          "fontFamily": "Inter",
+          "fontSize": 22,
+          "fontWeight": "normal"
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "kCnZT",
+      "x": 16485,
+      "y": 0,
+      "name": "V2-15 Tab未登录态",
+      "context": "FR-H5 全局未登录态：四个 Tab 页统一登录门；未登录不触发任何数据请求",
+      "clip": true,
+      "width": 375,
+      "height": 812,
+      "fill": "#F7F8FA",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "DzILP",
+          "layoutPosition": "absolute",
+          "x": 0,
+          "y": 0,
+          "name": "gate",
+          "width": 375,
+          "height": 812,
+          "layout": "vertical",
+          "gap": 20,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "YJlgy",
+              "name": "gate-icon",
+              "width": 160,
+              "height": 160,
+              "fill": "#FFF1EA",
+              "cornerRadius": 80,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "Z6otee",
+                  "name": "gate-icon-lock",
+                  "width": 64,
+                  "height": 64,
+                  "icon": "lock",
+                  "library": "lucide",
+                  "fill": "#FF6B35"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "BVzqO",
+              "name": "gate-title",
+              "fill": "#323233",
+              "content": "登录后开启完整体验",
+              "fontFamily": "Inter",
+              "fontSize": 34,
+              "fontWeight": "600"
+            },
+            {
+              "type": "text",
+              "id": "gDbXb",
+              "name": "gate-desc",
+              "fill": "#969799",
+              "textGrowth": "fixed-width",
+              "width": 300,
+              "content": "数据云端同步 · 换机不丢失 · 支持多宝宝管理",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 26,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "txgHu",
+              "name": "gate-btn",
+              "width": "fill_container",
+              "height": 96,
+              "fill": "#FF6B35",
+              "cornerRadius": 48,
+              "gap": 4,
+              "padding": [
+                0,
+                16
+              ],
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ZNhrP",
+                  "name": "gate-btn-t",
+                  "fill": "#FFFFFF",
+                  "content": "微信一键登录",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "zGVIN",
+              "name": "gate-link",
+              "fill": "#576B95",
+              "textGrowth": "fixed-width",
+              "width": 340,
+              "content": "先逛逛（游客模式，数据不跨设备）",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 24,
+              "fontWeight": "normal"
+            }
+          ]
+        }
+      ]
     }
   ],
   "variables": {

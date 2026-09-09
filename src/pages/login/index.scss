@@ -1,0 +1,124 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #fff;
+
+  &__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 200px 60px 0;
+  }
+
+  &__logo {
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    background: linear-gradient(135deg, #ff9a62, #ff6b35);
+    border-radius: 50px;
+    box-shadow: 0 20px 40px rgba(255, 107, 53, 0.22);
+  }
+
+  &__name {
+    font-size: 40px;
+    font-weight: 600;
+    color: #323233;
+  }
+
+  &__slogan {
+    font-size: 26px;
+    color: #969799;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 0 60px;
+    margin-top: auto;
+    margin-bottom: 40px;
+  }
+
+  &__wechat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 96px;
+    font-size: 32px;
+    font-weight: 500;
+    color: #fff;
+    background: #07c160;
+    border-radius: 999px;
+
+    &.is-loading {
+      opacity: 0.7;
+    }
+  }
+
+  &__guest {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 96px;
+    font-size: 30px;
+    color: #ff6b35;
+    background: #fff1ea;
+    border-radius: 999px;
+
+    &.is-loading {
+      opacity: 0.7;
+    }
+  }
+
+  &__agree {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 60px;
+  }
+
+  &__check {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #fff;
+    border: 2px solid #c8c9cc;
+    border-radius: 50%;
+
+    &.is-on {
+      background: #ff6b35;
+      border-color: #ff6b35;
+    }
+  }
+
+  &__check-mark {
+    color: #fff;
+  }
+
+  &__agree-t1 {
+    font-size: 24px;
+    color: #969799;
+  }
+
+  &__agree-link {
+    font-size: 24px;
+    color: #576b95;
+  }
+
+  &__guest-tip {
+    display: block;
+    padding: 16px 60px 60px;
+    font-size: 22px;
+    color: #c8c9cc;
+    text-align: center;
+  }
+}

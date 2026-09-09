@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { Cell, Empty, Search, Tabs } from '@taroify/core'
+import { LoginGate } from '../../components/LoginGate'
+import { useAuth } from '../../store/auth'
 import { ArticleService } from '../../services/article.service'
 import { toastError } from '../../utils/error'
 import type { ArticleRow } from '../../types'
@@ -17,12 +19,18 @@ const TAB_LIST = [
 const SEARCH_DEBOUNCE_MS = 300
 
 export default function Articles() {
+  const { authed } = useAuth()
   const [currentTab, setCurrentTab] = useState(0)
   const [articles, setArticles] = useState<ArticleRow[]>([])
   const [searchVal, setSearchVal] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    if (!authed) {
+      setArticles([])
+      setLoading(false)
+      return
+    }
     let cancelled = false
     const timer = setTimeout(
       async () => {
@@ -69,6 +77,7 @@ export default function Articles() {
   )
 
   return (
+    <LoginGate>
     <View className='articles-page'>
       <Search
         value={searchVal}
@@ -91,5 +100,6 @@ export default function Articles() {
         ))}
       </Tabs>
     </View>
+    </LoginGate>
   )
 }

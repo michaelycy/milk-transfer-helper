@@ -101,6 +101,7 @@ docs/spec/
 | FR-B4 | 条码扫描录入 | B 奶粉库 | P3 | 草案 | — | [modules/B-milk-products.md](modules/B-milk-products.md) |
 | FR-H3 | 家庭共享 | H 账户 | P3 | 草案 | — | [modules/H-account.md](modules/H-account.md) |
 | FR-H4 | 埋点与分析基建 | H 账户 | P0 | 草案 | M1 | [modules/H-account.md](modules/H-account.md) |
+| FR-H5 | 开屏页与全局未登录态 | H 账户 | P0 | 草案 | M1 | [modules/H-account.md](modules/H-account.md) |
 
 非功能需求：NFR-1 医学安全与内容合规 / NFR-2 隐私与数据合规 / NFR-3 性能 / NFR-4 兼容 / NFR-5 可维护性 / NFR-6 可用性，统一见 [04-nfr.md](04-nfr.md)。
 
@@ -108,6 +109,6 @@ docs/spec/
 
 | 文档 | 关系 |
 |---|---|
-| `docs/ui/ui.pen` + `docs/ui/generate.mjs` | UI 设计图。画板 01–08 为现有页面（v1 实现对照）；V2-01–V2-13 为本需求的设计稿，**当前【未生成】**（UI 工作暂停中），恢复后由模块文档「UI 画板对照」章节负责映射 |
+| `docs/ui/ui.pen` | UI 设计图。画板 01–15 为现有页面与状态补全（v1 实现对照）；V2-01–V2-13 为本需求设计稿（**已生成**，画板名以「V2-」开头；其中 V2-12 复用画板 09），由模块文档「UI 画板对照」章节负责映射 |
 | `.trae/documents/baby-milk-transfer-tech-arch.md` | 技术架构，随里程碑更新 |
 | `supabase/migrations/` | 数据库基线与增量迁移，规范见 [03-data-model.md](03-data-model.md) |
