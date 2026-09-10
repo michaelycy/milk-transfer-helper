@@ -46,13 +46,22 @@ export async function loginWechat(): Promise<void> {
   const { data, error } = await supabase.functions.invoke('wechat-login', { body: { code } })
   if (error) throw new Error(error.message || '微信登录暂不可用')
 
-  const payload = data as { session?: { access_token: string; refresh_token: string } }
+  const payload = data as {
+    session?: { access_token: string; refresh_token: string; expires_at?: number; expires_in?: number }
+  }
   if (!payload?.session?.access_token || !payload?.session?.refresh_token) {
     throw new Error('微信登录服务未返回会话')
   }
   const { error: sessionError } = await supabase.auth.setSession({
     access_token: payload.session.access_token,
     refresh_token: payload.session.refresh_token,
+    // 服务端缺 expires_at 时由 expires_in 推导（秒级时间戳）；缺失会导致会话永不刷新
+    expires_at:
+      typeof payload.session.expires_at === 'number'
+        ? payload.session.expires_at
+        : typeof payload.session.expires_in === 'number'
+          ? Math.round(Date.now() / 1000) + payload.session.expires_in
+          : undefined,
   })
   if (sessionError) throw sessionError
   setAuthMode('wechat')

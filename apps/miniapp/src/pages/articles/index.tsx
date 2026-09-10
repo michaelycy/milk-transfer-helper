@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { View } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { Cell, Empty, Search, Tabs } from '@taroify/core'
@@ -20,19 +20,30 @@ const TAB_LIST = [
 const SEARCH_DEBOUNCE_MS = 300
 
 export default function Articles() {
-  useDidShow(() => {
-    selectTabbar(2)
-  })
-  
   const { authed } = useAuth()
   const [currentTab, setCurrentTab] = useState(0)
   const [articles, setArticles] = useState<ArticleRow[]>([])
   const [searchVal, setSearchVal] = useState('')
   const [loading, setLoading] = useState(false)
+  const [loadFailed, setLoadFailed] = useState(false)
+  const [reloadNonce, setReloadNonce] = useState(0)
+  // 首次 onShow 由下方 useEffect 负责首拉，跳过避免重复请求
+  const firstShowRef = useRef(true)
+
+  useDidShow(() => {
+    selectTabbar(2)
+    // 每次回到本页都重拉：覆盖后端短暂不可用、会话刷新后自动恢复等场景
+    if (firstShowRef.current) {
+      firstShowRef.current = false
+      return
+    }
+    setReloadNonce((n) => n + 1)
+  })
 
   useEffect(() => {
     if (!authed) {
       setArticles([])
+      setLoadFailed(false)
       setLoading(false)
       return
     }
@@ -46,9 +57,15 @@ export default function Articles() {
             category,
             keyword: searchVal.trim() || undefined,
           })
-          if (!cancelled) setArticles(data)
+          if (!cancelled) {
+            setArticles(data)
+            setLoadFailed(false)
+          }
         } catch (error) {
-          if (!cancelled) toastError(error, '获取文章失败')
+          if (!cancelled) {
+            setLoadFailed(true)
+            toastError(error, '获取文章失败')
+          }
         } finally {
           if (!cancelled) setLoading(false)
         }
@@ -59,7 +76,7 @@ export default function Articles() {
       cancelled = true
       clearTimeout(timer)
     }
-  }, [currentTab, searchVal, authed])
+  }, [currentTab, searchVal, authed, reloadNonce])
 
   const handleArticleClick = (id: string) => {
     Taro.navigateTo({ url: `/packages/article/pages/detail/index?id=${id}` })
@@ -94,9 +111,15 @@ export default function Articles() {
           <Tabs.TabPane key={tab.title} title={tab.title}>
             <View className='tab-content'>
               {articles.length === 0 && !loading ? (
-                <Empty>
-                  <Empty.Description>暂无相关文章</Empty.Description>
-                </Empty>
+                loadFailed ? (
+                  <Empty onClick={() => setReloadNonce((n) => n + 1)}>
+                    <Empty.Description>文章加载失败，轻触重试</Empty.Description>
+                  </Empty>
+                ) : (
+                  <Empty>
+                    <Empty.Description>暂无相关文章</Empty.Description>
+                  </Empty>
+                )
               ) : (
                 renderArticleList()
               )}

@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import type { PropsWithChildren } from 'react'
 import { getAuthMode, loginAnonymous, loginWechat as wechatLogin, signOut } from '../services/auth.service'
+import { onSessionInvalid } from '../services/supabase'
 import { ensureSession } from '../utils/auth'
 
 export type AuthStatus = 'loading' | 'loggedOut' | 'guest' | 'wechat'
@@ -31,6 +32,10 @@ export function AuthProvider({ children }: PropsWithChildren) {
       .then(() => setStatus(mode))
       .catch(() => setStatus('loggedOut'))
   }, [])
+
+  // 数据请求发现会话已死（刷新被服务端拒绝）：本地凭证已清，整体回落登录门，
+  // 而不是让各页面反复弹「获取失败」
+  useEffect(() => onSessionInvalid(() => setStatus('loggedOut')), [])
 
   const loginGuest = useCallback(async () => {
     await loginAnonymous()

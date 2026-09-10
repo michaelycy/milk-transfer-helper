@@ -48,6 +48,57 @@ function saveSession(session: ApiSession | null): void {
   else Taro.removeStorageSync(SESSION_KEY)
 }
 
+// ---------- 会话生命周期（数据请求自愈） ----------
+
+type SessionInvalidListener = () => void
+let sessionInvalidListener: SessionInvalidListener | null = null
+
+/** 注册会话彻底失效回调（返回解绑函数）：数据层刷新会话被服务端拒绝时触发 */
+export function onSessionInvalid(listener: SessionInvalidListener | null): () => void {
+  sessionInvalidListener = listener
+  return () => {
+    if (sessionInvalidListener === listener) sessionInvalidListener = null
+  }
+}
+
+/** 会话已死：清本地凭证并通知 UI 层回落登录门 */
+function clearSession(): void {
+  saveSession(null)
+  sessionInvalidListener?.()
+}
+
+/** 单飞刷新：并发请求共享同一次 refresh，避免 refresh token 轮换被并发用废 */
+let refreshingPromise: Promise<ApiSession | null> | null = null
+
+function refreshSessionCached(session: ApiSession): Promise<ApiSession | null> {
+  if (!refreshingPromise) {
+    refreshingPromise = refreshSession(session)
+      .then((res) => {
+        if (res.data) return res.data
+        // 服务端明确拒绝（refresh token 失效/已被轮换）：会话无法自愈，清理并通知
+        clearSession()
+        return null
+      })
+      .finally(() => {
+        refreshingPromise = null
+      })
+  }
+  return refreshingPromise
+}
+
+/**
+ * 取可用于数据请求的会话：
+ * 临期（余量 < 60s）或缺 expires_at（旧版会话字段缺失）时先刷新补全；
+ * 刷新被拒返回 null（本地会话已一并清理），网络异常向上抛（与请求不可达同路径）。
+ */
+async function getValidSession(): Promise<ApiSession | null> {
+  const session = loadSession()
+  if (!session?.access_token) return null
+  const expiresMs = typeof session.expires_at === 'number' ? session.expires_at * 1000 : null
+  if (expiresMs !== null && expiresMs >= Date.now() + 60_000) return session
+  return refreshSessionCached(session)
+}
+
 // ---------- 传输层 ----------
 
 interface TransportResult {
@@ -77,15 +128,19 @@ async function httpRequest(options: {
   }
 }
 
-async function transport(path: string, body: Record<string, unknown>): Promise<TransportResult> {
-  const session = loadSession()
+async function transport(
+  path: string,
+  body: Record<string, unknown>,
+  bearerToken?: string,
+): Promise<TransportResult> {
+  const token = bearerToken ?? loadSession()?.access_token
   const res = await httpRequest({
     url: `${API_BASE}${path}`,
     method: 'POST',
     data: body,
     header: {
       'Content-Type': 'application/json',
-      ...(session ? { Authorization: `Bearer ${session.access_token}` } : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
   })
   return {
@@ -341,9 +396,38 @@ interface BuilderState {
 
 // ---------- 执行 ----------
 
+/** 后端把 PostgREST 真实状态装进信封体（外层 HTTP 恒为 200）；FastAPI 层错误才是真实状态码 */
+function resultStatus(res: TransportResult): number {
+  const inner = res.body.status
+  return typeof inner === 'number' ? inner : res.status
+}
+
+/** 信封 error 优先；FastAPI 层错误体是 {detail}（表白名单/缺凭证等），归一为 ApiError 避免被吞成空数据 */
+function errorOf(res: TransportResult): ApiError | null {
+  const raw = (res.body.error ?? null) as ApiError | null
+  if (raw || resultStatus(res) < 400) return raw
+  return toApiError(res.body, resultStatus(res))
+}
+
+function readResult(
+  res: TransportResult,
+  singleMode: SingleMode,
+): ApiResult<ApiRow | ApiRow[] | null> {
+  const count = typeof res.body.count === 'number' ? res.body.count : undefined
+  if (resultStatus(res) >= 400) {
+    return { data: null, error: errorOf(res), count }
+  }
+  const data = (res.body.data ?? null) as ApiRow | ApiRow[] | null
+  if (singleMode === 'one' || singleMode === 'maybe') {
+    const row = Array.isArray(data) ? (data[0] ?? null) : (data ?? null)
+    return { data: row, error: errorOf(res), count }
+  }
+  return { data, error: errorOf(res), count }
+}
+
 async function execBuilder(state: BuilderState): Promise<ApiResult<ApiRow | ApiRow[] | null>> {
-  const session = loadSession()
-  if (!session?.access_token) {
+  const session = await getValidSession()
+  if (!session) {
     // 未登录时数据接口不可用，读写一视同仁本地短路，请求不出网（服务端同样会以 401 拒绝）
     return { data: null, error: { message: '未登录' } }
   }
@@ -383,21 +467,18 @@ async function execBuilder(state: BuilderState): Promise<ApiResult<ApiRow | ApiR
     if (payload[key] === undefined) delete payload[key]
   })
 
-  const res = await transport(path, payload)
-  const error = (res.body.error ?? null) as ApiError | null
-  const count = typeof res.body.count === 'number' ? res.body.count : undefined
-  const data = (res.body.data ?? null) as ApiRow | ApiRow[] | null
-
-  if (state.singleMode === 'one') {
-    const row = Array.isArray(data) ? (data[0] ?? null) : (data ?? null)
-    return { data: row, error, count }
+  let res = await transport(path, payload, session.access_token)
+  // access token 恰在请求途中失效（服务端 401）：刷新一次并重试一次。
+  // 若期间会话已被其他流程刷新（token 已变化），直接用新凭证重试，避免拿旧 refresh token 误刷
+  if (resultStatus(res) === 401) {
+    const current = loadSession()
+    const retrySession =
+      current && current.access_token !== session.access_token
+        ? current
+        : await refreshSessionCached(session)
+    if (retrySession) res = await transport(path, payload, retrySession.access_token)
   }
-  if (state.singleMode === 'maybe') {
-    const row = Array.isArray(data) ? (data[0] ?? null) : (data ?? null)
-    if (row === null) return { data: null, error: null, count }
-    return { data: row, error: null, count }
-  }
-  return { data, error, count }
+  return readResult(res, state.singleMode)
 }
 
 // ---------- 客户端主体 ----------
@@ -409,12 +490,12 @@ function from<Table extends keyof Tables & string>(
 }
 
 async function rpc(fnName: string, args: Record<string, unknown> = {}): Promise<ApiResult<unknown>> {
-  const session = loadSession()
-  if (!session?.access_token) return { data: null, error: { message: '未登录' } }
-  const res = await transport(`/v1/rpc/${fnName}`, { args })
+  const session = await getValidSession()
+  if (!session) return { data: null, error: { message: '未登录' } }
+  const res = await transport(`/v1/rpc/${fnName}`, { args }, session.access_token)
   return {
     data: (res.body.data ?? null) as unknown,
-    error: (res.body.error ?? null) as ApiError | null,
+    error: errorOf(res),
   }
 }
 
@@ -430,6 +511,13 @@ async function refreshSession(session: ApiSession): Promise<ApiResult<ApiSession
     ...session,
     access_token: String(body.access_token),
     refresh_token: String(body.refresh_token ?? session.refresh_token),
+    // 必须写回新过期时间：沿用旧值会让下一次请求立刻再次触发刷新（并白白轮换 refresh token）
+    expires_at:
+      typeof body.expires_at === 'number'
+        ? body.expires_at
+        : typeof body.expires_in === 'number'
+          ? Math.round(Date.now() / 1000) + body.expires_in
+          : session.expires_at,
     user: (body.user as ApiSession['user']) ?? session.user,
   }
   saveSession(next)
@@ -457,23 +545,16 @@ const auth = {
   },
 
   async getSession(): Promise<ApiResult<{ session: ApiSession | null }>> {
-    const session = loadSession()
-    if (!session) return { data: { session: null }, error: null }
-    const expired =
-      typeof session.expires_at === 'number' && session.expires_at * 1000 < Date.now() + 60_000
-    if (expired && session.refresh_token) {
-      const refreshed = await refreshSession(session)
-      if (refreshed.error || !refreshed.data) {
-        return { data: { session: null }, error: refreshed.error }
-      }
-      return { data: { session: refreshed.data }, error: null }
-    }
+    // 与数据请求同一套会话自愈逻辑：临期/缺 expires_at 先刷新，已死则返回 null（由调用方重登）
+    const session = await getValidSession()
     return { data: { session }, error: null }
   },
 
   async setSession(params: {
     access_token: string
     refresh_token: string
+    /** 过期时间（秒级时间戳）；微信登录路径必须携带，否则会话永不刷新 */
+    expires_at?: number
   }): Promise<ApiResult<null>> {
     // 校验并取回用户信息
     const res = await httpRequest({
@@ -492,6 +573,7 @@ const auth = {
     const session: ApiSession = {
       access_token: params.access_token,
       refresh_token: params.refresh_token,
+      expires_at: params.expires_at,
       user: body as ApiSession['user'],
     }
     saveSession(session)
