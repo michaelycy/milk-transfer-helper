@@ -1,0 +1,10 @@
+{
+  "name": "@milk-transfer/shared",
+  "version": "1.0.0",
+  "private": true,
+  "description": "跨端共享的数据库类型（纯类型包，源码直接分发，无需构建）",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

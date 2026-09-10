@@ -1,6 +1,20 @@
 # AGENTS.md — 本仓库协作规则
 
-婴儿转奶助手：Taro 4 + React 18 + TypeScript + Supabase 的多端小程序（主端微信 weapp，兼顾 H5）。详细技术栈与数据安全模型见 `README.md`。
+婴儿转奶助手：Taro 4 + React 18 + TypeScript + Supabase 的多端小程序（主端微信 weapp，兼顾 H5）+ Web 管理后台（apps/admin）。详细技术栈与数据安全模型见 `README.md`。
+
+## 开发流程规范（所有功能必须遵循）
+
+**需求梳理 → 产出 spec（docs/spec/modules/）→ UI 设计图（docs/ui/*.pen）→ 代码。**
+
+- spec 先行：任何功能动代码前，对应模块文档（FR 编号、验收标准、依赖）必须存在并在 spec README 状态总表登记；
+- UI 先于代码：页面类需求先在设计文件出画板（小程序 `docs/ui/ui.pen`，管理端 `docs/ui/admin.pen`），画板对照在模块文档「UI 画板对照」章节回链；
+- 数据库改动走迁移文件、前端页面遵循下方分层约束，均以 spec 为准绳。
+
+## 代码规范
+
+- **文件与文件夹命名**：一律小写短横线（kebab-case，如 `page-header.tsx`、`milk.service.ts`），禁止大驼峰；React 组件的**类型名**仍用大驼峰（PascalCase），只是文件名小写。TanStack Router 等框架强制约定的文件名（`__root.tsx`、`_auth.tsx`）除外。
+- **行尾分号**：所有 TS/JS 语句以分号结尾（admin 由 ESLint `semi` + Prettier 强制；小程序存量代码维持原风格，新文件一律分号）。
+- **格式化**：apps/admin 使用 Prettier（`.prettierrc`：singleQuote、printWidth 100）。
 
 ## 常用命令
 
@@ -26,7 +40,7 @@ fix(record): 修复转奶记录跨天排序
 ## 规格驱动开发
 
 - 实现功能前先读 `docs/spec/`：模块规格在 `modules/`，数据模型以 `03-data-model.md` 为准，术语见 `00-glossary.md`。提交信息可引用 FR 编号（如 FR-H5）。
-- 涉及 UI 的改动遵循 `docs/ui/DESIGN-GUIDELINES.md`（字阶白名单、lucide 图标、token 化颜色）。
+- 涉及 UI 的改动遵循对应端的设计规范：小程序 `docs/ui/DESIGN-GUIDELINES.md`，管理端 `docs/ui/ADMIN-DESIGN-GUIDELINES.md`（两套 token 不互相复用，品牌色延续）；画布审计 `node docs/ui/audit.mjs ui.pen|admin.pen`。
 - 数据库改动必须走 `supabase/migrations/` 新增迁移文件（日期前缀命名），遵循现有 RLS 策略：`user_id` 由数据库端 `auth.uid()` 默认，客户端不传、不可伪造。
 
 ## 代码组织与拆分

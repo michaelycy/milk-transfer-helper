@@ -4,7 +4,7 @@
 
 | 项目 | 内容 |
 |---|---|
-| 文档版本 | v2.0-draft3 |
+| 文档版本 | v2.0-draft4 |
 | 文档状态 | 草案（待评审） |
 | 最后更新 | 2026-09-09 |
 | 取代 | `docs/PRD.md`（已删除）、`.trae/documents/baby-milk-transfer-prd.md`（v1，仅存档） |
@@ -17,6 +17,7 @@
 | v2.0-draft1 | 2026-09-08 | 围绕三大问题重构需求，形成四大闭环与模块化需求编号 |
 | v2.0-draft2 | 2026-09-09 | 按模块拆分为独立文档并建立本索引；新增 UI 设计画板对照（docs/ui/ui.pen V2 系列） |
 | v2.0-draft3 | 2026-09-09 | 闭环评审修复：建立 00-glossary 语义基线（喂养日/顿次/状态机/指标口径与事件清单）；新增 FR-A4 段位时机提示、FR-H4 埋点基建；定义计划完成判定与预警生命周期；修正 D5/D2/F1 的里程碑依赖矛盾；H2 增加数据导出；评审规则与 UI 画板解耦 |
+| v2.0-draft4 | 2026-09-09 | 新增模块 J 管理后台（FR-J1~J5，运营载体由 Supabase 表编辑升级为 apps/admin）；UI 设计文件新增 docs/ui/admin.pen |
 
 ---
 
@@ -40,6 +41,7 @@ docs/spec/
     G-content.md         内容与知识        (FR-G1~G3)
     H-account.md         账户与基础        (FR-H0~H3)
     I-reminders.md       提醒              (FR-I1~I3)
+    J-admin-console.md   管理后台          (FR-J1~J5)
   99-appendix.md       ← 术语表、需求追溯矩阵、旧文档关系
 ```
 
@@ -102,6 +104,11 @@ docs/spec/
 | FR-H3 | 家庭共享 | H 账户 | P3 | 草案 | — | [modules/H-account.md](modules/H-account.md) |
 | FR-H4 | 埋点与分析基建 | H 账户 | P0 | 草案 | M1 | [modules/H-account.md](modules/H-account.md) |
 | FR-H5 | 开屏页与全局未登录态 | H 账户 | P0 | 草案 | M1 | [modules/H-account.md](modules/H-account.md) |
+| FR-J1 | 管理员认证与白名单 | J 管理后台 | P0 | 草案 | M2 | [modules/J-admin-console.md](modules/J-admin-console.md) |
+| FR-J2 | 奶粉库管理（含 CSV 导入） | J 管理后台 | P0 | 草案 | M2 | [modules/J-admin-console.md](modules/J-admin-console.md) |
+| FR-J3 | 文章管理与审核流 | J 管理后台 | P1 | 草案 | M2 | [modules/J-admin-console.md](modules/J-admin-console.md) |
+| FR-J4 | 转奶模板管理 | J 管理后台 | P1 | 草案 | M2 | [modules/J-admin-console.md](modules/J-admin-console.md) |
+| FR-J5 | 数据看板 | J 管理后台 | P2 | 草案 | M2 | [modules/J-admin-console.md](modules/J-admin-console.md) |
 
 非功能需求：NFR-1 医学安全与内容合规 / NFR-2 隐私与数据合规 / NFR-3 性能 / NFR-4 兼容 / NFR-5 可维护性 / NFR-6 可用性，统一见 [04-nfr.md](04-nfr.md)。
 
@@ -109,6 +116,7 @@ docs/spec/
 
 | 文档 | 关系 |
 |---|---|
-| `docs/ui/ui.pen`（配套 `docs/ui/audit.mjs` 画布审计、`docs/ui/DESIGN-GUIDELINES.md` 工作流规范） | UI 设计图。画板 01–15 为现有页面与状态补全（v1 实现对照）；V2-01–V2-13 为本需求设计稿（**已生成**，画板名以「V2-」开头；其中 V2-12 复用画板 09），由模块文档「UI 画板对照」章节负责映射 |
+| `docs/ui/ui.pen`（配套 `docs/ui/audit.mjs` 画布审计、`docs/ui/DESIGN-GUIDELINES.md` 工作流规范） | 小程序 UI 设计图。画板 01–15 为现有页面与状态补全（v1 实现对照）；V2-01–V2-13 为本需求设计稿（**已生成**，画板名以「V2-」开头；其中 V2-12 复用画板 09），由模块文档「UI 画板对照」章节负责映射 |
+| `docs/ui/admin.pen`（配套 `docs/ui/ADMIN-DESIGN-GUIDELINES.md` 管理端规范） | 管理后台 UI 设计图（画板 A-01–A-07，对应模块 J；**未生成**，设计阶段补齐） |
 | `.trae/documents/baby-milk-transfer-tech-arch.md` | 技术架构，随里程碑更新 |
 | `supabase/migrations/` | 数据库基线与增量迁移，规范见 [03-data-model.md](03-data-model.md) |

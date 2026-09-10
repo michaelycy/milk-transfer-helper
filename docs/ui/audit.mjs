@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * 画布审计脚本（docs/ui/DESIGN-GUIDELINES.md §1.6 的执行工具）。
+ * 画布审计脚本（DESIGN-GUIDELINES.md §1.6 / ADMIN-DESIGN-GUIDELINES.md §1.6 的执行工具）。
  *
- * 用法：node docs/ui/audit.mjs
- * 作用：通过 Pencil MCP 对 docs/ui/ui.pen 全文档扫描——
+ * 用法：node docs/ui/audit.mjs [ui.pen|admin.pen]（缺省 ui.pen）
+ * 作用：通过 Pencil MCP 对指定 .pen 全文档扫描——
  *   1) 结构问题：裁剪（含有意出血需人工确认）、零尺寸
  *   2) 文本缺 fill（不可见）
  *   3) 超出字阶白名单的 fontSize
@@ -16,12 +16,17 @@ import os from 'node:os'
 import path from 'node:path'
 
 const SERVER = path.join(os.homedir(), '.pencil/mcp/trae/out/mcp-server-darwin-arm64')
-const DOC = new URL('./ui.pen', `file://${process.cwd()}/`).pathname
+const DOC_NAME = process.argv[2] ?? 'ui.pen'
+const DOC = new URL(`./${DOC_NAME}`, `file://${process.cwd()}/`).pathname
 
-// ---------- 字阶白名单（DESIGN-GUIDELINES §2） ----------
-const FONT_WHITELIST = new Set([
-  9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 28, 30, 32, 36, 40, 44, 56, 60, 64, 72, 80, 88,
-])
+// ---------- 字阶白名单（小程序 DESIGN-GUIDELINES §2 / 管理端 ADMIN-DESIGN-GUIDELINES §2） ----------
+const FONT_WHITELIST =
+  DOC_NAME === 'admin.pen'
+    ? new Set([12, 14, 16, 20, 24])
+    : new Set([
+        9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 22, 24, 28, 30, 32, 36, 40, 44, 56, 60, 64, 72, 80,
+        88,
+      ])
 const INTENTIONAL_CLIP = /deco|deco1|deco2/ // 装饰性出血白名单（节点名匹配）
 
 // ---------- 在画布端执行的审计 JS ----------
@@ -79,7 +84,8 @@ function request(method, params, timeoutMs = 240000) {
     }, timeoutMs)
     pending.set(id, (msg) => {
       clearTimeout(t)
-      msg.ok ? resolve(msg) : reject(new Error(JSON.stringify(msg.error ?? msg).slice(0, 300)))
+      if (msg.error) reject(new Error(JSON.stringify(msg.error).slice(0, 300)))
+      else resolve(msg)
     })
     proc.stdin.write(JSON.stringify({ jsonrpc: '2.0', id, method, params }) + '\n')
   })

@@ -27,15 +27,15 @@ export default function PlanDetail() {
   const [records, setRecords] = useState<FeedRecordRow[]>([])
 
   const load = useCallback(async () => {
-    const plan = await PlanService.getById(planId)
-    if (!plan) {
+    const data = await PlanService.getById(planId)
+    if (!data) {
       toastError(new Error('计划不存在'))
       return
     }
-    setPlan(plan)
-    const end = new Date(`${plan.start_date}T00:00:00`)
+    setPlan(data)
+    const end = new Date(`${data.start_date}T00:00:00`)
     end.setDate(end.getDate() + 30)
-    setRecords(await FeedRecordService.listByDateRange(plan.baby_id, plan.start_date, formatDateSafe(end)))
+    setRecords(await FeedRecordService.listByDateRange(data.baby_id, data.start_date, formatDateSafe(end)))
   }, [planId])
 
   useEffect(() => {

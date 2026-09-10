@@ -1,0 +1,64 @@
+name: Deploy (production)
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 发布前强制过质量门（master 直推不经 PR，此处是最后一道闸）
+      - name: Quality gate
+        run: |
+          pnpm typecheck
+          pnpm lint
+          pnpm test
+
+      - name: Deploy Edge Function (admin-stats)
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ] || [ -z "$SUPABASE_PROJECT_REF" ]; then
+            echo "跳过：未配置 SUPABASE_ACCESS_TOKEN / SUPABASE_PROJECT_REF"
+            exit 0
+          fi
+          npx supabase functions deploy admin-stats --project-ref "$SUPABASE_PROJECT_REF"
+
+      - name: Link Vercel project (optional pin)
+        if: env.VERCEL_ORG_ID != '' && env.VERCEL_PROJECT_ID != ''
+        working-directory: apps/admin
+        run: |
+          mkdir -p .vercel
+          printf '{"orgId":"%s","projectId":"%s"}' "$VERCEL_ORG_ID" "$VERCEL_PROJECT_ID" > .vercel/project.json
+
+      - name: Build admin (Vercel prebuilt)
+        working-directory: apps/admin
+        run: npx vercel build --prod --token="$VERCEL_TOKEN" --yes
+
+      - name: Deploy admin (Vercel)
+        working-directory: apps/admin
+        run: npx vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN" --yes

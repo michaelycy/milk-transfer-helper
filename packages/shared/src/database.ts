@@ -82,6 +82,27 @@ export interface Database {
         }
         Relationships: []
       }
+      admins: {
+        Row: {
+          user_id: string
+          email: string
+          note: string | null
+          created_at: string
+        }
+        Insert: {
+          user_id: string
+          email: string
+          note?: string | null
+          created_at?: string
+        }
+        Update: {
+          user_id?: string
+          email?: string
+          note?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      },
       milk_products: {
         Row: {
           id: string
@@ -92,6 +113,8 @@ export interface Database {
           region: 'domestic' | 'overseas'
           reg_no: string | null
           ingredients: Json
+          mix_ratio: string | null
+          price_range: string | null
           status: 'on_shelf' | 'off_shelf'
           updated_at: string
         }
@@ -104,6 +127,8 @@ export interface Database {
           region?: 'domestic' | 'overseas'
           reg_no?: string | null
           ingredients?: Json
+          mix_ratio?: string | null
+          price_range?: string | null
           status?: 'on_shelf' | 'off_shelf'
           updated_at?: string
         }
@@ -115,6 +140,8 @@ export interface Database {
           region?: 'domestic' | 'overseas'
           reg_no?: string | null
           ingredients?: Json
+          mix_ratio?: string | null
+          price_range?: string | null
           status?: 'on_shelf' | 'off_shelf'
           updated_at?: string
         }
@@ -453,3 +480,14 @@ export type ProteinType = 'intact' | 'partially_hydrolyzed' | 'extensively_hydro
 export type AlertLevel = 'red' | 'yellow' | 'green'
 export type AlertStatus = 'new' | 'acked' | 'resolved'
 export type Gender = 'male' | 'female' | 'unknown'
+
+/**
+ * 方法模板的逐日定义（plan_templates.days jsonb 的元素契约，两端共用）。
+ * 用 type 而非 interface：保持对 Json 索引签名类型的结构可赋值性。
+ */
+export type PlanDaySpec = {
+  /** 当日新奶占比 0–1 */
+  ratio: number
+  /** 展示用文案，如「新奶 1/3」 */
+  label: string
+}

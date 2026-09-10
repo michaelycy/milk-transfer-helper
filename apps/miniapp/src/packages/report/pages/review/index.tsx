@@ -31,7 +31,7 @@ export default function Review() {
       AlertService.listUnresolved(plan.baby_id),
       BabyService.listWeights(plan.baby_id),
     ])
-    const report = buildReviewReport({
+    const data = buildReviewReport({
       plan: {
         status: plan.status,
         rollback_count: plan.rollback_count,
@@ -44,7 +44,7 @@ export default function Review() {
       alerts: alerts.filter((a) => a.plan_id === plan.id),
       weightsKg: weights.map((w) => w.weight_g / 1000),
     })
-    setReport(report)
+    setReport(data)
   }, [planId])
 
   useEffect(() => {

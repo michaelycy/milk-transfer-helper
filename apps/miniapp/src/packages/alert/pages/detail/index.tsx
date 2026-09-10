@@ -22,9 +22,9 @@ export default function AlertDetail() {
   const [alert, setAlert] = useState<AlertRow | null>(null)
 
   const load = useCallback(async () => {
-    setAlert(await AlertService.getById(alertId))
-    const alert = await AlertService.getById(alertId)
-    if (alert) track('alert_shown', { level: alert.level })
+    const data = await AlertService.getById(alertId)
+    setAlert(data)
+    if (data) track('alert_shown', { level: data.level })
   }, [alertId])
 
   useEffect(() => {

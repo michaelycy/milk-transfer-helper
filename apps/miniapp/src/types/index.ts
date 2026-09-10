@@ -19,19 +19,11 @@ export type AlertRow = PublicTables['alerts']['Row']
 export type ArticleRow = PublicTables['articles']['Row']
 export type FavoriteRow = PublicTables['favorites']['Row']
 
-export type { PlanStatus, PlanMethod, PlanReason, ProteinType, AlertLevel, AlertStatus, Gender } from './database'
+export type { PlanStatus, PlanMethod, PlanReason, ProteinType, AlertLevel, AlertStatus, Gender, PlanDaySpec } from './database'
 
 export interface RecordStats {
   total: number
   days: number
-}
-
-/** 方法模板的逐日定义（plan_templates.days jsonb） */
-export interface PlanDaySpec {
-  /** 当日新奶占比 0–1 */
-  ratio: number
-  /** 展示用文案，如「新奶 1/3」 */
-  label: string
 }
 
 /** 从模板展开后的逐日计划 */
