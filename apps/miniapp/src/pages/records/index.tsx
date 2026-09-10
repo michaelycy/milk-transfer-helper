@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Input, Picker, Text, Textarea, View } from '@tarojs/components'
 import Taro, { useDidShow, useReachBottom } from '@tarojs/taro'
 import { Button, Cell, Empty, Field, FloatingBubble, Popup, Tabs } from '@taroify/core'
@@ -89,6 +89,15 @@ export default function Records() {
     void loadRecords(0, 'replace')
     void loadPlan()
   })
+
+  // 冷启动补载：useDidShow 触发时会话/宝宝档案可能尚未就绪，两者就绪后再加载一次
+  // （依赖不变时不触发，与 useDidShow 不会重复请求）
+  useEffect(() => {
+    if (authed && currentBaby) {
+      void loadRecords(0, 'replace')
+      void loadPlan()
+    }
+  }, [authed, currentBaby, loadRecords, loadPlan])
 
   useReachBottom(() => {
     if (hasMoreRef.current && !loadingRef.current) {

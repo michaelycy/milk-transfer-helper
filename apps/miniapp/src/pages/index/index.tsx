@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Text, View } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { selectTabbar } from '../../utils/tabbar'
@@ -18,7 +18,7 @@ import './index.scss'
 /** 首页（V2-01 计划进行中 / V2-02 无计划空状态 / V2-16 游客未建档：引导 + 推荐文章） */
 export default function Index() {
   const { authed } = useAuth()
-  const { currentBaby, babies, loading: babyLoading } = useBaby()
+  const { currentBaby, babies, loading: babyLoading, switchBaby } = useBaby()
   const [plan, setPlan] = useState<TransferPlanRow | null>(null)
   const [planDays, setPlanDays] = useState<ReturnType<typeof buildPlanDays>>([])
   const [latestRecord, setLatestRecord] = useState<FeedRecordRow | null>(null)
@@ -59,6 +59,12 @@ export default function Index() {
     selectTabbar(0)
     void load()
   })
+
+  // 冷启动补载：useDidShow 触发时会话可能仍在恢复中；authed 与宝宝档案就绪后补一次，
+  // 同时承担切宝宝后的重载（依赖不变时不触发，与 useDidShow 不会重复请求）
+  useEffect(() => {
+    if (authed && !babyLoading) void load()
+  }, [authed, babyLoading, load])
 
   const stageTip = useMemo(
     () => (currentBaby && !plan ? getStageTip(currentBaby.birth_date) : null),
@@ -121,8 +127,7 @@ export default function Index() {
             if (babies.length > 1) {
               const idx = babies.findIndex((b) => b.id === currentBaby?.id)
               const next = babies[(idx + 1) % babies.length]
-              Taro.setStorageSync('baby:current-id', next.id)
-              void load()
+              switchBaby(next.id)
             } else {
               Taro.navigateTo({ url: '/packages/baby/pages/create/index' })
             }
