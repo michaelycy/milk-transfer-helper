@@ -343,8 +343,8 @@ interface BuilderState {
 
 async function execBuilder(state: BuilderState): Promise<ApiResult<ApiRow | ApiRow[] | null>> {
   const session = loadSession()
-  if (state.mode === 'select' && !session?.access_token) {
-    // 未登录时数据接口不可用（服务端同样会以 401 拒绝）
+  if (!session?.access_token) {
+    // 未登录时数据接口不可用，读写一视同仁本地短路，请求不出网（服务端同样会以 401 拒绝）
     return { data: null, error: { message: '未登录' } }
   }
 

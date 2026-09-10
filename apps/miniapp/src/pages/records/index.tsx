@@ -68,7 +68,7 @@ export default function Records() {
         setLoading(false)
       }
     },
-    [currentBaby],
+    [currentBaby, authed],
   )
 
   const loadPlan = useCallback(async () => {
@@ -81,7 +81,7 @@ export default function Records() {
     } catch {
       setPlan(null)
     }
-  }, [currentBaby])
+  }, [currentBaby, authed])
 
   // 页面首次显示与每次切回 tab 都刷新，直接取最新会话，避免闭包旧值
   useDidShow(() => {

@@ -10,11 +10,12 @@ import { buildPlanDays, getCurrentPlanDay } from '../../utils/plan'
 import { getStageTip } from '../../utils/baby'
 import { QuickRecordSheet } from '../../components/QuickRecordSheet'
 import { LoginGate } from '../../components/LoginGate'
+import { RecommendedArticles } from '../../components/recommended-articles'
 import { useAuth } from '../../store/auth'
 import type { AlertRow, FeedRecordRow, TransferPlanRow } from '../../types'
 import './index.scss'
 
-/** 首页（V2-01 计划进行中 / V2-02 无计划空状态） */
+/** 首页（V2-01 计划进行中 / V2-02 无计划空状态 / V2-16 游客未建档：引导 + 推荐文章） */
 export default function Index() {
   const { authed } = useAuth()
   const { currentBaby, babies, loading: babyLoading } = useBaby()
@@ -52,7 +53,7 @@ export default function Index() {
     } catch (error) {
       Taro.showToast({ title: '数据加载失败，下拉重试', icon: 'none' })
     }
-  }, [currentBaby])
+  }, [currentBaby, authed])
 
   useDidShow(() => {
     selectTabbar(0)
@@ -85,12 +86,15 @@ export default function Index() {
     Taro.navigateTo({ url: `/packages/alert/pages/detail/index?id=${alert.id}` })
   }
 
-  // 建档引导（FR-A1 验收：未创建档案时引导至建档页）
+  // 建档引导（FR-A1 验收：未创建档案时引导至建档页）；V2-16 游客态保留推荐文章模块
   if (!babyLoading && !currentBaby) {
     return (
       <LoginGate>
       <View className='home home--empty'>
         <View className='home__guide'>
+          <View className='home__guide-icon'>
+            <Text>🍼</Text>
+          </View>
           <Text className='home__guide-title'>先给宝宝建个档案</Text>
           <Text className='home__guide-desc'>建档后即可记录喂养、打卡并创建转奶计划</Text>
           <View
@@ -100,6 +104,7 @@ export default function Index() {
             <Text>创建宝宝档案</Text>
           </View>
         </View>
+        <RecommendedArticles />
       </View>
       </LoginGate>
     )

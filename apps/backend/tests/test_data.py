@@ -8,6 +8,9 @@ from app.main import app
 
 JWT = "test.jwt.token"
 
+# 捕获透传给 PostgREST 的请求头，防回归：Authorization 必须是单层 Bearer
+forwarded: dict[str, str] = {}
+
 
 @pytest.fixture(autouse=True)
 def _env_and_transport(monkeypatch: pytest.MonkeyPatch):
@@ -18,6 +21,7 @@ def _env_and_transport(monkeypatch: pytest.MonkeyPatch):
     get_settings.cache_clear()
 
     def handler(request: httpx.Request) -> httpx.Response:
+        forwarded["authorization"] = request.headers.get("authorization", "")
         if request.url.path == "/rest/v1/feed_records" and request.method == "GET":
             return httpx.Response(
                 200,
@@ -63,6 +67,8 @@ def test_query_passthrough_with_filters_and_count() -> None:
     assert body["data"] == [{"id": "r1", "baby_id": "b1"}]
     assert body["count"] == 42
     assert body["error"] is None
+    # 回归：透传给 PostgREST 的 Authorization 不能出现 "Bearer Bearer" 双前缀
+    assert forwarded["authorization"] == f"Bearer {JWT}"
 
 
 def test_query_rejects_unknown_table() -> None:

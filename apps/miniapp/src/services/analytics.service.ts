@@ -1,5 +1,4 @@
 import { supabase } from './supabase'
-import { ensureSession } from '../utils/auth'
 import type { Json } from '../types/database'
 
 /**
@@ -24,7 +23,9 @@ export type AnalyticsEvent =
 export function track(name: AnalyticsEvent, props: Record<string, unknown> = {}): void {
   void (async () => {
     try {
-      await ensureSession()
+      // 仅在已有会话（guest/wechat）时上报：埋点绝不创建会话，未登录态不发任何请求
+      const { data } = await supabase.auth.getSession()
+      if (!data.session?.access_token) return
       const { error } = await supabase
         .from('analytics_events')
         .insert({ name, props: props as Json })

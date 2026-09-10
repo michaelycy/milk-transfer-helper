@@ -5,6 +5,8 @@ export interface GetArticlesOptions {
   category?: string
   /** 标题模糊搜索关键词 */
   keyword?: string
+  /** 限制条数（首页推荐位取最新 2 篇） */
+  limit?: number
 }
 
 export const ArticleService = {
@@ -16,6 +18,7 @@ export const ArticleService = {
 
     if (options.category) query = query.eq('category', options.category)
     if (options.keyword) query = query.ilike('title', `%${options.keyword}%`)
+    if (options.limit) query = query.limit(options.limit)
 
     const { data, error } = await query
     if (error) throw error

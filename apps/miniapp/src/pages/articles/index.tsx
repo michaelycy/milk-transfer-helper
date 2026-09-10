@@ -59,7 +59,7 @@ export default function Articles() {
       cancelled = true
       clearTimeout(timer)
     }
-  }, [currentTab, searchVal])
+  }, [currentTab, searchVal, authed])
 
   const handleArticleClick = (id: string) => {
     Taro.navigateTo({ url: `/packages/article/pages/detail/index?id=${id}` })

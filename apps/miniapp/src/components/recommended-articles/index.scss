@@ -1,0 +1,105 @@
+// 首页推荐文章（V2-16）；token 与 docs/ui/DESIGN-GUIDELINES.md 同名
+$primary: #ff6b35;
+$info: #2db7f5;
+$success: #07c160;
+$text: #323233;
+$text3: #c8c9cc;
+$border: #ebedf0;
+
+.rec-articles {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &__title {
+    font-size: 32px;
+    font-weight: 500;
+    color: $text;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid $border;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 32px;
+
+    & + & {
+      border-top: 1px solid $border;
+    }
+  }
+
+  &__thumb {
+    width: 152px;
+    height: 114px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 56px;
+    background: #f2f3f5;
+    border-radius: 8px;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  &__name {
+    font-size: 28px;
+    font-weight: 500;
+    color: $text;
+    line-height: 36px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__tag {
+    padding: 2px 12px;
+    font-size: 20px;
+    color: #fff;
+    background: $text3;
+    border-radius: 999px;
+
+    &.is-guide {
+      background: $primary;
+    }
+
+    &.is-milk {
+      background: $info;
+    }
+
+    &.is-faq {
+      background: $success;
+    }
+  }
+
+  &__count {
+    font-size: 22px;
+    color: $text3;
+  }
+
+  &__chev {
+    font-size: 32px;
+    color: $text3;
+  }
+}

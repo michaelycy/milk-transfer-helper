@@ -5,7 +5,7 @@
       "type": "frame",
       "id": "home-root",
       "x": 0,
-      "y": 0,
+      "y": 1000,
       "name": "01 首页 · Home",
       "clip": true,
       "width": 375,
@@ -973,7 +973,8 @@
                   "fill": "#646566",
                   "content": "记录",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -1003,7 +1004,8 @@
                   "fill": "#646566",
                   "content": "知识",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -1033,7 +1035,8 @@
                   "fill": "#646566",
                   "content": "我的",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -1056,8 +1059,8 @@
     {
       "type": "frame",
       "id": "reclist-root",
-      "x": 455,
-      "y": 0,
+      "x": 0,
+      "y": 2000,
       "name": "02 转奶记录 · 列表",
       "clip": true,
       "width": 375,
@@ -1249,7 +1252,8 @@
                       "fill": "#646566",
                       "content": "图表模式",
                       "fontFamily": "Inter",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "rectangle",
@@ -2198,7 +2202,8 @@
                   "fill": "#646566",
                   "content": "首页",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -2259,7 +2264,8 @@
                   "fill": "#646566",
                   "content": "知识",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -2289,7 +2295,8 @@
                   "fill": "#646566",
                   "content": "我的",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -2338,8 +2345,8 @@
     {
       "type": "frame",
       "id": "recchart-root",
-      "x": 910,
-      "y": 0,
+      "x": 455,
+      "y": 2000,
       "name": "03 转奶记录 · 图表",
       "clip": true,
       "width": 375,
@@ -2502,7 +2509,8 @@
                       "fill": "#646566",
                       "content": "列表模式",
                       "fontFamily": "Inter",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "rectangle",
@@ -3222,7 +3230,8 @@
                   "fill": "#646566",
                   "content": "首页",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -3283,7 +3292,8 @@
                   "fill": "#646566",
                   "content": "知识",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -3313,7 +3323,8 @@
                   "fill": "#646566",
                   "content": "我的",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -3362,8 +3373,8 @@
     {
       "type": "frame",
       "id": "addsheet-root",
-      "x": 1365,
-      "y": 0,
+      "x": 910,
+      "y": 2000,
       "name": "04 添加转奶记录",
       "clip": true,
       "width": 375,
@@ -3576,7 +3587,8 @@
                   "fill": "#646566",
                   "content": "首页",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -3637,7 +3649,8 @@
                   "fill": "#646566",
                   "content": "知识",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -3667,7 +3680,8 @@
                   "fill": "#646566",
                   "content": "我的",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -4238,8 +4252,8 @@
     {
       "type": "frame",
       "id": "articles-root",
-      "x": 1820,
-      "y": 0,
+      "x": 0,
+      "y": 4000,
       "name": "05 育儿知识 · Articles",
       "clip": true,
       "width": 375,
@@ -4485,7 +4499,8 @@
                       "fill": "#646566",
                       "content": "转奶指南",
                       "fontFamily": "Inter",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "rectangle",
@@ -4513,7 +4528,8 @@
                       "fill": "#646566",
                       "content": "奶粉知识",
                       "fontFamily": "Inter",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "rectangle",
@@ -4541,7 +4557,8 @@
                       "fill": "#646566",
                       "content": "常见问题",
                       "fontFamily": "Inter",
-                      "fontSize": 14
+                      "fontSize": 14,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "rectangle",
@@ -5055,7 +5072,8 @@
                   "fill": "#646566",
                   "content": "首页",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -5085,7 +5103,8 @@
                   "fill": "#646566",
                   "content": "记录",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -5146,7 +5165,8 @@
                   "fill": "#646566",
                   "content": "我的",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -5169,8 +5189,8 @@
     {
       "type": "frame",
       "id": "detail-root",
-      "x": 2275,
-      "y": 0,
+      "x": 910,
+      "y": 4000,
       "name": "06 文章详情 · Detail",
       "clip": true,
       "width": 375,
@@ -5718,8 +5738,8 @@
     {
       "type": "frame",
       "id": "profile-root",
-      "x": 2730,
-      "y": 0,
+      "x": 0,
+      "y": 7000,
       "name": "07 我的 · Profile",
       "clip": true,
       "width": 375,
@@ -6386,7 +6406,8 @@
                   "fill": "#646566",
                   "content": "首页",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -6416,7 +6437,8 @@
                   "fill": "#646566",
                   "content": "记录",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -6446,7 +6468,8 @@
                   "fill": "#646566",
                   "content": "知识",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 }
               ]
             },
@@ -6500,8 +6523,8 @@
     {
       "type": "frame",
       "id": "spec-root",
-      "x": 3185,
-      "y": -14,
+      "x": 0,
+      "y": 10000,
       "name": "08 设计规范 · Taroify Tokens",
       "clip": true,
       "width": 644,
@@ -7335,7 +7358,8 @@
                   "width": 300,
                   "content": "正文 font-size-md",
                   "fontFamily": "Inter",
-                  "fontSize": 14
+                  "fontSize": 14,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "text",
@@ -7366,7 +7390,8 @@
                   "width": 300,
                   "content": "辅助 font-size-sm",
                   "fontFamily": "Inter",
-                  "fontSize": 12
+                  "fontSize": 12,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "text",
@@ -7397,7 +7422,8 @@
                   "width": 300,
                   "content": "极小 font-size-xs",
                   "fontFamily": "Inter",
-                  "fontSize": 10
+                  "fontSize": 10,
+                  "fontWeight": "normal"
                 },
                 {
                   "type": "text",
@@ -7952,7 +7978,7 @@
       "type": "text",
       "id": "caption-1",
       "x": 0,
-      "y": 826,
+      "y": 1826,
       "name": "caption-1",
       "fill": "#969799",
       "content": "01 首页 — Taroify: NavBar · Button(small round) · CellGroup · Cell · Tag · Tabbar",
@@ -7963,8 +7989,8 @@
     {
       "type": "text",
       "id": "caption-2",
-      "x": 455,
-      "y": 826,
+      "x": 0,
+      "y": 2826,
       "name": "caption-2",
       "fill": "#969799",
       "content": "02 转奶记录·列表 — Tabs · Cell · Tag(warning) · FloatingBubble · Tabbar",
@@ -7975,8 +8001,8 @@
     {
       "type": "text",
       "id": "caption-3",
-      "x": 910,
-      "y": 826,
+      "x": 455,
+      "y": 2826,
       "name": "caption-3",
       "fill": "#969799",
       "content": "03 转奶记录·图表 — Tabs · Grid · echarts 折线 · FloatingBubble",
@@ -7987,8 +8013,8 @@
     {
       "type": "text",
       "id": "caption-4",
-      "x": 1365,
-      "y": 826,
+      "x": 910,
+      "y": 2826,
       "name": "caption-4",
       "fill": "#969799",
       "content": "04 添加转奶记录 — Backdrop(70%) · Popup(rounded 16) · Field · Tag · Button(large)",
@@ -7999,8 +8025,8 @@
     {
       "type": "text",
       "id": "caption-5",
-      "x": 1820,
-      "y": 826,
+      "x": 0,
+      "y": 4826,
       "name": "caption-5",
       "fill": "#969799",
       "content": "05 育儿知识 — Search(round) · Tabs · Cell · Tag",
@@ -8011,8 +8037,8 @@
     {
       "type": "text",
       "id": "caption-6",
-      "x": 2275,
-      "y": 826,
+      "x": 910,
+      "y": 4826,
       "name": "caption-6",
       "fill": "#969799",
       "content": "06 文章详情 — NavBar(back/share) · Button(outlined/medium) · NoticeBar 风格提示卡",
@@ -8023,8 +8049,8 @@
     {
       "type": "text",
       "id": "caption-7",
-      "x": 2730,
-      "y": 826,
+      "x": 0,
+      "y": 7826,
       "name": "caption-7",
       "fill": "#969799",
       "content": "07 我的 — 渐变头部 · CellGroup · Cell(图标菜单) · Tabbar",
@@ -8035,8 +8061,8 @@
     {
       "type": "note",
       "id": "readme-note",
-      "x": 3151,
-      "y": -590,
+      "x": 724,
+      "y": 10000,
       "name": "README · 交接说明",
       "width": 640,
       "height": 0,
@@ -8045,7 +8071,7 @@
     {
       "type": "frame",
       "id": "iNyh6",
-      "x": 3905,
+      "x": 0,
       "y": 0,
       "name": "09 微信登录 · V2-12",
       "context": "对应 src/utils/user.ts 微信授权登录；Taroify: Button(success/outlined) + Checkbox",
@@ -8352,8 +8378,8 @@
     {
       "type": "frame",
       "id": "NWxbY",
-      "x": 4360,
-      "y": 0,
+      "x": 0,
+      "y": 9000,
       "name": "10 空状态 · Empty States",
       "width": 1245,
       "height": 812,
@@ -9413,8 +9439,8 @@
     {
       "type": "frame",
       "id": "gQ4QC",
-      "x": 5685,
-      "y": 0,
+      "x": 1325,
+      "y": 9000,
       "name": "11 加载与反馈 · Loading & Toast",
       "context": "骨架屏=Taroify Skeleton；Toast=Taroify Toast（对应代码 Taro.atMessage / Taro.showToast）",
       "width": 2115,
@@ -11497,7 +11523,7 @@
     {
       "type": "text",
       "id": "UPeKB",
-      "x": 3905,
+      "x": 0,
       "y": 826,
       "name": "caption-9",
       "fill": "#969799",
@@ -11509,8 +11535,8 @@
     {
       "type": "text",
       "id": "PTPeT",
-      "x": 4360,
-      "y": 826,
+      "x": 0,
+      "y": 9826,
       "name": "caption-10",
       "fill": "#969799",
       "content": "10 空状态 — Taroify Empty（image 80 + description + 按钮插槽）· FloatingBubble",
@@ -11521,8 +11547,8 @@
     {
       "type": "text",
       "id": "VOI25",
-      "x": 5685,
-      "y": 826,
+      "x": 1325,
+      "y": 9826,
       "name": "caption-11",
       "fill": "#969799",
       "content": "11 加载与反馈 — Skeleton · Toast(success/文字/error 88×88·距顶20%) · Button loading 提交中",
@@ -11533,8 +11559,8 @@
     {
       "type": "frame",
       "id": "sE1Lj",
-      "x": 7010,
-      "y": 0,
+      "x": 2275,
+      "y": 2000,
       "name": "12 删除流程 · ActionSheet+Dialog",
       "context": "Taroify Dialog theme=danger 二次确认 — 对应记录列表删除操作（trash-2 图标）",
       "clip": true,
@@ -12247,8 +12273,8 @@
     {
       "type": "frame",
       "id": "jCEtp",
-      "x": 7465,
-      "y": 0,
+      "x": 5280,
+      "y": 9000,
       "name": "13 分享面板 · ActionSheet",
       "context": "Taroify ActionSheet — 文章详情「分享」按钮触发；底部弹层圆角16 + 取消条",
       "clip": true,
@@ -12624,8 +12650,8 @@
     {
       "type": "frame",
       "id": "Q4UCyY",
-      "x": 7920,
-      "y": 0,
+      "x": 3520,
+      "y": 9000,
       "name": "14 边界情况 · Edge Cases",
       "context": "网络错误（Empty+重试）/ 长文案溢出折行 / 下拉刷新（PullRefresh head 50）",
       "width": 1680,
@@ -14327,8 +14353,8 @@
     {
       "type": "text",
       "id": "H59sD9",
-      "x": 7920,
-      "y": 826,
+      "x": 3520,
+      "y": 9826,
       "name": "caption-14",
       "fill": "#969799",
       "content": "14 边界情况 — 网络错误 Empty+重试 · 长文案折行 · PullRefresh(head 50) · 图表暂无数据 · FAB",
@@ -14339,8 +14365,8 @@
     {
       "type": "text",
       "id": "qBCvD",
-      "x": 7010,
-      "y": 826,
+      "x": 2275,
+      "y": 2826,
       "name": "caption-12",
       "fill": "#969799",
       "content": "12 删除流程 — 步骤1 ActionSheet(删除该记录) → 步骤2 Dialog 确认（confirmColor 主色 #FF6B35）",
@@ -14351,8 +14377,8 @@
     {
       "type": "text",
       "id": "ZWP6r",
-      "x": 7465,
-      "y": 826,
+      "x": 5280,
+      "y": 9826,
       "name": "caption-13",
       "fill": "#969799",
       "content": "13 分享面板 — Taroify ActionSheet：条目52 + 取消48 + 底部圆角16",
@@ -14363,8 +14389,8 @@
     {
       "type": "text",
       "id": "Bvmrz",
-      "x": 7010,
-      "y": 826,
+      "x": 2275,
+      "y": 2856,
       "name": "caption-12b",
       "fill": "#969799",
       "content": "12b 步骤1 — Taro.showActionSheet([删除该记录])；12 主画板为步骤2 showModal 确认（confirmColor 主色）",
@@ -14375,8 +14401,8 @@
     {
       "type": "frame",
       "id": "c9HeH",
-      "x": 9245,
-      "y": 0,
+      "x": 1365,
+      "y": 4000,
       "name": "15 文章详情 · 加载与异常",
       "context": "detail.tsx 的三个分支：Loading 加载中 / toast 加载失败 / 文章不存在",
       "width": 1245,
@@ -14895,8 +14921,8 @@
     {
       "type": "text",
       "id": "sPZM2",
-      "x": 9245,
-      "y": 826,
+      "x": 1365,
+      "y": 4826,
       "name": "caption-15",
       "fill": "#969799",
       "content": "15 文章详情加载与异常 — Taroify Loading(30, gray-5) · error Toast · Empty 文章不存在",
@@ -14907,8 +14933,8 @@
     {
       "type": "frame",
       "id": "N9Hr7",
-      "x": 10570,
-      "y": 0,
+      "x": 455,
+      "y": 1000,
       "name": "V2-01 首页·计划进行中",
       "context": "覆盖 C3 任务卡 / D1 快速记奶 / E3 适应度小结 / A2 多宝宝切换 / I1 提醒我",
       "clip": true,
@@ -15575,8 +15601,8 @@
     {
       "type": "frame",
       "id": "Qdw0C",
-      "x": 12390,
-      "y": 0,
+      "x": 910,
+      "y": 3000,
       "name": "V2-05 计划详情·时间轴",
       "context": "覆盖 C4 状态机（进行中/暂停/回退/完成，变更留痕）/ C5 一键回退 / C7 时间轴（计划 vs 实际）/ I1 提醒联动",
       "clip": true,
@@ -16049,7 +16075,8 @@
                           "fill": "#323233",
                           "content": "D1 · 9/10",
                           "fontFamily": "Inter",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -16126,7 +16153,8 @@
                           "fill": "#323233",
                           "content": "D2 · 9/11",
                           "fontFamily": "Inter",
-                          "fontSize": 13
+                          "fontSize": 13,
+                          "fontWeight": "normal"
                         },
                         {
                           "type": "text",
@@ -16336,8 +16364,8 @@
     {
       "type": "frame",
       "id": "trIRN",
-      "x": 11480,
-      "y": 0,
+      "x": 0,
+      "y": 3000,
       "name": "V2-03 计划向导·选择奶粉",
       "context": "覆盖 C1 四步向导步骤1（含上次转奶经验摘要、手动输入兜底）/ B2 搜索筛选（蛋白类型驱动方法与安全提示）",
       "clip": true,
@@ -17141,8 +17169,8 @@
     {
       "type": "frame",
       "id": "fZu0W",
-      "x": 11935,
-      "y": 0,
+      "x": 455,
+      "y": 3000,
       "name": "V2-04 计划向导·原因与确认",
       "context": "覆盖 C1 原因选择与计划总览 / C2 方法模板（混合法7天，模板可配置带版本锁定）/ C6 安全规则拦截（确认留痕，水解配方强提示不可跳过）",
       "clip": true,
@@ -17817,8 +17845,8 @@
     {
       "type": "frame",
       "id": "mST0l",
-      "x": 13755,
-      "y": 0,
+      "x": 0,
+      "y": 5000,
       "name": "V2-08 黄色预警",
       "context": "覆盖 E2 分级预警（图标+文字+颜色三重传达；红色预警不可关闭）/ C5 回退建议入口；预警生命周期 new→acked；文案无诊断表述（NFR-1）",
       "clip": true,
@@ -18314,8 +18342,8 @@
     {
       "type": "frame",
       "id": "JsLml",
-      "x": 14210,
-      "y": 0,
+      "x": 1365,
+      "y": 3000,
       "name": "V2-09 计划复盘报告",
       "context": "覆盖 F2 复盘报告（实际天数/偏离/预警/奶量/体重）+ 脱敏分享卡（L4，scene=share_plan 归因）；报告可作就医沟通材料（P3 画像）",
       "clip": true,
@@ -19214,8 +19242,8 @@
     {
       "type": "frame",
       "id": "z9gGn8",
-      "x": 12845,
-      "y": 0,
+      "x": 1365,
+      "y": 2000,
       "name": "V2-06 快速记奶",
       "context": "覆盖 D1 三秒记奶（≤3次触控，夜奶单手）/ D2 喝完三态 / D5 计划自动带出配方并标记计划内",
       "clip": true,
@@ -19849,7 +19877,8 @@
                       "fill": "#969799",
                       "content": "剩部分",
                       "fontFamily": "Inter",
-                      "fontSize": 13
+                      "fontSize": 13,
+                      "fontWeight": "normal"
                     }
                   ]
                 },
@@ -19875,7 +19904,8 @@
                       "fill": "#969799",
                       "content": "拒奶",
                       "fontFamily": "Inter",
-                      "fontSize": 13
+                      "fontSize": 13,
+                      "fontWeight": "normal"
                     }
                   ]
                 }
@@ -19938,8 +19968,8 @@
     {
       "type": "frame",
       "id": "lBdnY",
-      "x": 13300,
-      "y": 0,
+      "x": 1820,
+      "y": 2000,
       "name": "V2-07 症状打卡",
       "context": "覆盖 D3 症状打卡：按日一条、全部可跳过、30秒完成；大便图卡经顾问审核（NFR-1）；数据供 E1 规则引擎",
       "clip": true,
@@ -20943,8 +20973,8 @@
     {
       "type": "frame",
       "id": "zplH6",
-      "x": 14665,
-      "y": 0,
+      "x": 0,
+      "y": 6000,
       "name": "V2-10 奶粉库搜索",
       "context": "覆盖 B1 结构化奶粉库（蛋白类型/注册号关键字段，中性呈现无排名）/ B2 搜索筛选 + 手动输入兜底；TY 特医条目带就医标记（C6 读取）",
       "clip": true,
@@ -21805,8 +21835,8 @@
     {
       "type": "frame",
       "id": "X86aq",
-      "x": 15120,
-      "y": 0,
+      "x": 455,
+      "y": 6000,
       "name": "V2-11 奶粉对比",
       "context": "覆盖 B3 奶粉对比：勾选2–3款并排对比，差异高亮，缺失显示暂无，固定免责声明；不给出谁更好的结论",
       "clip": true,
@@ -22084,7 +22114,8 @@
                       "width": "fill_container",
                       "content": "3段",
                       "fontFamily": "Inter",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -22138,7 +22169,8 @@
                       "width": "fill_container",
                       "content": "整蛋白",
                       "fontFamily": "Inter",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -22192,7 +22224,8 @@
                       "width": "fill_container",
                       "content": "YP",
                       "fontFamily": "Inter",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -22246,7 +22279,8 @@
                       "width": "fill_container",
                       "content": "有",
                       "fontFamily": "Inter",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -22410,7 +22444,8 @@
                       "width": "fill_container",
                       "content": "有",
                       "fontFamily": "Inter",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -22464,7 +22499,8 @@
                       "width": "fill_container",
                       "content": "不含",
                       "fontFamily": "Inter",
-                      "fontSize": 12
+                      "fontSize": 12,
+                      "fontWeight": "normal"
                     },
                     {
                       "type": "text",
@@ -22520,8 +22556,8 @@
     {
       "type": "frame",
       "id": "g42A45",
-      "x": 15575,
-      "y": 0,
+      "x": 0,
+      "y": 8000,
       "name": "V2-13 宝宝建档",
       "context": "覆盖 A1 创建宝宝档案（昵称/出生日期/性别，不收集照片）+ H2 建档前隐私单独同意留痕；月龄自动计算展示",
       "clip": true,
@@ -23074,8 +23110,8 @@
     {
       "type": "text",
       "id": "yMeah",
-      "x": 10570,
-      "y": 826,
+      "x": 455,
+      "y": 1826,
       "name": "cap-10570",
       "fill": "#969799",
       "content": "V2-01 首页·计划进行中 — 今日任务卡(C3) · 适应度小结(E3) · 快速记奶(D1) · 宝宝切换(A2) · 提醒我(I1)",
@@ -23086,8 +23122,8 @@
     {
       "type": "text",
       "id": "P2Lkbd",
-      "x": 11025,
-      "y": 826,
+      "x": 910,
+      "y": 1826,
       "name": "cap-11025",
       "fill": "#969799",
       "content": "V2-02 首页·无计划空状态 — 发起计划引导(C3) · 段位时机提示条(A4)",
@@ -23098,8 +23134,8 @@
     {
       "type": "text",
       "id": "QyCfZ",
-      "x": 11480,
-      "y": 826,
+      "x": 0,
+      "y": 3826,
       "name": "cap-11480",
       "fill": "#969799",
       "content": "V2-03 计划向导 1/4 选择奶粉 — 上次转奶摘要 · 搜索筛选(B2) · 手动输入兜底(C1)",
@@ -23110,8 +23146,8 @@
     {
       "type": "text",
       "id": "m8f8Za",
-      "x": 11935,
-      "y": 826,
+      "x": 455,
+      "y": 3826,
       "name": "cap-11935",
       "fill": "#969799",
       "content": "V2-04 计划向导 4/4 原因与确认 — 方法模板(C2) · 安全规则确认(C6) · 计划总览",
@@ -23122,8 +23158,8 @@
     {
       "type": "text",
       "id": "SijRi",
-      "x": 12390,
-      "y": 826,
+      "x": 910,
+      "y": 3826,
       "name": "cap-12390",
       "fill": "#969799",
       "content": "V2-05 计划详情时间轴 — 状态机(C4) · 暂停/一键回退(C5) · 打卡与事件留痕(C7)",
@@ -23134,8 +23170,8 @@
     {
       "type": "text",
       "id": "iZDtj",
-      "x": 12845,
-      "y": 826,
+      "x": 1365,
+      "y": 2826,
       "name": "cap-12845",
       "fill": "#969799",
       "content": "V2-06 快速记奶 — 配方自动带出标记计划内(D5) · ±10ml · 喝完三态 · 3秒保存(D1)",
@@ -23146,8 +23182,8 @@
     {
       "type": "text",
       "id": "RL410",
-      "x": 13300,
-      "y": 826,
+      "x": 1820,
+      "y": 2826,
       "name": "cap-13300",
       "fill": "#969799",
       "content": "V2-07 症状打卡 — 大便次数/性状/颜色+图卡 · 湿疹/吐奶/胀气 chips · 哭闹档位 · 全部可跳过(D3)",
@@ -23158,8 +23194,8 @@
     {
       "type": "text",
       "id": "vlPOz",
-      "x": 13755,
-      "y": 826,
+      "x": 0,
+      "y": 5826,
       "name": "cap-13755",
       "fill": "#969799",
       "content": "V2-08 黄色预警 — 图标+文字+颜色三重传达 · 触发依据 · 一键回退(C5) · 就医提示 · 免责声明(E2)",
@@ -23170,8 +23206,8 @@
     {
       "type": "text",
       "id": "ZWZQe",
-      "x": 14210,
-      "y": 826,
+      "x": 1365,
+      "y": 3826,
       "name": "cap-14210",
       "fill": "#969799",
       "content": "V2-09 计划复盘报告 — 完成徽章 · 关键数据 · 奶量条形图(F1) · 体重 · 分享卡/就医材料(F2)",
@@ -23182,8 +23218,8 @@
     {
       "type": "text",
       "id": "a4WZF",
-      "x": 14665,
-      "y": 826,
+      "x": 0,
+      "y": 6826,
       "name": "cap-14665",
       "fill": "#969799",
       "content": "V2-10 奶粉库搜索 — 段位/蛋白类型筛选 · 注册号标注 · 中性呈现 · 手动输入兜底(B1/B2)",
@@ -23194,8 +23230,8 @@
     {
       "type": "text",
       "id": "tJzRE",
-      "x": 15120,
-      "y": 826,
+      "x": 455,
+      "y": 6826,
       "name": "cap-15120",
       "fill": "#969799",
       "content": "V2-11 奶粉对比 — 双列对比 · 差异高亮 · 缺失显示暂无 · 免责声明(B3)",
@@ -23206,8 +23242,8 @@
     {
       "type": "text",
       "id": "n3AoWE",
-      "x": 15575,
-      "y": 826,
+      "x": 0,
+      "y": 8826,
       "name": "cap-15575",
       "fill": "#969799",
       "content": "V2-13 宝宝建档 — 昵称/生日/性别 · 月龄自动计算 · 隐私单独同意(A1/H2)",
@@ -23218,8 +23254,8 @@
     {
       "type": "frame",
       "id": "D6Cj0R",
-      "x": 11025,
-      "y": 0,
+      "x": 910,
+      "y": 1000,
       "name": "V2-02 首页·无计划空状态",
       "context": "覆盖 C3 空态发起计划引导 / A4 段位时机提示条（仅无进行中计划时出现，关闭后7个喂养日不再出现）",
       "clip": true,
@@ -23700,7 +23736,7 @@
     {
       "type": "frame",
       "id": "elsc8",
-      "x": 16030,
+      "x": 455,
       "y": 0,
       "name": "V2-14 开屏页",
       "context": "FR-H5 开屏页：品牌展示 ≤1.5s 自动路由（已登录→首页 / 未登录→登录页），点击可跳过",
@@ -23823,7 +23859,7 @@
     {
       "type": "frame",
       "id": "kCnZT",
-      "x": 16485,
+      "x": 910,
       "y": 0,
       "name": "V2-15 Tab未登录态",
       "context": "FR-H5 全局未登录态：四个 Tab 页统一登录门；未登录不触发任何数据请求",
@@ -23938,6 +23974,1782 @@
           ]
         }
       ]
+    },
+    {
+      "type": "text",
+      "id": "xeiXn",
+      "x": -44,
+      "y": -70,
+      "name": "row-label-认证与启动",
+      "fill": "#323233",
+      "content": "认证与启动",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "RJq8G",
+      "x": 0,
+      "y": 927,
+      "name": "row-label-首页",
+      "fill": "#323233",
+      "content": "首页",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "lEEdk",
+      "x": -65,
+      "y": 1939,
+      "name": "row-label-转奶记录",
+      "fill": "#323233",
+      "content": "转奶记录",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "H14kp",
+      "x": 0,
+      "y": 2964,
+      "name": "row-label-转奶计划",
+      "fill": "#323233",
+      "content": "转奶计划",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "oN8yj",
+      "x": 0,
+      "y": 3964,
+      "name": "row-label-育儿知识",
+      "fill": "#323233",
+      "content": "育儿知识",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "zDHxc",
+      "x": 0,
+      "y": 4964,
+      "name": "row-label-适应度预警",
+      "fill": "#323233",
+      "content": "适应度预警",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "UoUPQ",
+      "x": 0,
+      "y": 5964,
+      "name": "row-label-奶粉库",
+      "fill": "#323233",
+      "content": "奶粉库",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "TvTBb",
+      "x": 0,
+      "y": 6964,
+      "name": "row-label-我的",
+      "fill": "#323233",
+      "content": "我的",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "bpjE1",
+      "x": 0,
+      "y": 7964,
+      "name": "row-label-宝宝建档",
+      "fill": "#323233",
+      "content": "宝宝建档",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "oXyhv",
+      "x": 0,
+      "y": 8964,
+      "name": "row-label-全局通用",
+      "fill": "#323233",
+      "content": "全局通用",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "V73KP",
+      "x": 0,
+      "y": 9964,
+      "name": "row-label-设计规范",
+      "fill": "#323233",
+      "content": "设计规范",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "frame",
+      "id": "RBm0X",
+      "x": 1365,
+      "y": 1000,
+      "name": "V2-16 首页·游客模式",
+      "context": "覆盖 C3 空态发起计划引导 / A4 段位时机提示条（仅无进行中计划时出现，关闭后7个喂养日不再出现）",
+      "clip": true,
+      "width": 375,
+      "height": 812,
+      "fill": "#F7F8FA",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "zr6a0",
+          "name": "v2-statusbar",
+          "width": "fill_container",
+          "height": 44,
+          "padding": [
+            12,
+            24,
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "WetOs",
+              "name": "v2-time",
+              "fill": "#323233",
+              "content": "9:41",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "e5tRc",
+              "name": "v2-icons",
+              "gap": 5,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "Imj9j",
+                  "name": "v2-signal",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "signal",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "IttkO",
+                  "name": "v2-wifi",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "wifi",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "emxVG",
+                  "name": "v2-battery-full",
+                  "width": 19,
+                  "height": 19,
+                  "icon": "battery-full",
+                  "library": "lucide",
+                  "fill": "#323233"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "mpgMx",
+          "name": "v2-content",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            10,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "O7Xl1",
+              "name": "v2-empty",
+              "width": "fill_container",
+              "height": 264,
+              "layout": "vertical",
+              "gap": 14,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "p2nTY",
+                  "name": "v2-img",
+                  "width": 96,
+                  "height": 96,
+                  "fill": "#F2F3F5",
+                  "cornerRadius": 48,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "wMIOm",
+                      "name": "v2-img-ic",
+                      "width": 38,
+                      "height": 38,
+                      "icon": "milk",
+                      "library": "lucide",
+                      "fill": "#C8C9CC"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "Q4M1h",
+                  "name": "v2-title",
+                  "fill": "#323233",
+                  "content": "先给宝宝建个档案",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "L2u6Bl",
+                  "name": "v2-desc",
+                  "fill": "#969799",
+                  "content": "建档后即可记录喂养、打卡并创建转奶计划",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "ZF3FM",
+                  "name": "v2-cta",
+                  "width": "fill_container",
+                  "height": 44,
+                  "fill": "#FF6B35",
+                  "cornerRadius": 22,
+                  "gap": 4,
+                  "padding": [
+                    0,
+                    16
+                  ],
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "d68aG",
+                      "name": "v2-cta-t",
+                      "fill": "#FFFFFF",
+                      "content": "创建宝宝档案",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "bD0LV",
+              "name": "v2-art-gt",
+              "fill": "#969799",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "推荐文章",
+              "fontFamily": "Inter",
+              "fontSize": 14,
+              "fontWeight": "normal"
+            },
+            {
+              "type": "frame",
+              "id": "XmPJI",
+              "name": "v2-art-list",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": "#EBEDF0",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "dtkjP",
+                  "name": "home-art-1",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "og3VE",
+                      "name": "home-art-1-thumb",
+                      "width": 76,
+                      "height": 57,
+                      "fill": "#E8F7FE",
+                      "cornerRadius": 4,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "jFrlE",
+                          "name": "ic-thumb",
+                          "width": 24,
+                          "height": 24,
+                          "icon": "baby",
+                          "library": "lucide",
+                          "fill": "#2DB7F5"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "pjdmS",
+                      "name": "home-art-1-body",
+                      "width": "fill_container",
+                      "height": 57,
+                      "layout": "vertical",
+                      "gap": 6,
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "E5bcl",
+                          "name": "home-art-1-title",
+                          "fill": "#323233",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "转奶期宝宝拒绝新奶粉？5 个技巧轻松过渡",
+                          "lineHeight": 1.45,
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "yDjmG",
+                          "name": "home-art-1-metarow",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "jb9zI",
+                              "name": "home-art-1-tag",
+                              "fill": "#FF6B35",
+                              "cornerRadius": 999,
+                              "stroke": "#FF6B35",
+                              "strokeWidth": 1,
+                              "padding": [
+                                2,
+                                6
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "o867ng",
+                                  "name": "home-art-1-tag-t",
+                                  "fill": "#FFFFFF",
+                                  "content": "转奶指南",
+                                  "lineHeight": 1.35,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "f9fcI",
+                              "name": "home-art-1-meta",
+                              "fill": "#C8C9CC",
+                              "content": "8.6k 阅读 · 2天前",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "NOQl3",
+                  "name": "home-div2",
+                  "fill": "#EBEDF0",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "T4XDyX",
+                  "name": "home-art-2",
+                  "width": "fill_container",
+                  "gap": 12,
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "jn33Z",
+                      "name": "home-art-2-thumb",
+                      "width": 76,
+                      "height": 57,
+                      "fill": "#FFF1EA",
+                      "cornerRadius": 4,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "GYvpz",
+                          "name": "ic-thumb",
+                          "width": 24,
+                          "height": 24,
+                          "icon": "milk",
+                          "library": "lucide",
+                          "fill": "#FF6B35"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "Xheoj",
+                      "name": "home-art-2-body",
+                      "width": "fill_container",
+                      "height": 57,
+                      "layout": "vertical",
+                      "gap": 6,
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "Z7nn8y",
+                          "name": "home-art-2-title",
+                          "fill": "#323233",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "一篇看懂奶粉段位怎么划分、怎么转",
+                          "lineHeight": 1.45,
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "EcQ08",
+                          "name": "home-art-2-metarow",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "nKqoP",
+                              "name": "home-art-2-tag",
+                              "fill": "#2DB7F5",
+                              "cornerRadius": 999,
+                              "stroke": "#2DB7F5",
+                              "strokeWidth": 1,
+                              "padding": [
+                                2,
+                                6
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "qjJTJ",
+                                  "name": "home-art-2-tag-t",
+                                  "fill": "#FFFFFF",
+                                  "content": "奶粉知识",
+                                  "lineHeight": 1.35,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "n24xzM",
+                              "name": "home-art-2-meta",
+                              "fill": "#C8C9CC",
+                              "content": "6.2k 阅读 · 5天前",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "RRm0B",
+          "name": "v2-tabbar",
+          "width": "fill_container",
+          "height": 84,
+          "fill": "#FFFFFF",
+          "stroke": "#EBEDF0",
+          "strokeWidth": {
+            "top": 1
+          },
+          "padding": [
+            7,
+            4,
+            0,
+            4
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "tkBe7",
+              "name": "v2-tab0",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "eqniw",
+                  "name": "v2-tabi0",
+                  "width": 22,
+                  "height": 22,
+                  "icon": "house",
+                  "library": "lucide",
+                  "fill": "#FF6B35"
+                },
+                {
+                  "type": "text",
+                  "id": "znrVl",
+                  "name": "v2-tabt0",
+                  "fill": "#FF6B35",
+                  "content": "首页",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "tQQRk",
+              "name": "v2-tab1",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "YJLHC",
+                  "name": "v2-tabi1",
+                  "width": 22,
+                  "height": 22,
+                  "icon": "chart-column",
+                  "library": "lucide",
+                  "fill": "#646566"
+                },
+                {
+                  "type": "text",
+                  "id": "slomP",
+                  "name": "v2-tabt1",
+                  "fill": "#646566",
+                  "content": "记录",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "b9J5RO",
+              "name": "v2-tab2",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "hfFKn",
+                  "name": "v2-tabi2",
+                  "width": 22,
+                  "height": 22,
+                  "icon": "book-open",
+                  "library": "lucide",
+                  "fill": "#646566"
+                },
+                {
+                  "type": "text",
+                  "id": "k6J1A3",
+                  "name": "v2-tabt2",
+                  "fill": "#646566",
+                  "content": "知识",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "nI5dr",
+              "name": "v2-tab3",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "Ya5zr",
+                  "name": "v2-tabi3",
+                  "width": 22,
+                  "height": 22,
+                  "icon": "user",
+                  "library": "lucide",
+                  "fill": "#646566"
+                },
+                {
+                  "type": "text",
+                  "id": "Z7Uscz",
+                  "name": "v2-tabt3",
+                  "fill": "#646566",
+                  "content": "我的",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": 3,
+              "id": "c36BB",
+              "layoutPosition": "absolute",
+              "x": 120,
+              "y": 76,
+              "name": "v2-ind",
+              "fill": "#3232332E",
+              "width": 134,
+              "height": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "SfHQG",
+      "x": 455,
+      "y": 4000,
+      "name": "V2-17 知识·游客模式",
+      "clip": true,
+      "width": 375,
+      "height": 812,
+      "fill": "#F7F8FA",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "A29Jp",
+          "name": "articles-statusbar",
+          "width": "fill_container",
+          "height": 44,
+          "padding": [
+            12,
+            24,
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "c7oV5y",
+              "name": "articles-statusbar-time",
+              "fill": "#323233",
+              "content": "9:41",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "jvzdq",
+              "name": "articles-statusbar-icons",
+              "gap": 5,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "SDCH1",
+                  "name": "ic-signal",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "signal",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "DNQGq",
+                  "name": "ic-wifi",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "wifi",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "nMS8i",
+                  "name": "ic-battery",
+                  "width": 19,
+                  "height": 19,
+                  "icon": "battery-full",
+                  "library": "lucide",
+                  "fill": "#323233"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "VaacG",
+          "name": "articles-nav",
+          "width": "fill_container",
+          "height": 46,
+          "fill": "#FFFFFF",
+          "stroke": "#EBEDF0",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "AmBYJ",
+              "name": "articles-nav-left",
+              "width": 44,
+              "height": 46,
+              "justifyContent": "center",
+              "alignItems": "center"
+            },
+            {
+              "type": "text",
+              "id": "enY1n",
+              "name": "articles-nav-title",
+              "fill": "#323233",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "育儿知识",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "kCvyE",
+              "name": "articles-nav-right",
+              "width": 44,
+              "height": 46,
+              "justifyContent": "center",
+              "alignItems": "center"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "FilDL",
+          "name": "articles-content",
+          "clip": true,
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 10,
+          "padding": [
+            4,
+            16,
+            12,
+            16
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "o7PKCT",
+              "name": "art-search",
+              "width": "fill_container",
+              "fill": "#FFFFFF",
+              "padding": [
+                4,
+                12,
+                6,
+                12
+              ],
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "VOIaf",
+                  "name": "art-search-field",
+                  "width": "fill_container",
+                  "height": 34,
+                  "fill": "#F7F8FA",
+                  "cornerRadius": 999,
+                  "gap": 6,
+                  "padding": [
+                    0,
+                    12
+                  ],
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "ZEChi",
+                      "name": "ic-art-search-ic",
+                      "width": 15,
+                      "height": 15,
+                      "icon": "search",
+                      "library": "lucide",
+                      "fill": "#969799"
+                    },
+                    {
+                      "type": "text",
+                      "id": "NjqnM",
+                      "name": "art-search-ph",
+                      "fill": "#C8C9CC",
+                      "content": "搜索文章标题",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "FTBqT",
+              "name": "art-tabs",
+              "width": "fill_container",
+              "height": 44,
+              "fill": "#FFFFFF",
+              "padding": [
+                0,
+                24
+              ],
+              "justifyContent": "space_between",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "Gqosx",
+                  "name": "art-tabs-tab0",
+                  "layout": "vertical",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "qegGx",
+                      "name": "art-tabs-t0",
+                      "fill": "#323233",
+                      "content": "全部",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 1.5,
+                      "id": "LY4pA",
+                      "name": "art-tabs-line0",
+                      "fill": "#FF6B35",
+                      "width": 40,
+                      "height": 3
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "wOnfk",
+                  "name": "art-tabs-tab1",
+                  "layout": "vertical",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "D6vH9",
+                      "name": "art-tabs-t1",
+                      "fill": "#646566",
+                      "content": "转奶指南",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 1.5,
+                      "id": "A17d8Y",
+                      "name": "art-tabs-line1",
+                      "fill": "#00000000",
+                      "width": 40,
+                      "height": 3
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "RFzMA",
+                  "name": "art-tabs-tab2",
+                  "layout": "vertical",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "ESmLE",
+                      "name": "art-tabs-t2",
+                      "fill": "#646566",
+                      "content": "奶粉知识",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 1.5,
+                      "id": "I0MvM1",
+                      "name": "art-tabs-line2",
+                      "fill": "#00000000",
+                      "width": 40,
+                      "height": 3
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "PN3ec",
+                  "name": "art-tabs-tab3",
+                  "layout": "vertical",
+                  "gap": 3,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "nPmAw",
+                      "name": "art-tabs-t3",
+                      "fill": "#646566",
+                      "content": "常见问题",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 1.5,
+                      "id": "Gv9YI",
+                      "name": "art-tabs-line3",
+                      "fill": "#00000000",
+                      "width": 40,
+                      "height": 3
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "o3xSId",
+              "name": "art-list",
+              "width": "fill_container",
+              "height": 388,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": "#EBEDF0",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "HR9eZ",
+                  "name": "art-a1",
+                  "width": "fill_container",
+                  "height": 96,
+                  "gap": 12,
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "ZnSEd",
+                      "name": "art-a1-thumb",
+                      "width": 76,
+                      "height": 57,
+                      "fill": "#E8F7FE",
+                      "cornerRadius": 4,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "mnFLk",
+                          "name": "ic-thumb",
+                          "width": 24,
+                          "height": 24,
+                          "icon": "baby",
+                          "library": "lucide",
+                          "fill": "#2DB7F5"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "h0cr7",
+                      "name": "art-a1-body",
+                      "width": "fill_container",
+                      "height": 72,
+                      "layout": "vertical",
+                      "gap": 6,
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "rRfmi",
+                          "name": "art-a1-title",
+                          "fill": "#323233",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "转奶期宝宝拒绝新奶粉？5 个技巧轻松过渡",
+                          "lineHeight": 1.45,
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "ryctj",
+                          "name": "art-a1-brief",
+                          "fill": "#969799",
+                          "textGrowth": "fixed-width",
+                          "width": 231,
+                          "content": "从 1/3 新奶开始，观察 3 天再逐步加量",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "IP96x",
+                          "name": "art-a1-metarow",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "CwBny",
+                              "name": "art-a1-tag",
+                              "fill": "#FF6B35",
+                              "cornerRadius": 999,
+                              "stroke": "#FF6B35",
+                              "strokeWidth": 1,
+                              "padding": [
+                                2,
+                                6
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "falot",
+                                  "name": "art-a1-tag-t",
+                                  "fill": "#FFFFFF",
+                                  "content": "转奶指南",
+                                  "lineHeight": 1.35,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "nkVDc",
+                              "name": "art-a1-meta",
+                              "fill": "#C8C9CC",
+                              "content": "8.6k 阅读 · 2天前",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "U5QGd",
+                      "layoutPosition": "absolute",
+                      "x": 299,
+                      "y": 37,
+                      "name": "art-a1-chevron",
+                      "fill": "#C8C9CC",
+                      "content": "›",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "hfbZK",
+                  "name": "art-d1",
+                  "fill": "#EBEDF0",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "nrkvS",
+                  "name": "art-a2",
+                  "width": "fill_container",
+                  "height": 96,
+                  "gap": 12,
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "Zhj9G",
+                      "name": "art-a2-thumb",
+                      "width": 76,
+                      "height": 57,
+                      "fill": "#FFF1EA",
+                      "cornerRadius": 4,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "hIucB",
+                          "name": "ic-thumb",
+                          "width": 24,
+                          "height": 24,
+                          "icon": "milk",
+                          "library": "lucide",
+                          "fill": "#FF6B35"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "dqBjp",
+                      "name": "art-a2-body",
+                      "width": "fill_container",
+                      "height": 72,
+                      "layout": "vertical",
+                      "gap": 6,
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "OViBi",
+                          "name": "art-a2-title",
+                          "fill": "#323233",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "一篇看懂奶粉段位与转段方法",
+                          "lineHeight": 1.45,
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "Hw63X",
+                          "name": "art-a2-brief",
+                          "fill": "#969799",
+                          "textGrowth": "fixed-width",
+                          "width": 231,
+                          "content": "按月龄分段，跨段转奶逐批替换",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "gsa9L",
+                          "name": "art-a2-metarow",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "El94m",
+                              "name": "art-a2-tag",
+                              "fill": "#2DB7F5",
+                              "cornerRadius": 999,
+                              "stroke": "#2DB7F5",
+                              "strokeWidth": 1,
+                              "padding": [
+                                2,
+                                6
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "sh6pz",
+                                  "name": "art-a2-tag-t",
+                                  "fill": "#FFFFFF",
+                                  "content": "奶粉知识",
+                                  "lineHeight": 1.35,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "wZ05u",
+                              "name": "art-a2-meta",
+                              "fill": "#C8C9CC",
+                              "content": "6.2k 阅读 · 5天前",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "tpLzf",
+                      "layoutPosition": "absolute",
+                      "x": 299,
+                      "y": 37,
+                      "name": "art-a2-chevron",
+                      "fill": "#C8C9CC",
+                      "content": "›",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "Intp3",
+                  "name": "art-d2",
+                  "fill": "#EBEDF0",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "b7Hidx",
+                  "name": "art-a3",
+                  "width": "fill_container",
+                  "height": 96,
+                  "gap": 12,
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "lwCuh",
+                      "name": "art-a3-thumb",
+                      "width": 76,
+                      "height": 57,
+                      "fill": "#FFFBE8",
+                      "cornerRadius": 4,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "Z2mWc",
+                          "name": "ic-thumb",
+                          "width": 24,
+                          "height": 24,
+                          "icon": "circle-alert",
+                          "library": "lucide",
+                          "fill": "#ED6A0C"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "onsck",
+                      "name": "art-a3-body",
+                      "width": "fill_container",
+                      "height": 72,
+                      "layout": "vertical",
+                      "gap": 6,
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "hqphn",
+                          "name": "art-a3-title",
+                          "fill": "#323233",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "转奶后腹泻或便秘？先排查这 4 个原因",
+                          "lineHeight": 1.45,
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "SdRVa",
+                          "name": "art-a3-brief",
+                          "fill": "#969799",
+                          "textGrowth": "fixed-width",
+                          "width": 231,
+                          "content": "多与换奶速度、冲调比例和体质有关",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "D8eQNG",
+                          "name": "art-a3-metarow",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "X2cmJ",
+                              "name": "art-a3-tag",
+                              "fill": "#FF976A",
+                              "cornerRadius": 999,
+                              "stroke": "#FF976A",
+                              "strokeWidth": 1,
+                              "padding": [
+                                2,
+                                6
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "xr4KT",
+                                  "name": "art-a3-tag-t",
+                                  "fill": "#FFFFFF",
+                                  "content": "常见问题",
+                                  "lineHeight": 1.35,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "c4YzHN",
+                              "name": "art-a3-meta",
+                              "fill": "#C8C9CC",
+                              "content": "1.2w 阅读 · 1周前",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "WzzCA",
+                      "layoutPosition": "absolute",
+                      "x": 299,
+                      "y": 37,
+                      "name": "art-a3-chevron",
+                      "fill": "#C8C9CC",
+                      "content": "›",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "j5mqCM",
+                  "name": "art-d3",
+                  "fill": "#EBEDF0",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "A1J70",
+                  "name": "art-a4",
+                  "width": "fill_container",
+                  "height": 96,
+                  "gap": 12,
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "OEkXS",
+                      "name": "art-a4-thumb",
+                      "width": 76,
+                      "height": 57,
+                      "fill": "#E8F3FE",
+                      "cornerRadius": 4,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "YKcvh",
+                          "name": "ic-thumb",
+                          "width": 24,
+                          "height": 24,
+                          "icon": "lightbulb",
+                          "library": "lucide",
+                          "fill": "#1989FA"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "eF7GH",
+                      "name": "art-a4-body",
+                      "width": "fill_container",
+                      "height": 72,
+                      "layout": "vertical",
+                      "gap": 6,
+                      "justifyContent": "space_between",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "cN541",
+                          "name": "art-a4-title",
+                          "fill": "#323233",
+                          "textGrowth": "fixed-width",
+                          "width": "fill_container",
+                          "content": "冲调水温与比例：新手爸妈最容易做错的 6 件事",
+                          "lineHeight": 1.45,
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "text",
+                          "id": "vlkvs",
+                          "name": "art-a4-brief",
+                          "fill": "#969799",
+                          "textGrowth": "fixed-width",
+                          "width": 231,
+                          "content": "先加水后加粉，40–50℃ 冲调最稳妥",
+                          "fontFamily": "Inter",
+                          "fontSize": 12,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "Lf6Vy",
+                          "name": "art-a4-metarow",
+                          "width": "fill_container",
+                          "gap": 8,
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "frame",
+                              "id": "E74KUs",
+                              "name": "art-a4-tag",
+                              "fill": "#2DB7F5",
+                              "cornerRadius": 999,
+                              "stroke": "#2DB7F5",
+                              "strokeWidth": 1,
+                              "padding": [
+                                2,
+                                6
+                              ],
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "id": "Z0JrCI",
+                                  "name": "art-a4-tag-t",
+                                  "fill": "#FFFFFF",
+                                  "content": "奶粉知识",
+                                  "lineHeight": 1.35,
+                                  "fontFamily": "Inter",
+                                  "fontSize": 12,
+                                  "fontWeight": "normal"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "id": "jiv94",
+                              "name": "art-a4-meta",
+                              "fill": "#C8C9CC",
+                              "content": "9.8k 阅读 · 3天前",
+                              "fontFamily": "Inter",
+                              "fontSize": 12,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "text",
+                      "id": "covsN",
+                      "layoutPosition": "absolute",
+                      "x": 299,
+                      "y": 37,
+                      "name": "art-a4-chevron",
+                      "fill": "#C8C9CC",
+                      "content": "›",
+                      "fontFamily": "Inter",
+                      "fontSize": 16,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "RIuj6",
+          "name": "articles-tabbar",
+          "width": "fill_container",
+          "height": 84,
+          "fill": "#FFFFFF",
+          "stroke": "#EBEDF0",
+          "strokeWidth": {
+            "top": 1
+          },
+          "padding": [
+            7,
+            4,
+            0,
+            4
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "mmGxd",
+              "name": "articles-tabbar-item-首页",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "roO3c",
+                  "name": "ic-tab-首页",
+                  "width": 22,
+                  "height": 22,
+                  "icon": "house",
+                  "library": "lucide",
+                  "fill": "#646566"
+                },
+                {
+                  "type": "text",
+                  "id": "y1xa6c",
+                  "name": "tab-label-首页",
+                  "fill": "#646566",
+                  "content": "首页",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "vkSx2",
+              "name": "articles-tabbar-item-记录",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "JcZEZ",
+                  "name": "ic-tab-记录",
+                  "width": 22,
+                  "height": 22,
+                  "icon": "chart-column",
+                  "library": "lucide",
+                  "fill": "#646566"
+                },
+                {
+                  "type": "text",
+                  "id": "ifuO1",
+                  "name": "tab-label-记录",
+                  "fill": "#646566",
+                  "content": "记录",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "KQleC",
+              "name": "articles-tabbar-item-知识",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "XLB4O",
+                  "name": "ic-tab-知识",
+                  "width": 22,
+                  "height": 22,
+                  "icon": "book-open",
+                  "library": "lucide",
+                  "fill": "#FF6B35"
+                },
+                {
+                  "type": "text",
+                  "id": "A2mxxv",
+                  "name": "tab-label-知识",
+                  "fill": "#FF6B35",
+                  "content": "知识",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "GnEu7",
+              "name": "articles-tabbar-item-我的",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "rYJQp",
+                  "name": "ic-tab-我的",
+                  "width": 22,
+                  "height": 22,
+                  "icon": "user",
+                  "library": "lucide",
+                  "fill": "#646566"
+                },
+                {
+                  "type": "text",
+                  "id": "voPuE",
+                  "name": "tab-label-我的",
+                  "fill": "#646566",
+                  "content": "我的",
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "rectangle",
+              "cornerRadius": 3,
+              "id": "GAmap",
+              "layoutPosition": "absolute",
+              "x": 120,
+              "y": 76,
+              "name": "articles-tabbar-indicator",
+              "fill": "#3232332E",
+              "width": 134,
+              "height": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "JwSas",
+      "x": 1365,
+      "y": 1826,
+      "name": "cap-v2-16",
+      "fill": "#969799",
+      "content": "V2-16 首页·游客模式（未建档）— 建档引导卡 + 推荐文章模块（游客可浏览）；已建档游客与登录用户一致（V2-01/V2-02）— Taroify: NavBar · Button · Cell",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "text",
+      "id": "vJOyg",
+      "x": 455,
+      "y": 4826,
+      "name": "cap-v2-17",
+      "fill": "#969799",
+      "content": "V2-17 知识·游客模式 — 游客可完整浏览文章与详情，数据仅本设备；未登录展示 V2-15 登录门 — Taroify: Search · Tabs · Cell",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "normal"
     }
   ],
   "variables": {

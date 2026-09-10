@@ -1,7 +1,7 @@
 """数据接口：白名单表透传 PostgREST（用户 JWT 随行，RLS 生效）。"""
 from typing import Annotated, Any, Literal
 
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel, Field
 
 from app.core.supabase import postgrest
@@ -62,8 +62,6 @@ class RpcBody(BaseModel):
 def _require_table(table: str, action: "Literal['read', 'insert', 'update', 'delete']") -> None:
     policy = TABLE_POLICY.get(table)
     if not policy or not policy.get(action):
-        from fastapi import HTTPException
-
         raise HTTPException(status_code=403, detail=f"table {table} 不允许 {action} 操作")
 
 
@@ -71,8 +69,6 @@ def _filter_params(filters: list[Filter]) -> dict[str, str]:
     params: dict[str, str] = {}
     for f in filters:
         if f.op not in ALLOWED_OPS:
-            from fastapi import HTTPException
-
             raise HTTPException(status_code=400, detail=f"不支持的操作符 {f.op}")
         if f.op == "or":
             expr = f.value if f.value.startswith("(") else f"({f.value})"
@@ -105,7 +101,7 @@ def _envelope(
 @router.post("/query")
 async def query(body: QueryBody, jwt: Annotated[str | None, Header(alias="authorization")] = None) -> dict:
     _require_table(body.table, "read")
-    _require_jwt(jwt)
+    token = _require_jwt(jwt)
     params = {"select": body.select, **_filter_params(body.filters)}
     order = _order_param(body.order)
     if order:
@@ -123,7 +119,7 @@ async def query(body: QueryBody, jwt: Annotated[str | None, Header(alias="author
         else "application/json"
     )
     res = await postgrest(
-        "GET", f"/{body.table}", jwt=jwt, params=params, prefer=prefer, accept=accept
+        "GET", f"/{body.table}", jwt=token, params=params, prefer=prefer, accept=accept
     )
 
     error = None
@@ -140,7 +136,7 @@ async def query(body: QueryBody, jwt: Annotated[str | None, Header(alias="author
 @router.post("/insert")
 async def insert(body: MutationBody, jwt: Annotated[str | None, Header(alias="authorization")] = None) -> dict:
     _require_table(body.table, "insert")
-    _require_jwt(jwt)
+    token = _require_jwt(jwt)
     params = {"select": body.select}
     if body.on_conflict:
         params["on_conflict"] = body.on_conflict
@@ -152,7 +148,7 @@ async def insert(body: MutationBody, jwt: Annotated[str | None, Header(alias="au
     res = await postgrest(
         "POST",
         f"/{body.table}",
-        jwt=jwt,
+        jwt=token,
         params=params,
         json_body=body.values,
         prefer=prefer,
@@ -173,15 +169,13 @@ async def insert(body: MutationBody, jwt: Annotated[str | None, Header(alias="au
 @router.post("/update")
 async def update(body: MutationBody, jwt: Annotated[str | None, Header(alias="authorization")] = None) -> dict:
     _require_table(body.table, "update")
-    _require_jwt(jwt)
+    token = _require_jwt(jwt)
     if not body.filters:
-        from fastapi import HTTPException
-
         raise HTTPException(status_code=400, detail="update 必须携带过滤条件")
     res = await postgrest(
         "PATCH",
         f"/{body.table}",
-        jwt=jwt,
+        jwt=token,
         params=_filter_params(body.filters),
         json_body=body.values,
         prefer="return=representation",
@@ -199,13 +193,11 @@ async def delete_rows(
     body: QueryBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
 ) -> dict:
     _require_table(body.table, "delete")
-    _require_jwt(jwt)
+    token = _require_jwt(jwt)
     if not body.filters:
-        from fastapi import HTTPException
-
         raise HTTPException(status_code=400, detail="delete 必须携带过滤条件")
     res = await postgrest(
-        "DELETE", f"/{body.table}", jwt=jwt, params=_filter_params(body.filters)
+        "DELETE", f"/{body.table}", jwt=token, params=_filter_params(body.filters)
     )
     error = _as_error(res.data) if res.status >= 400 else None
     return _envelope(res.status, None, error)
@@ -216,22 +208,20 @@ async def rpc(
     fn_name: str, body: RpcBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
 ) -> dict:
     if fn_name not in ALLOWED_RPCS:
-        from fastapi import HTTPException
-
         raise HTTPException(status_code=403, detail=f"RPC {fn_name} 不在白名单")
-    _require_jwt(jwt)
-    res = await postgrest("POST", f"/rpc/{fn_name}", jwt=jwt, json_body=body.args)
+    token = _require_jwt(jwt)
+    res = await postgrest("POST", f"/rpc/{fn_name}", jwt=token, json_body=body.args)
     error = _as_error(res.data) if res.status >= 400 else None
     data = None if res.status >= 400 else res.data
     return _envelope(res.status, data, error)
 
 
-def _require_jwt(jwt: str | None) -> None:
-    token = (jwt or "").removeprefix("Bearer ").strip()
+def _require_jwt(authorization: str | None) -> str:
+    """校验并剥掉 Bearer 前缀，返回裸 token（postgrest() 内层会统一再包装）。"""
+    token = (authorization or "").removeprefix("Bearer ").strip()
     if not token:
-        from fastapi import HTTPException
-
         raise HTTPException(status_code=401, detail="缺少会话凭证")
+    return token
 
 
 def _as_error(data: object) -> dict | None:
