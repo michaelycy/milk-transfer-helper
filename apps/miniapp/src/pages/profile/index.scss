@@ -1,4 +1,5 @@
 .profile-page {
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
   padding: 20px;
 
   .user-card {

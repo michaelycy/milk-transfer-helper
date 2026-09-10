@@ -54,7 +54,7 @@ export default function Login() {
         <View className='login__logo'>
           <Text>🍼</Text>
         </View>
-        <Text className='login__name'>婴儿转奶助手</Text>
+        <Text className='login__name'>转奶日记</Text>
         <Text className='login__slogan'>记录宝宝转奶的每一天 · 科学又安心</Text>
       </View>
 

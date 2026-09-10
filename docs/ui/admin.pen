@@ -31,7 +31,7 @@
               "id": "Gs4Q4",
               "name": "title",
               "fill": "#262626",
-              "content": "管理后台 · 婴儿转奶助手",
+              "content": "管理后台 · 转奶日记",
               "fontFamily": "Inter",
               "fontSize": 20,
               "fontWeight": "600"
@@ -262,7 +262,7 @@
                       "id": "D4F0h",
                       "name": "logo-name",
                       "fill": "#FFFFFF",
-                      "content": "转奶助手",
+                      "content": "转奶日记",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "600"
@@ -616,7 +616,7 @@
                       "id": "y0khst",
                       "name": "logo-name",
                       "fill": "#FFFFFF",
-                      "content": "转奶助手",
+                      "content": "转奶日记",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "600"
@@ -2086,7 +2086,7 @@
                       "id": "ip2Vk",
                       "name": "logo-name",
                       "fill": "#FFFFFF",
-                      "content": "转奶助手",
+                      "content": "转奶日记",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "600"
@@ -4337,7 +4337,7 @@
                           "id": "UDolh",
                           "name": "logo-name",
                           "fill": "#FFFFFF",
-                          "content": "转奶助手",
+                          "content": "转奶日记",
                           "fontFamily": "Inter",
                           "fontSize": 14,
                           "fontWeight": "600"
@@ -5032,7 +5032,7 @@
                       "id": "YSthf",
                       "name": "logo-name",
                       "fill": "#FFFFFF",
-                      "content": "转奶助手",
+                      "content": "转奶日记",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "600"
@@ -6514,7 +6514,7 @@
                       "id": "ZV1AQ",
                       "name": "logo-name",
                       "fill": "#FFFFFF",
-                      "content": "转奶助手",
+                      "content": "转奶日记",
                       "fontFamily": "Inter",
                       "fontSize": 14,
                       "fontWeight": "600"

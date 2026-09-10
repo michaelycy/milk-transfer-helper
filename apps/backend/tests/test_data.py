@@ -1,0 +1,110 @@
+import httpx
+import pytest
+from fastapi.testclient import TestClient
+
+from app.core import supabase as supabase_module
+from app.core.config import get_settings
+from app.main import app
+
+JWT = "test.jwt.token"
+
+
+@pytest.fixture(autouse=True)
+def _env_and_transport(monkeypatch: pytest.MonkeyPatch):
+    """注入测试环境变量与 PostgREST MockTransport。"""
+    monkeypatch.setenv("SUPABASE_URL", "https://stub.supabase.co")
+    monkeypatch.setenv("SUPABASE_ANON_KEY", "anon-key")
+    monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "service-key")
+    get_settings.cache_clear()
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/rest/v1/feed_records" and request.method == "GET":
+            return httpx.Response(
+                200,
+                json=[{"id": "r1", "baby_id": "b1"}],
+                headers={"content-range": "0-1/42"},
+            )
+        if request.url.path == "/rest/v1/babies" and request.method == "POST":
+            return httpx.Response(201, json=[{"id": "b-new"}])
+        if request.url.path == "/rest/v1/rpc/get_record_stats":
+            return httpx.Response(200, json={"total": 3, "days": 2})
+        return httpx.Response(200, json=[])
+
+    supabase_module._transport = httpx.MockTransport(handler)
+    yield
+    supabase_module._transport = None
+    get_settings.cache_clear()
+
+
+client = TestClient(app)
+
+
+def test_healthz() -> None:
+    res = client.get("/healthz")
+    assert res.status_code == 200
+    assert res.json() == {"status": "ok"}
+
+
+def test_query_passthrough_with_filters_and_count() -> None:
+    res = client.post(
+        "/v1/query",
+        json={
+            "table": "feed_records",
+            "select": "*",
+            "filters": [{"op": "eq", "col": "baby_id", "value": "b1"}],
+            "order": [{"col": "feed_time", "ascending": False}],
+            "count": True,
+        },
+        headers={"authorization": f"Bearer {JWT}"},
+    )
+    assert res.status_code == 200
+    body = res.json()
+    assert body["status"] == 200
+    assert body["data"] == [{"id": "r1", "baby_id": "b1"}]
+    assert body["count"] == 42
+    assert body["error"] is None
+
+
+def test_query_rejects_unknown_table() -> None:
+    res = client.post(
+        "/v1/query",
+        json={"table": "secrets", "filters": []},
+        headers={"authorization": f"Bearer {JWT}"},
+    )
+    assert res.status_code == 403
+
+
+def test_query_requires_jwt() -> None:
+    res = client.post("/v1/query", json={"table": "babies", "filters": []})
+    assert res.status_code == 401
+
+
+def test_insert_maps_single_row() -> None:
+    res = client.post(
+        "/v1/insert",
+        json={"table": "babies", "values": {"nickname": "宝宝"}, "single": "one"},
+        headers={"authorization": f"Bearer {JWT}"},
+    )
+    assert res.status_code == 200
+    body = res.json()
+    assert body["data"] == {"id": "b-new"}
+    assert body["error"] is None
+
+
+def test_rpc_whitelist() -> None:
+    res = client.post(
+        "/v1/rpc/get_record_stats",
+        json={"args": {}},
+        headers={"authorization": f"Bearer {JWT}"},
+    )
+    assert res.status_code == 200
+    assert res.json()["data"] == {"total": 3, "days": 2}
+
+
+def test_rpc_rejects_unknown_function() -> None:
+    res = client.post(
+        "/v1/rpc/dangerous_fn",
+        json={"args": {}},
+        headers={"authorization": f"Bearer {JWT}"},
+    )
+    assert res.status_code == 403

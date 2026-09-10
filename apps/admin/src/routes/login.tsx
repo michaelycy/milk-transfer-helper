@@ -45,7 +45,7 @@ function LoginPage() {
     >
       <Card style={{ width: 380 }}>
         <Typography.Title level={4} style={{ textAlign: 'center', marginTop: 0 }}>
-          管理后台 · 婴儿转奶助手
+          管理后台 · 转奶日记
         </Typography.Title>
         {error === 'forbidden' && (
           <Alert

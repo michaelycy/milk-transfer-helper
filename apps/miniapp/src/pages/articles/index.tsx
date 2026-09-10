@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { View } from '@tarojs/components'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { Cell, Empty, Search, Tabs } from '@taroify/core'
 import { LoginGate } from '../../components/LoginGate'
 import { useAuth } from '../../store/auth'
@@ -8,6 +8,7 @@ import { ArticleService } from '../../services/article.service'
 import { toastError } from '../../utils/error'
 import type { ArticleRow } from '../../types'
 import './index.scss'
+import { selectTabbar } from '../../utils/tabbar'
 
 const TAB_LIST = [
   { title: '全部' },
@@ -19,6 +20,10 @@ const TAB_LIST = [
 const SEARCH_DEBOUNCE_MS = 300
 
 export default function Articles() {
+  useDidShow(() => {
+    selectTabbar(2)
+  })
+  
   const { authed } = useAuth()
   const [currentTab, setCurrentTab] = useState(0)
   const [articles, setArticles] = useState<ArticleRow[]>([])

@@ -1,4 +1,4 @@
-# 婴儿转奶助手 (Milk Transfer Helper)
+# 转奶日记 (Milk Transfer Helper)
 
 基于 Taro + React + TypeScript + Supabase 的微信小程序（家长端）+ Web 管理后台（运营端），帮助家长记录宝宝转奶过程，提供转奶记录和喂养知识文章；运营侧维护奶粉库、文章审核与转奶模板。
 
@@ -8,6 +8,7 @@
 apps/
   miniapp/        # 小程序（Taro 4 + React 18，主端微信 weapp，兼顾 H5）
   admin/          # 管理后台（Vite + React 18 + antd 5 + TanStack Router）
+  backend/        # 小程序后端服务（FastAPI：鉴权代理 + 数据白名单透传，见 apps/backend/README.md）
 packages/
   shared/         # 跨端共享数据库类型（纯类型包，源码分发）
 supabase/

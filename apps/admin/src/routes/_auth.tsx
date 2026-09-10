@@ -64,7 +64,7 @@ function AuthLayout() {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.2 }}>
             <Typography.Text strong style={{ color: '#fff', fontSize: 14 }}>
-              转奶助手
+              转奶日记
             </Typography.Text>
             <Typography.Text style={{ color: 'rgba(255,255,255,0.45)', fontSize: 10 }}>
               管理后台

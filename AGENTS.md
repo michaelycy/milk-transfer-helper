@@ -1,6 +1,6 @@
 # AGENTS.md — 本仓库协作规则
 
-婴儿转奶助手：Taro 4 + React 18 + TypeScript + Supabase 的多端小程序（主端微信 weapp，兼顾 H5）+ Web 管理后台（apps/admin）。详细技术栈与数据安全模型见 `README.md`。
+转奶日记：Taro 4 + React 18 + TypeScript + Supabase 的多端小程序（主端微信 weapp，兼顾 H5）+ Web 管理后台（apps/admin）。详细技术栈与数据安全模型见 `README.md`。
 
 ## 开发流程规范（所有功能必须遵循）
 

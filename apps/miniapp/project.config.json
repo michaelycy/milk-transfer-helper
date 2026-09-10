@@ -1,7 +1,7 @@
 {
   "miniprogramRoot": "dist/",
   "projectname": "taro-milk-transfer-helper",
-  "description": "婴儿转奶助手",
+  "description": "转奶日记",
   "appid": "wx2e493d76e0d87cac",
   "setting": {
     "urlCheck": true,
@@ -17,16 +17,33 @@
     "showShadowRootInWxmlPanel": true,
     "scopeDataCheck": false,
     "uglifyFileName": false,
-    "checkInvalidSitemap": true
+    "checkInvalidSitemap": true,
+    "compileWorklet": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
   },
   "compileType": "miniprogram",
   "libVersion": "latest",
   "srcMiniprogramRoot": "dist/",
   "packOptions": {
-    "ignore": []
+    "ignore": [],
+    "include": []
   },
   "editorSetting": {
     "tabIndent": "auto",
     "tabSize": 2
-  }
+  },
+  "simulatorPluginLibVersion": {}
 }

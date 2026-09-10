@@ -2,7 +2,7 @@
   "name": "@milk-transfer/admin",
   "version": "1.0.0",
   "private": true,
-  "description": "婴儿转奶助手管理后台（运营维护奶粉库 / 文章审核 / 模板配置 / 数据看板）",
+  "description": "转奶日记管理后台（运营维护奶粉库 / 文章审核 / 模板配置 / 数据看板）",
   "type": "module",
   "scripts": {
     "dev": "vite",

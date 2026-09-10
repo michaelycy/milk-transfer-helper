@@ -108,7 +108,7 @@
               "fill": "#323233",
               "textGrowth": "fixed-width",
               "width": "fill_container",
-              "content": "婴儿转奶助手",
+              "content": "转奶日记",
               "textAlign": "center",
               "fontFamily": "Inter",
               "fontSize": 16,
@@ -6323,7 +6323,7 @@
                   "id": "profile-ver",
                   "name": "profile-ver",
                   "fill": "#C8C9CC",
-                  "content": "婴儿转奶助手 v1.0.0",
+                  "content": "转奶日记 v1.0.0",
                   "fontFamily": "Inter",
                   "fontSize": 12,
                   "fontWeight": "normal"
@@ -6526,7 +6526,7 @@
               "id": "spec-h",
               "name": "spec-h",
               "fill": "#323233",
-              "content": "婴儿转奶助手 · 设计规范",
+              "content": "转奶日记 · 设计规范",
               "fontFamily": "Inter",
               "fontSize": 20,
               "fontWeight": "600"
@@ -8040,7 +8040,7 @@
       "name": "README · 交接说明",
       "width": 640,
       "height": 0,
-      "content": "「婴儿转奶助手」UI 设计 — v1 现有页面（01–08）+ 状态补全（09–15）+ 规格需求 V2 系列（V2-01–V2-13），共 27 个画板。设计基座 @taroify/core ^1.0.6。\nV2 系列对应 docs/spec 模块：V2-01/02 首页计划态与空态（C3/E3/A2/A4/I1）；V2-03/04 计划向导（C1/C2/C6/B2）；V2-05 计划详情时间轴（C4/C5/C7/I1）；V2-06 快速记奶（D1/D2/D5）；V2-07 症状打卡（D3）；V2-08 黄色预警（E2/C5）；V2-09 复盘报告（F1/F2）；V2-10/11 奶粉库搜索与对比（B1/B2/B3）；V2-12 微信登录（H1，复用画板 09）；V2-13 宝宝建档（A1/H2）。\n主题：--primary-color: #FF6B35；tokens 与 @taroify/core/styles/_variables.scss 同名（$hd=2）。\nv1 页面 → 代码：01 首页 index.tsx；02/03/04/12 记录页 records/index.tsx；05 知识 articles/index.tsx；06 详情 detail.tsx；07 我的 profile/index.tsx；09 登录 user.ts。\n安全基线：预警文案无诊断表述、红色预警不可关闭、免责声明常驻（NFR-1/NFR-6）。"
+      "content": "「转奶日记」UI 设计 — v1 现有页面（01–08）+ 状态补全（09–15）+ 规格需求 V2 系列（V2-01–V2-13），共 27 个画板。设计基座 @taroify/core ^1.0.6。\nV2 系列对应 docs/spec 模块：V2-01/02 首页计划态与空态（C3/E3/A2/A4/I1）；V2-03/04 计划向导（C1/C2/C6/B2）；V2-05 计划详情时间轴（C4/C5/C7/I1）；V2-06 快速记奶（D1/D2/D5）；V2-07 症状打卡（D3）；V2-08 黄色预警（E2/C5）；V2-09 复盘报告（F1/F2）；V2-10/11 奶粉库搜索与对比（B1/B2/B3）；V2-12 微信登录（H1，复用画板 09）；V2-13 宝宝建档（A1/H2）。\n主题：--primary-color: #FF6B35；tokens 与 @taroify/core/styles/_variables.scss 同名（$hd=2）。\nv1 页面 → 代码：01 首页 index.tsx；02/03/04/12 记录页 records/index.tsx；05 知识 articles/index.tsx；06 详情 detail.tsx；07 我的 profile/index.tsx；09 登录 user.ts。\n安全基线：预警文案无诊断表述、红色预警不可关闭、免责声明常驻（NFR-1/NFR-6）。"
     },
     {
       "type": "frame",
@@ -8178,7 +8178,7 @@
               "id": "ZVEQs",
               "name": "login-title",
               "fill": "#323233",
-              "content": "婴儿转奶助手",
+              "content": "转奶日记",
               "fontFamily": "Inter",
               "fontSize": 24,
               "fontWeight": "600"
@@ -8456,7 +8456,7 @@
                   "id": "g7fFb",
                   "name": "empty-home-title",
                   "fill": "#323233",
-                  "content": "婴儿转奶助手",
+                  "content": "转奶日记",
                   "fontFamily": "Inter",
                   "fontSize": 16,
                   "fontWeight": "500"
@@ -22656,7 +22656,7 @@
               "id": "rQ8Ve",
               "name": "v13-app",
               "fill": "#323233",
-              "content": "婴儿转奶助手",
+              "content": "转奶日记",
               "fontFamily": "Inter",
               "fontSize": 15,
               "fontWeight": "600"
@@ -23791,7 +23791,7 @@
               "id": "P8VXot",
               "name": "splash-name",
               "fill": "#323233",
-              "content": "婴儿转奶助手",
+              "content": "转奶日记",
               "fontFamily": "Inter",
               "fontSize": 44,
               "fontWeight": "600"

@@ -39,8 +39,8 @@ export default function Splash() {
         <View className='splash__logo'>
           <Text>🍼</Text>
         </View>
-        <Text className='splash__name'>婴儿转奶助手</Text>
-        <Text className='splash__slogan'>跟着走的转奶助手 · 有依据 可观察 能复盘</Text>
+        <Text className='splash__name'>转奶日记</Text>
+        <Text className='splash__slogan'>跟着走的转奶日记 · 有依据 可观察 能复盘</Text>
       </View>
       <Text className='splash__copyright'>选奶 → 转奶 → 记录 → 复盘</Text>
     </View>

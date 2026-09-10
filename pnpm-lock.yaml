@@ -92,9 +92,6 @@ importers:
       '@milk-transfer/shared':
         specifier: workspace:*
         version: link:../../packages/shared
-      '@supabase/supabase-js':
-        specifier: ^2.39.0
-        version: 2.97.0
       '@taroify/core':
         specifier: ^1.0.6
         version: 1.0.6(@tarojs/components@4.1.4(@tarojs/helper@4.1.4)(@types/react@18.3.28)(html-webpack-plugin@5.6.6(webpack@5.91.0(@swc/core@1.3.96)))(postcss@8.5.6)(rollup@3.30.0)(webpack-chain@6.5.1)(webpack-dev-server@4.15.2(webpack@5.91.0(@swc/core@1.3.96)))(webpack@5.91.0(@swc/core@1.3.96)))(@tarojs/taro@4.1.4(@tarojs/components@4.1.4(@tarojs/helper@4.1.4)(@types/react@18.3.28)(html-webpack-plugin@5.6.6(webpack@5.91.0(@swc/core@1.3.96)))(postcss@8.5.6)(rollup@3.30.0)(webpack-chain@6.5.1)(webpack-dev-server@4.15.2(webpack@5.91.0(@swc/core@1.3.96)))(webpack@5.91.0(@swc/core@1.3.96)))(@tarojs/helper@4.1.4)(@tarojs/shared@4.1.4)(@types/react@18.3.28)(html-webpack-plugin@5.6.6(webpack@5.91.0(@swc/core@1.3.96)))(postcss@8.5.6)(rollup@3.30.0)(webpack-chain@6.5.1)(webpack-dev-server@4.15.2(webpack@5.91.0(@swc/core@1.3.96)))(webpack@5.91.0(@swc/core@1.3.96)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -14511,7 +14508,7 @@ snapshots:
       json-schema-deref-sync: 0.13.0
       lodash.debounce: 4.0.8
       md5hex: 1.0.0
-      minimatch: 3.1.4
+      minimatch: 3.1.5
       minipass: 3.3.6
       node-fetch: 2.7.0
       node-forge: 1.3.3
@@ -14626,7 +14623,7 @@ snapshots:
       chalk: 4.1.2
       debug: 4.4.3
       find-up: 5.0.0
-      minimatch: 3.1.4
+      minimatch: 3.1.5
       p-limit: 3.1.0
       resolve-from: 5.0.0
     transitivePeerDependencies:
@@ -14770,7 +14767,7 @@ snapshots:
     dependencies:
       '@babel/code-frame': 7.29.0
       chalk: 4.1.2
-      js-yaml: 4.1.1
+      js-yaml: 4.3.2
     optional: true
 
   '@gar/promisify@1.1.3':
@@ -17772,7 +17769,7 @@ snapshots:
       debug: 2.6.9
       json5: 0.5.1
       lodash: 4.17.23
-      minimatch: 3.1.4
+      minimatch: 3.1.5
       path-is-absolute: 1.0.1
       private: 0.1.8
       slash: 1.0.0
@@ -21015,7 +21012,7 @@ snapshots:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.1.4
+      minimatch: 3.1.5
       once: 1.4.0
       path-is-absolute: 1.0.1
 
@@ -21024,7 +21021,7 @@ snapshots:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.1.4
+      minimatch: 3.1.5
       once: 1.4.0
       path-is-absolute: 1.0.1
     optional: true
@@ -23136,7 +23133,7 @@ snapshots:
 
   node-dir@0.1.17:
     dependencies:
-      minimatch: 3.1.4
+      minimatch: 3.1.5
     optional: true
 
   node-exports-info@1.6.0:
@@ -25959,7 +25956,7 @@ snapshots:
     dependencies:
       '@istanbuljs/schema': 0.1.3
       glob: 7.2.3
-      minimatch: 3.1.4
+      minimatch: 3.1.5
     optional: true
 
   text-table@0.2.0: {}
@@ -26139,7 +26136,7 @@ snapshots:
       diff: 4.0.4
       glob: 7.2.3
       js-yaml: 3.14.2
-      minimatch: 3.1.4
+      minimatch: 3.1.5
       mkdirp: 0.5.6
       resolve: 1.22.11
       semver: 5.7.2

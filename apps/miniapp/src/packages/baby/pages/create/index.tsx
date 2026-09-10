@@ -51,7 +51,7 @@ export default function BabyCreate() {
         <View className='baby-create__logo-ic'>
           <Text>🍼</Text>
         </View>
-        <Text className='baby-create__logo-name'>婴儿转奶助手</Text>
+        <Text className='baby-create__logo-name'>转奶日记</Text>
       </View>
 
       <Text className='baby-create__h'>创建宝宝档案</Text>

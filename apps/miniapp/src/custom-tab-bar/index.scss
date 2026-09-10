@@ -1,0 +1,42 @@
+// 设计稿：docs/ui/ui.pen home-tabbar（内容高 50pt + 底部安全区，描边 #EBEDF0）
+// 数值基准：designWidth 750（设计稿 375 基准值 ×2）
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-top: 2px solid #ebedf0;
+  padding: 14px 8px 0;
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+
+  &__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 86px;
+  }
+
+  &__icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  &__label {
+    font-size: 24px;
+    line-height: 28px;
+    color: #646566;
+
+    &.is-active {
+      color: #ff6b35;
+      font-weight: 500;
+    }
+  }
+}

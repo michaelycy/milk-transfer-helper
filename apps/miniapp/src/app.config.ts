@@ -40,38 +40,20 @@ export default defineAppConfig({
   window: {
     backgroundTextStyle: 'light',
     navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: '婴儿转奶助手',
+    navigationBarTitleText: '转奶日记',
     navigationBarTextStyle: 'black',
   },
   tabBar: {
+    // 自定义 tabBar：ui.pen home-tabbar 设计（lucide 图标 + 安全区），见 src/custom-tab-bar
+    custom: true,
     color: '#999999',
     selectedColor: '#FF6B35',
     backgroundColor: '#ffffff',
     list: [
-      {
-        pagePath: 'pages/index/index',
-        text: '首页',
-        iconPath: 'assets/tab-home.png',
-        selectedIconPath: 'assets/tab-home-active.png',
-      },
-      {
-        pagePath: 'pages/records/index',
-        text: '记录',
-        iconPath: 'assets/tab-record.png',
-        selectedIconPath: 'assets/tab-record-active.png',
-      },
-      {
-        pagePath: 'pages/articles/index',
-        text: '知识',
-        iconPath: 'assets/tab-article.png',
-        selectedIconPath: 'assets/tab-article-active.png',
-      },
-      {
-        pagePath: 'pages/profile/index',
-        text: '我的',
-        iconPath: 'assets/tab-profile.png',
-        selectedIconPath: 'assets/tab-profile-active.png',
-      },
+      { pagePath: 'pages/index/index', text: '首页' },
+      { pagePath: 'pages/records/index', text: '记录' },
+      { pagePath: 'pages/articles/index', text: '知识' },
+      { pagePath: 'pages/profile/index', text: '我的' },
     ],
   },
 })

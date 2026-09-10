@@ -1,5 +1,5 @@
 .records-page {
-  padding-bottom: 140px; // 为 FloatingBubble 预留空间
+  padding-bottom: calc(240px + env(safe-area-inset-bottom)); // 为 FloatingBubble 与自定义 tabBar 预留空间
 
   .chart-view {
     padding: 20px;

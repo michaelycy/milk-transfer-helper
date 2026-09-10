@@ -2,7 +2,7 @@
   "name": "@milk-transfer/miniapp",
   "version": "1.0.0",
   "private": true,
-  "description": "婴儿转奶助手小程序（Taro）",
+  "description": "转奶日记小程序（Taro）",
   "templateInfo": {
     "name": "default",
     "typescript": true,
@@ -38,7 +38,6 @@
   "dependencies": {
     "@babel/runtime": "^7.7.7",
     "@milk-transfer/shared": "workspace:*",
-    "@supabase/supabase-js": "^2.39.0",
     "@taroify/core": "^1.0.6",
     "@tarojs/cli": "4.1.4",
     "@tarojs/components": "4.1.4",

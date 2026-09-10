@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Text, View } from '@tarojs/components'
 
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { Avatar, Cell } from '@taroify/core'
 import { LoginGate } from '../../components/LoginGate'
 import { useAuth } from '../../store/auth'
@@ -9,9 +9,14 @@ import { RecordService } from '../../services/record.service'
 import { toastError } from '../../utils/error'
 import type { RecordStats } from '../../types'
 import './index.scss'
+import { selectTabbar } from '../../utils/tabbar'
 
 /** 我的（未登录态由 LoginGate 呈现登录引导） */
 export default function Profile() {
+  useDidShow(() => {
+    selectTabbar(3)
+  })
+  
   const { authed, isWechat, logout } = useAuth()
   const [stats, setStats] = useState<RecordStats>({ total: 0, days: 0 })
 

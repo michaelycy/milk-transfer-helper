@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationBarTitleText: '婴儿转奶助手',
+  navigationBarTitleText: '转奶日记',
   navigationStyle: 'custom',
 })

@@ -10,6 +10,7 @@ $success: #07c160;
 $danger: #ee0a24;
 
 .home {
+  padding-bottom: calc(100px + env(safe-area-inset-bottom));
   min-height: 100vh;
   background: #f7f8fa;
 

@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import { Text, View } from '@tarojs/components'
 import Taro, { useDidShow } from '@tarojs/taro'
+import { selectTabbar } from '../../utils/tabbar'
 import { FeedRecordService } from '../../services/record.service'
 import { PlanService } from '../../services/plan.service'
 import { AlertService } from '../../services/alert.service'
@@ -54,6 +55,7 @@ export default function Index() {
   }, [currentBaby])
 
   useDidShow(() => {
+    selectTabbar(0)
     void load()
   })
 

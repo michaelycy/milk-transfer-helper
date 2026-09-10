@@ -1,0 +1,24 @@
+[project]
+name = "milk-transfer-backend"
+version = "0.1.0"
+description = "转奶日记小程序后端服务（FastAPI）：鉴权代理 + PostgREST 白名单透传"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "httpx>=0.27",
+    "pydantic-settings>=2.3",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

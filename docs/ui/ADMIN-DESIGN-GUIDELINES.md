@@ -53,7 +53,7 @@
 
 | 画板元素 | antd 5 组件 / 实现 | lucide（画稿）→ @ant-design/icons |
 |---|---|---|
-| 侧栏 logo 区 | 橙色圆角块（28×28，radius 6）+ 双行文字（转奶助手/管理后台），下方 10% 白分隔线；实现用文字「奶」logo 块（antd 无 milk 图标，不为此单引依赖） | `milk`（白色 16）→ 文字「奶」logo 块 |
+| 侧栏 logo 区 | 橙色圆角块（28×28，radius 6）+ 双行文字（转奶日记/管理后台），下方 10% 白分隔线；实现用文字「奶」logo 块（antd 无 milk 图标，不为此单引依赖） | `milk`（白色 16）→ 文字「奶」logo 块 |
 | 侧边导航 | `Layout.Sider` + `Menu` | `layout-dashboard` → DashboardOutlined；`package` → ShopOutlined；`file-text` → FileTextOutlined；`calendar-clock` → ScheduleOutlined |
 | 顶栏 | `Layout.Header` + `Button` | `log-out` → LogoutOutlined |
 | 数据表格 | `Table`（size=middle，rowKey） | — |

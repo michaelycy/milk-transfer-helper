@@ -17,6 +17,7 @@ import { formatDateTime, nowInputValue, parseLocalDateTime } from '../../utils/d
 import { toast, toastError } from '../../utils/error'
 import type { TransferPlanRow, FeedRecordRow } from '../../types'
 import './index.scss'
+import { selectTabbar } from '../../utils/tabbar'
 
 const PAGE_SIZE = 20
 
@@ -84,6 +85,7 @@ export default function Records() {
 
   // 页面首次显示与每次切回 tab 都刷新，直接取最新会话，避免闭包旧值
   useDidShow(() => {
+    selectTabbar(1)
     void loadRecords(0, 'replace')
     void loadPlan()
   })
