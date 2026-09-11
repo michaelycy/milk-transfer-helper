@@ -457,6 +457,225 @@ export interface Database {
         }
         Relationships: []
       }
+      ai_configs: {
+        Row: {
+          id: string
+          scene: AiScene
+          provider: string
+          model: string
+          base_url: string | null
+          temperature: number
+          max_tokens: number
+          daily_limit_per_user: number
+          enabled: boolean
+          fallback_provider: string | null
+          fallback_model: string | null
+          note: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          scene: AiScene
+          provider?: string
+          model: string
+          base_url?: string | null
+          temperature?: number
+          max_tokens?: number
+          daily_limit_per_user?: number
+          enabled?: boolean
+          fallback_provider?: string | null
+          fallback_model?: string | null
+          note?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          scene?: AiScene
+          provider?: string
+          model?: string
+          base_url?: string | null
+          temperature?: number
+          max_tokens?: number
+          daily_limit_per_user?: number
+          enabled?: boolean
+          fallback_provider?: string | null
+          fallback_model?: string | null
+          note?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ai_prompt_templates: {
+        Row: {
+          id: string
+          scene: AiScene
+          version: number
+          system_prompt: string
+          review_status: AiReviewStatus
+          review_note: string | null
+          reviewed_at: string | null
+          enabled: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          scene: AiScene
+          version?: number
+          system_prompt: string
+          review_status?: AiReviewStatus
+          review_note?: string | null
+          reviewed_at?: string | null
+          enabled?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          scene?: AiScene
+          version?: number
+          system_prompt?: string
+          review_status?: AiReviewStatus
+          review_note?: string | null
+          reviewed_at?: string | null
+          enabled?: boolean
+        }
+        Relationships: []
+      }
+      ai_usage_logs: {
+        Row: {
+          id: string
+          user_id: string
+          scene: AiScene
+          success: boolean
+          tokens: number
+          fallback_used: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string
+          scene: AiScene
+          success?: boolean
+          tokens?: number
+          fallback_used?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          success?: boolean
+          tokens?: number
+          fallback_used?: boolean
+        }
+        Relationships: []
+      }
+      ai_providers: {
+        Row: {
+          id: string
+          name: string
+          base_url: string
+          note: string | null
+          enabled: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          base_url: string
+          note?: string | null
+          enabled?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          base_url?: string
+          note?: string | null
+          enabled?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ai_chat_messages: {
+        Row: {
+          id: string
+          user_id: string
+          baby_id: string | null
+          role: 'user' | 'assistant'
+          scene: AiScene
+          content: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string
+          baby_id?: string | null
+          role: 'user' | 'assistant'
+          scene?: AiScene
+          content: string
+          created_at?: string
+        }
+        Update: {
+          content?: string
+        }
+        Relationships: []
+      }
+      ai_analyses: {
+        Row: {
+          id: string
+          user_id: string
+          baby_id: string | null
+          scene: 'poop' | 'bottle' | 'can'
+          result: Json
+          confidence: number | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string
+          baby_id?: string | null
+          scene: 'poop' | 'bottle' | 'can'
+          result: Json
+          confidence?: number | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          result?: Json
+          confidence?: number | null
+        }
+        Relationships: []
+      }
+      milk_product_submissions: {
+        Row: {
+          id: string
+          user_id: string
+          source: 'ai_can' | 'barcode'
+          payload: Json
+          image_path: string | null
+          status: 'pending' | 'processed' | 'dismissed'
+          created_at: string
+          processed_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id?: string
+          source?: 'ai_can' | 'barcode'
+          payload: Json
+          image_path?: string | null
+          status?: 'pending' | 'processed' | 'dismissed'
+          created_at?: string
+          processed_at?: string | null
+        }
+        Update: {
+          id?: string
+          status?: 'pending' | 'processed' | 'dismissed'
+          processed_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: Record<string, never>
     Functions: {
@@ -480,6 +699,11 @@ export type ProteinType = 'intact' | 'partially_hydrolyzed' | 'extensively_hydro
 export type AlertLevel = 'red' | 'yellow' | 'green'
 export type AlertStatus = 'new' | 'acked' | 'resolved'
 export type Gender = 'male' | 'female' | 'unknown'
+
+/** AI 场景（FR-K1，glossary §1）：问答 / 便便 / 奶瓶 / 奶粉罐 */
+export type AiScene = 'chat' | 'poop' | 'bottle' | 'can'
+/** AI 提示词审核流（NFR-1）：仅 approved 且 enabled 的版本可生效 */
+export type AiReviewStatus = 'pending' | 'approved' | 'rejected'
 
 /**
  * 方法模板的逐日定义（plan_templates.days jsonb 的元素契约，两端共用）。

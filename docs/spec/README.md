@@ -18,6 +18,9 @@
 | v2.0-draft2 | 2026-09-09 | 按模块拆分为独立文档并建立本索引；新增 UI 设计画板对照（docs/ui/ui.pen V2 系列） |
 | v2.0-draft3 | 2026-09-09 | 闭环评审修复：建立 00-glossary 语义基线（喂养日/顿次/状态机/指标口径与事件清单）；新增 FR-A4 段位时机提示、FR-H4 埋点基建；定义计划完成判定与预警生命周期；修正 D5/D2/F1 的里程碑依赖矛盾；H2 增加数据导出；评审规则与 UI 画板解耦 |
 | v2.0-draft4 | 2026-09-09 | 新增模块 J 管理后台（FR-J1~J5，运营载体由 Supabase 表编辑升级为 apps/admin）；UI 设计文件新增 docs/ui/admin.pen |
+| v2.0-draft5 | 2026-09-11 | 新增模块 K AI 助手（FR-K1~K5：配置网关/拍奶瓶记奶/拍奶粉罐识别/便便拍照评估/限定域问答）+ FR-J6 AI 配置管理；NFR-2 照片条款修订为「照片最小化」；02-roadmap「AI 答疑」移出不做清单挂 M4 |
+| v2.0-draft6 | 2026-09-11 | 模块 K 扩展模型接入管理：FR-K6 供应商注册表（配置驱动新增供应商）/ FR-K7 备用模型与故障转移 / FR-K8 连通性自检；管理端新增 FR-J7 模型接入管理页（admin.pen A-09 已生成）；小程序侧无改动 |
+| v2.0-draft7 | 2026-09-11 | 供应商密钥界面化（FR-K6/J7 扩展 + NFR-2 修订）：管理端可设置 API Key，AES-256-GCM 加密落库（ai_provider_secrets，主密钥在环境变量），编辑不回显仅掩码；网关密钥解析 = 库内密文 > 环境变量兜底 |
 
 ---
 
@@ -41,7 +44,8 @@ docs/spec/
     G-content.md         内容与知识        (FR-G1~G3)
     H-account.md         账户与基础        (FR-H0~H3)
     I-reminders.md       提醒              (FR-I1~I3)
-    J-admin-console.md   管理后台          (FR-J1~J5)
+    J-admin-console.md   管理后台          (FR-J1~J7)
+    K-ai-assistant.md    AI 助手           (FR-K1~K8)
   99-appendix.md       ← 术语表、需求追溯矩阵、旧文档关系
 ```
 
@@ -109,6 +113,16 @@ docs/spec/
 | FR-J3 | 文章管理与审核流 | J 管理后台 | P1 | 草案 | M2 | [modules/J-admin-console.md](modules/J-admin-console.md) |
 | FR-J4 | 转奶模板管理 | J 管理后台 | P1 | 草案 | M2 | [modules/J-admin-console.md](modules/J-admin-console.md) |
 | FR-J5 | 数据看板 | J 管理后台 | P2 | 草案 | M2 | [modules/J-admin-console.md](modules/J-admin-console.md) |
+| FR-K1 | AI 配置与安全网关 | K AI 助手 | P0 | 草案 | M4 | [modules/K-ai-assistant.md](modules/K-ai-assistant.md) |
+| FR-K2 | 拍奶瓶快速记奶 | K AI 助手 | P1 | 草案 | M4 | [modules/K-ai-assistant.md](modules/K-ai-assistant.md) |
+| FR-K3 | 拍奶粉罐识别 | K AI 助手 | P1 | 草案 | M4 | [modules/K-ai-assistant.md](modules/K-ai-assistant.md) |
+| FR-K4 | 便便拍照评估 | K AI 助手 | P2 | 草案 | M4 | [modules/K-ai-assistant.md](modules/K-ai-assistant.md) |
+| FR-K5 | 限定域问答 | K AI 助手 | P2 | 草案 | M4 | [modules/K-ai-assistant.md](modules/K-ai-assistant.md) |
+| FR-J6 | AI 配置管理 | J 管理后台 | P1 | 草案 | M4 | [modules/J-admin-console.md](modules/J-admin-console.md) |
+| FR-K6 | 供应商注册表 | K AI 助手 | P1 | 草案 | M4 | [modules/K-ai-assistant.md](modules/K-ai-assistant.md) |
+| FR-K7 | 备用模型与故障转移 | K AI 助手 | P2 | 草案 | M4 | [modules/K-ai-assistant.md](modules/K-ai-assistant.md) |
+| FR-K8 | 连通性自检 | K AI 助手 | P1 | 草案 | M4 | [modules/K-ai-assistant.md](modules/K-ai-assistant.md) |
+| FR-J7 | 模型接入管理 | J 管理后台 | P1 | 草案 | M4 | [modules/J-admin-console.md](modules/J-admin-console.md) |
 
 非功能需求：NFR-1 医学安全与内容合规 / NFR-2 隐私与数据合规 / NFR-3 性能 / NFR-4 兼容 / NFR-5 可维护性 / NFR-6 可用性，统一见 [04-nfr.md](04-nfr.md)。
 
@@ -117,6 +131,6 @@ docs/spec/
 | 文档 | 关系 |
 |---|---|
 | `docs/ui/ui.pen`（配套 `docs/ui/audit.mjs` 画布审计、`docs/ui/DESIGN-GUIDELINES.md` 工作流规范） | 小程序 UI 设计图。画板 01–15 为现有页面与状态补全（v1 实现对照）；V2-01–V2-13 为本需求设计稿（**已生成**，画板名以「V2-」开头；其中 V2-12 复用画板 09），由模块文档「UI 画板对照」章节负责映射 |
-| `docs/ui/admin.pen`（配套 `docs/ui/ADMIN-DESIGN-GUIDELINES.md` 管理端规范） | 管理后台 UI 设计图（画板 A-01–A-07，对应模块 J；**未生成**，设计阶段补齐） |
+| `docs/ui/admin.pen`（配套 `docs/ui/ADMIN-DESIGN-GUIDELINES.md` 管理端规范） | 管理后台 UI 设计图（画板 A-01–A-09，对应模块 J；A-01–A-09 已生成） |
 | `.trae/documents/baby-milk-transfer-tech-arch.md` | 技术架构，随里程碑更新 |
 | `supabase/migrations/` | 数据库基线与增量迁移，规范见 [03-data-model.md](03-data-model.md) |

@@ -1,8 +1,15 @@
-import { createFileRoute, Outlet, redirect, useLocation, useNavigate } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  Outlet,
+  redirect,
+  useLocation,
+  useNavigate,
+} from '@tanstack/react-router';
 import { Button, Layout, Menu, Typography, App } from 'antd';
 import {
   DashboardOutlined,
   FileTextOutlined,
+  RobotOutlined,
   ScheduleOutlined,
   ShopOutlined,
   LogoutOutlined,
@@ -27,6 +34,7 @@ const MENU_ITEMS = [
   { key: '/milk', icon: <ShopOutlined />, label: '奶粉库' },
   { key: '/articles', icon: <FileTextOutlined />, label: '文章管理' },
   { key: '/templates', icon: <ScheduleOutlined />, label: '转奶模板' },
+  { key: '/ai', icon: <RobotOutlined />, label: 'AI 配置' },
 ];
 
 function AuthLayout() {

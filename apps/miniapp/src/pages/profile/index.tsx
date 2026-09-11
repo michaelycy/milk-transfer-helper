@@ -80,6 +80,12 @@ export default function Profile() {
               clickable
               onClick={() => Taro.navigateTo({ url: '/packages/baby/pages/create/index' })}
             />
+            <Cell
+              title='AI 助手（问答 · 拍照识别）'
+              isLink
+              clickable
+              onClick={() => Taro.navigateTo({ url: '/packages/ai/pages/chat/index' })}
+            />
             <Cell title='我的收藏' isLink clickable />
             <Cell title='关于我们' isLink clickable />
             <Cell title='设置' isLink clickable />

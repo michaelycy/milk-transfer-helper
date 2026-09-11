@@ -36,6 +36,15 @@ export default defineAppConfig({
       root: 'packages/article',
       pages: ['pages/detail/index'],
     },
+    {
+      root: 'packages/ai',
+      pages: [
+        'pages/chat/index',
+        'pages/bottle/index',
+        'pages/poop/index',
+        'pages/can/index',
+      ],
+    },
   ],
   window: {
     backgroundTextStyle: 'light',

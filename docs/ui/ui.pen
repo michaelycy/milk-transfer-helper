@@ -7850,127 +7850,6 @@
               ]
             }
           ]
-        },
-        {
-          "type": "text",
-          "id": "spec-r-title",
-          "name": "spec-r-title",
-          "fill": "#323233",
-          "content": "圆角 & 尺寸（$hd=2）",
-          "fontFamily": "Inter",
-          "fontSize": 14,
-          "fontWeight": "500"
-        },
-        {
-          "type": "text",
-          "id": "caption-8",
-          "name": "caption-8",
-          "fill": "#969799",
-          "content": "08 设计规范 — 与 @taroify/core/styles/_variables.scss 同名 tokens",
-          "fontFamily": "Inter",
-          "fontSize": 12,
-          "fontWeight": "normal"
-        },
-        {
-          "type": "frame",
-          "id": "spec-radius",
-          "name": "spec-radius",
-          "gap": 14,
-          "alignItems": "center",
-          "children": [
-            {
-              "type": "rectangle",
-              "cornerRadius": 2,
-              "id": "Rect-45",
-              "name": "spec-r2",
-              "fill": "#F7F8FA",
-              "width": 68,
-              "height": 44,
-              "stroke": "#EBEDF0",
-              "strokeWidth": 1
-            },
-            {
-              "type": "rectangle",
-              "cornerRadius": 4,
-              "id": "Rect-46",
-              "name": "spec-r4",
-              "fill": "#F7F8FA",
-              "width": 68,
-              "height": 44,
-              "stroke": "#EBEDF0",
-              "strokeWidth": 1
-            },
-            {
-              "type": "rectangle",
-              "cornerRadius": 8,
-              "id": "Rect-47",
-              "name": "spec-r8",
-              "fill": "#F7F8FA",
-              "width": 68,
-              "height": 44,
-              "stroke": "#EBEDF0",
-              "strokeWidth": 1
-            },
-            {
-              "type": "frame",
-              "id": "spec-rn",
-              "name": "spec-rn",
-              "layout": "vertical",
-              "gap": 5,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "spec-rn1",
-                  "name": "spec-rn1",
-                  "fill": "#969799",
-                  "content": "radius-sm 2 · 按钮 / Tag 默认",
-                  "fontFamily": "Inter",
-                  "fontSize": 11,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "spec-rn2",
-                  "name": "spec-rn2",
-                  "fill": "#969799",
-                  "content": "radius-md 4 · 缩略图 / 提示卡",
-                  "fontFamily": "Inter",
-                  "fontSize": 11,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "spec-rn3",
-                  "name": "spec-rn3",
-                  "fill": "#969799",
-                  "content": "radius-lg 8 · CellGroup inset 卡片",
-                  "fontFamily": "Inter",
-                  "fontSize": 11,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "spec-rn4",
-                  "name": "spec-rn4",
-                  "fill": "#969799",
-                  "content": "max 999 · round 按钮 / 搜索框 / 悬浮球",
-                  "fontFamily": "Inter",
-                  "fontSize": 11,
-                  "fontWeight": "normal"
-                },
-                {
-                  "type": "text",
-                  "id": "spec-rn5",
-                  "name": "spec-rn5",
-                  "fill": "#969799",
-                  "content": "NavBar 46 · Tabbar 50 · Cell 44 · Button 32/44/50 · Popup 圆角 16",
-                  "fontFamily": "Inter",
-                  "fontSize": 11,
-                  "fontWeight": "normal"
-                }
-              ]
-            }
-          ]
         }
       ]
     },
@@ -7994,6 +7873,2470 @@
       "name": "caption-2",
       "fill": "#969799",
       "content": "02 转奶记录·列表 — Tabs · Cell · Tag(warning) · FloatingBubble · Tabbar",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "frame",
+      "id": "kroot048",
+      "x": 0,
+      "y": 11607,
+      "name": "V2-K1 AI 助手·问答",
+      "context": "覆盖 FR-K5 限定域问答：宝宝上下文注入、动作入口、AI 标识与免责声明、输入栏 — Taroify: Cell · Button · Field",
+      "clip": true,
+      "width": 375,
+      "height": 812,
+      "fill": "#F7F8FA",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "kf040",
+          "name": "vk1-statusbar",
+          "width": "fill_container",
+          "height": 44,
+          "padding": [
+            12,
+            24,
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "kt039",
+              "name": "vk1-time",
+              "fill": "#323233",
+              "content": "9:41",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "kf038",
+              "name": "vk1-icons",
+              "gap": 5,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ki035",
+                  "name": "vk1-signal",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "signal",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "ki036",
+                  "name": "vk1-wifi",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "wifi",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "ki037",
+                  "name": "vk1-battery",
+                  "width": 19,
+                  "height": 19,
+                  "icon": "battery-full",
+                  "library": "lucide",
+                  "fill": "#323233"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf045",
+          "name": "vk1-nav",
+          "width": "fill_container",
+          "height": 46,
+          "fill": "#FFFFFF",
+          "stroke": "#EBEDF0",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "kf042",
+              "name": "vk1-navl",
+              "width": 88,
+              "height": 46,
+              "padding": [
+                0,
+                10
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ki041",
+                  "name": "vk1-back",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "chevron-left",
+                  "library": "lucide",
+                  "fill": "#323233"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "kt043",
+              "name": "vk1-title",
+              "fill": "#323233",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "AI 助手",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "kf044",
+              "name": "vk1-navr",
+              "width": 88,
+              "height": 46,
+              "padding": [
+                0,
+                10
+              ],
+              "justifyContent": "end",
+              "alignItems": "center"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf003",
+          "name": "vk1-notice",
+          "width": "fill_container",
+          "height": 28,
+          "fill": "#FFFBE8",
+          "gap": 6,
+          "padding": [
+            0,
+            12
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "icon",
+              "id": "ki001",
+              "name": "vk1-notice-ic",
+              "width": 12,
+              "height": 12,
+              "icon": "info",
+              "library": "lucide",
+              "fill": "#ED6A0C"
+            },
+            {
+              "type": "text",
+              "id": "kt002",
+              "name": "vk1-notice-t",
+              "fill": "#ED6A0C",
+              "content": "AI 生成内容仅供参考，不构成医学建议",
+              "fontFamily": "Inter",
+              "fontSize": 11,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf029",
+          "name": "vk1-chat",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": 12,
+          "children": [
+            {
+              "type": "frame",
+              "id": "kf018",
+              "name": "vk1-b1-row",
+              "width": "fill_container",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kf017",
+                  "name": "vk1-b1-avatar",
+                  "width": 28,
+                  "height": 28,
+                  "fill": "#FFF1EA",
+                  "cornerRadius": 999,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "ki016",
+                      "name": "vk1-b1-avatar-ic",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "sparkles",
+                      "library": "lucide",
+                      "fill": "#FF6B35"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kf015",
+                  "name": "vk1-b1-bubble",
+                  "width": 260,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": "#EBEDF0",
+                  "strokeWidth": 1,
+                  "gap": 8,
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt007",
+                      "name": "vk1-b1-bubble-t",
+                      "fill": "#323233",
+                      "textGrowth": "fixed-width",
+                      "width": 236,
+                      "content": "你好呀！我可以解答转奶方法、奶粉知识与喂养观察的问题；宝宝在转奶时，我会结合计划进度回答。",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf014",
+                      "name": "vk1-b1-chips",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "kf009",
+                          "name": "vk1-b1-c0-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt008",
+                              "name": "vk1-b1-c0-chipt",
+                              "fill": "#646566",
+                              "content": "去打卡",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf011",
+                          "name": "vk1-b1-c1-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt010",
+                              "name": "vk1-b1-c1-chipt",
+                              "fill": "#646566",
+                              "content": "查预警",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf013",
+                          "name": "vk1-b1-c2-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt012",
+                              "name": "vk1-b1-c2-chipt",
+                              "fill": "#646566",
+                              "content": "查奶粉库",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf006",
+              "name": "vk1-urow",
+              "width": "fill_container",
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kf005",
+                  "name": "vk1-ububble",
+                  "width": 224,
+                  "fill": "#FF6B35",
+                  "cornerRadius": 8,
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt004",
+                      "name": "vk1-ububble-t",
+                      "fill": "#FFFFFF",
+                      "textGrowth": "fixed-width",
+                      "width": 200,
+                      "content": "换 2 段第 3 天，便便比之前稀一点，正常吗？",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf028",
+              "name": "vk1-b2-row",
+              "width": "fill_container",
+              "gap": 8,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kf027",
+                  "name": "vk1-b2-avatar",
+                  "width": 28,
+                  "height": 28,
+                  "fill": "#FFF1EA",
+                  "cornerRadius": 999,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "ki026",
+                      "name": "vk1-b2-avatar-ic",
+                      "width": 16,
+                      "height": 16,
+                      "icon": "sparkles",
+                      "library": "lucide",
+                      "fill": "#FF6B35"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kf025",
+                  "name": "vk1-b2-bubble",
+                  "width": 260,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 8,
+                  "stroke": "#EBEDF0",
+                  "strokeWidth": 1,
+                  "gap": 8,
+                  "padding": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt019",
+                      "name": "vk1-b2-bubble-t",
+                      "fill": "#323233",
+                      "textGrowth": "fixed-width",
+                      "width": 236,
+                      "content": "可乐正在「混合法 · D3（新奶占 1/3）」。换奶初期大便变稀较常见：保持当前比例观察 1–2 天并打卡记录；若稀水样便 ≥3 次或出现血丝，请及时就医。",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf024",
+                      "name": "vk1-b2-chips",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "kf021",
+                          "name": "vk1-b2-c0-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt020",
+                              "name": "vk1-b2-c0-chipt",
+                              "fill": "#646566",
+                              "content": "继续观察",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf023",
+                          "name": "vk1-b2-c1-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt022",
+                              "name": "vk1-b2-c1-chipt",
+                              "fill": "#646566",
+                              "content": "去打卡",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf034",
+          "name": "vk1-input",
+          "width": "fill_container",
+          "height": 56,
+          "fill": "#FFFFFF",
+          "stroke": "#EBEDF0",
+          "strokeWidth": {
+            "top": 1
+          },
+          "gap": 8,
+          "padding": [
+            0,
+            12
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "kf031",
+              "name": "vk1-input-field",
+              "width": "fill_container",
+              "height": 36,
+              "fill": "#F7F8FA",
+              "cornerRadius": 18,
+              "padding": [
+                0,
+                12
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "kt030",
+                  "name": "vk1-input-ph",
+                  "fill": "#C8C9CC",
+                  "content": "输入你的问题…",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf033",
+              "name": "vk1-send",
+              "width": 36,
+              "height": 36,
+              "fill": "#FF6B35",
+              "cornerRadius": 999,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ki032",
+                  "name": "vk1-send-ic",
+                  "width": 16,
+                  "height": 16,
+                  "icon": "arrow-right",
+                  "library": "lucide",
+                  "fill": "#FFFFFF"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf047",
+          "name": "vk1-home",
+          "width": "fill_container",
+          "height": 34,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "rectangle",
+              "cornerRadius": 999,
+              "id": "kr046",
+              "name": "vk1-home-bar",
+              "fill": "#323233",
+              "width": 134,
+              "height": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "kroot101",
+      "x": 455,
+      "y": 11607,
+      "name": "V2-K2 拍奶瓶记奶",
+      "context": "覆盖 FR-K2 拍奶瓶快速记奶：识别→预填→确认（不自动提交）、失败降级手填、照片分析即弃 — Taroify: Button · Stepper · Field",
+      "clip": true,
+      "width": 375,
+      "height": 812,
+      "fill": "#F7F8FA",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "kf093",
+          "name": "vk2-statusbar",
+          "width": "fill_container",
+          "height": 44,
+          "padding": [
+            12,
+            24,
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "kt092",
+              "name": "vk2-time",
+              "fill": "#323233",
+              "content": "9:41",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "kf091",
+              "name": "vk2-icons",
+              "gap": 5,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ki088",
+                  "name": "vk2-signal",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "signal",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "ki089",
+                  "name": "vk2-wifi",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "wifi",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "ki090",
+                  "name": "vk2-battery",
+                  "width": 19,
+                  "height": 19,
+                  "icon": "battery-full",
+                  "library": "lucide",
+                  "fill": "#323233"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf098",
+          "name": "vk2-nav",
+          "width": "fill_container",
+          "height": 46,
+          "fill": "#FFFFFF",
+          "stroke": "#EBEDF0",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "kf095",
+              "name": "vk2-navl",
+              "width": 88,
+              "height": 46,
+              "padding": [
+                0,
+                10
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ki094",
+                  "name": "vk2-back",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "chevron-left",
+                  "library": "lucide",
+                  "fill": "#323233"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "kt096",
+              "name": "vk2-title",
+              "fill": "#323233",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "拍奶瓶记奶",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "kf097",
+              "name": "vk2-navr",
+              "width": 88,
+              "height": 46,
+              "padding": [
+                0,
+                10
+              ],
+              "justifyContent": "end",
+              "alignItems": "center"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf049",
+          "name": "vk2-content",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "kf053",
+              "name": "vk2-photo",
+              "width": "fill_container",
+              "height": 180,
+              "fill": "#F2F3F5",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kf052",
+                  "name": "vk2-photo-inner",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "ki050",
+                      "name": "vk2-photo-ic",
+                      "width": 28,
+                      "height": 28,
+                      "icon": "camera",
+                      "library": "lucide",
+                      "fill": "#C8C9CC"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kt051",
+                      "name": "vk2-photo-hint",
+                      "fill": "#969799",
+                      "content": "对准瓶身刻度，光线充足",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf064",
+              "name": "vk2-result",
+              "width": 343,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": "#EBEDF0",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 10,
+              "padding": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kf057",
+                  "name": "vk2-result-h",
+                  "width": "fill_container",
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt054",
+                      "name": "vk2-result-title",
+                      "fill": "#323233",
+                      "content": "识别结果",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf056",
+                      "name": "vk2-conf-chip",
+                      "height": 24,
+                      "fill": "#F2F3F5",
+                      "cornerRadius": 999,
+                      "padding": [
+                        0,
+                        10
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kt055",
+                          "name": "vk2-conf-chipt",
+                          "fill": "#646566",
+                          "content": "高置信度 92%",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kf062",
+                  "name": "vk2-result-v",
+                  "gap": 4,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt058",
+                      "name": "vk2-result-num",
+                      "fill": "#323233",
+                      "content": "210",
+                      "fontFamily": "Inter",
+                      "fontSize": 28,
+                      "fontWeight": "600"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kt059",
+                      "name": "vk2-result-unit",
+                      "fill": "#969799",
+                      "content": "ml",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf060",
+                      "name": "vk2-sp1",
+                      "width": 8,
+                      "height": 1
+                    },
+                    {
+                      "type": "text",
+                      "id": "kt061",
+                      "name": "vk2-result-time",
+                      "fill": "#969799",
+                      "content": "14:32 · 自动带入",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "kt063",
+                  "name": "vk2-result-note",
+                  "fill": "#969799",
+                  "textGrowth": "fixed-width",
+                  "width": 319,
+                  "content": "已预填表单，确认或调整后保存；照片仅即时分析，不做存储",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf084",
+              "name": "vk2-form",
+              "width": 343,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": "#EBEDF0",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 10,
+              "padding": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kf072",
+                  "name": "vk2-f1",
+                  "width": 319,
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt065",
+                      "name": "vk2-f1l",
+                      "fill": "#323233",
+                      "content": "奶量（ml）",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf071",
+                      "name": "vk2-f1r",
+                      "gap": 12,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "kf067",
+                          "name": "vk2-dec",
+                          "width": 24,
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt066",
+                              "name": "vk2-dect",
+                              "fill": "#646566",
+                              "content": "−",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "text",
+                          "id": "kt068",
+                          "name": "vk2-f1v",
+                          "fill": "#323233",
+                          "content": "210",
+                          "fontFamily": "Inter",
+                          "fontSize": 16,
+                          "fontWeight": "500"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf070",
+                          "name": "vk2-inc",
+                          "width": 24,
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt069",
+                              "name": "vk2-inct",
+                              "fill": "#646566",
+                              "content": "＋",
+                              "fontFamily": "Inter",
+                              "fontSize": 14,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "kr073",
+                  "name": "vk2-divider",
+                  "fill": "#EBEDF0",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "kf076",
+                  "name": "vk2-f2",
+                  "width": 319,
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt074",
+                      "name": "vk2-f2l",
+                      "fill": "#323233",
+                      "content": "时间",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kt075",
+                      "name": "vk2-f2v",
+                      "fill": "#646566",
+                      "content": "今天 14:32",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "rectangle",
+                  "id": "kr077",
+                  "name": "vk2-divider",
+                  "fill": "#EBEDF0",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "kf083",
+                  "name": "vk2-f3",
+                  "width": 319,
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt078",
+                      "name": "vk2-f3l",
+                      "fill": "#323233",
+                      "content": "配方",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf082",
+                      "name": "vk2-f3r",
+                      "gap": 8,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kt079",
+                          "name": "vk2-f3v",
+                          "fill": "#646566",
+                          "content": "星飞帆 3 段",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf081",
+                          "name": "vk2-plan-chip",
+                          "height": 24,
+                          "fill": "#FFF1EA",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt080",
+                              "name": "vk2-plan-chipt",
+                              "fill": "#FF6B35",
+                              "content": "计划内",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf086",
+              "name": "vk2-btn-primary",
+              "width": "fill_container",
+              "height": 50,
+              "fill": "#FF6B35",
+              "cornerRadius": 999,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "kt085",
+                  "name": "vk2-btn-primary-t",
+                  "fill": "#FFFFFF",
+                  "content": "确认，记一笔",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "kt087",
+              "name": "vk2-manual",
+              "fill": "#576B95",
+              "textGrowth": "fixed-width",
+              "width": 343,
+              "content": "识别不对？手动填写",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 13,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf100",
+          "name": "vk2-home",
+          "width": "fill_container",
+          "height": 34,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "rectangle",
+              "cornerRadius": 999,
+              "id": "kr099",
+              "name": "vk2-home-bar",
+              "fill": "#323233",
+              "width": 134,
+              "height": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "kroot160",
+      "x": 910,
+      "y": 11607,
+      "name": "V2-K3 便便拍照评估",
+      "context": "覆盖 FR-K4 便便拍照评估：固定 schema 结构化观察、置信度、免责声明、确认后走 FR-D3/E1 链路 — Taroify: Tag · Button",
+      "clip": true,
+      "width": 375,
+      "height": 812,
+      "fill": "#F7F8FA",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "kf152",
+          "name": "vk3-statusbar",
+          "width": "fill_container",
+          "height": 44,
+          "padding": [
+            12,
+            24,
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "kt151",
+              "name": "vk3-time",
+              "fill": "#323233",
+              "content": "9:41",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "kf150",
+              "name": "vk3-icons",
+              "gap": 5,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ki147",
+                  "name": "vk3-signal",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "signal",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "ki148",
+                  "name": "vk3-wifi",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "wifi",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "ki149",
+                  "name": "vk3-battery",
+                  "width": 19,
+                  "height": 19,
+                  "icon": "battery-full",
+                  "library": "lucide",
+                  "fill": "#323233"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf157",
+          "name": "vk3-nav",
+          "width": "fill_container",
+          "height": 46,
+          "fill": "#FFFFFF",
+          "stroke": "#EBEDF0",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "kf154",
+              "name": "vk3-navl",
+              "width": 88,
+              "height": 46,
+              "padding": [
+                0,
+                10
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ki153",
+                  "name": "vk3-back",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "chevron-left",
+                  "library": "lucide",
+                  "fill": "#323233"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "kt155",
+              "name": "vk3-title",
+              "fill": "#323233",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "便便观察",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "kf156",
+              "name": "vk3-navr",
+              "width": 88,
+              "height": 46,
+              "padding": [
+                0,
+                10
+              ],
+              "justifyContent": "end",
+              "alignItems": "center"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf102",
+          "name": "vk3-content",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "kf106",
+              "name": "vk3-photo",
+              "width": "fill_container",
+              "height": 150,
+              "fill": "#F2F3F5",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kf105",
+                  "name": "vk3-photo-inner",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "ki103",
+                      "name": "vk3-photo-ic",
+                      "width": 28,
+                      "height": 28,
+                      "icon": "camera",
+                      "library": "lucide",
+                      "fill": "#C8C9CC"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kt104",
+                      "name": "vk3-photo-hint",
+                      "fill": "#969799",
+                      "content": "拍摄后 AI 仅输出结构化观察，不做诊断",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf139",
+              "name": "vk3-obs",
+              "width": 343,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": "#EBEDF0",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 10,
+              "padding": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kf112",
+                  "name": "vk3-obs-h",
+                  "width": 319,
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kf109",
+                      "name": "vk3-obs-title",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "ki107",
+                          "name": "vk3-obs-ic",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "sparkles",
+                          "library": "lucide",
+                          "fill": "#FF6B35"
+                        },
+                        {
+                          "type": "text",
+                          "id": "kt108",
+                          "name": "vk3-obs-tt",
+                          "fill": "#323233",
+                          "content": "AI 观察",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf111",
+                      "name": "vk3-conf-chip",
+                      "height": 24,
+                      "fill": "#F2F3F5",
+                      "cornerRadius": 999,
+                      "padding": [
+                        0,
+                        10
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kt110",
+                          "name": "vk3-conf-chipt",
+                          "fill": "#646566",
+                          "content": "置信度 87%",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kf123",
+                  "name": "vk3-obs-color",
+                  "width": 319,
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt113",
+                      "name": "vk3-cl",
+                      "fill": "#969799",
+                      "content": "颜色",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf122",
+                      "name": "vk3-cv",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "kf115",
+                          "name": "vk3-c1-chip",
+                          "height": 24,
+                          "fill": "#FFF1EA",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt114",
+                              "name": "vk3-c1-chipt",
+                              "fill": "#FF6B35",
+                              "content": "金黄",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf117",
+                          "name": "vk3-c2-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt116",
+                              "name": "vk3-c2-chipt",
+                              "fill": "#646566",
+                              "content": "绿色",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf119",
+                          "name": "vk3-c3-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt118",
+                              "name": "vk3-c3-chipt",
+                              "fill": "#646566",
+                              "content": "黑色",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf121",
+                          "name": "vk3-c4-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt120",
+                              "name": "vk3-c4-chipt",
+                              "fill": "#646566",
+                              "content": "带血丝",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kf134",
+                  "name": "vk3-obs-tex",
+                  "width": 319,
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt124",
+                      "name": "vk3-tl",
+                      "fill": "#969799",
+                      "content": "性状",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf133",
+                      "name": "vk3-tv",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "frame",
+                          "id": "kf126",
+                          "name": "vk3-t1-chip",
+                          "height": 24,
+                          "fill": "#FFF1EA",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt125",
+                              "name": "vk3-t1-chipt",
+                              "fill": "#FF6B35",
+                              "content": "稀软",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf128",
+                          "name": "vk3-t2-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt127",
+                              "name": "vk3-t2-chipt",
+                              "fill": "#646566",
+                              "content": "稀水样",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf130",
+                          "name": "vk3-t3-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt129",
+                              "name": "vk3-t3-chipt",
+                              "fill": "#646566",
+                              "content": "正常",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "frame",
+                          "id": "kf132",
+                          "name": "vk3-t4-chip",
+                          "height": 24,
+                          "fill": "#F2F3F5",
+                          "cornerRadius": 999,
+                          "padding": [
+                            0,
+                            10
+                          ],
+                          "justifyContent": "center",
+                          "alignItems": "center",
+                          "children": [
+                            {
+                              "type": "text",
+                              "id": "kt131",
+                              "name": "vk3-t4-chipt",
+                              "fill": "#646566",
+                              "content": "便秘",
+                              "fontFamily": "Inter",
+                              "fontSize": 11,
+                              "fontWeight": "normal"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kf137",
+                  "name": "vk3-obs-abn",
+                  "width": 319,
+                  "justifyContent": "space_between",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt135",
+                      "name": "vk3-al",
+                      "fill": "#969799",
+                      "content": "疑似异常",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "normal"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kt136",
+                      "name": "vk3-av",
+                      "fill": "#07C160",
+                      "content": "未发现",
+                      "fontFamily": "Inter",
+                      "fontSize": 13,
+                      "fontWeight": "500"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "kt138",
+                  "name": "vk3-obs-note",
+                  "fill": "#969799",
+                  "textGrowth": "fixed-width",
+                  "width": 319,
+                  "content": "观察描述：成形度略低，未见黏液与血丝。预警级别由规则引擎综合当日打卡判定。",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf142",
+              "name": "vk3-warn",
+              "width": 343,
+              "fill": "#FFFBE8",
+              "cornerRadius": 4,
+              "gap": 6,
+              "padding": 10,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ki140",
+                  "name": "vk3-warn-ic",
+                  "width": 12,
+                  "height": 12,
+                  "icon": "circle-alert",
+                  "library": "lucide",
+                  "fill": "#ED6A0C"
+                },
+                {
+                  "type": "text",
+                  "id": "kt141",
+                  "name": "vk3-warn-t",
+                  "fill": "#ED6A0C",
+                  "textGrowth": "fixed-width",
+                  "width": 300,
+                  "content": "AI 观察仅供参考，不构成医学判断；异常或持续异常请及时就医",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf146",
+              "name": "vk3-btn-primary",
+              "width": "fill_container",
+              "height": 50,
+              "fill": "#FF6B35",
+              "cornerRadius": 999,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "kt145",
+                  "name": "vk3-btn-primary-t",
+                  "fill": "#FFFFFF",
+                  "content": "同步到今日打卡",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf144",
+              "name": "vk3-ghost",
+              "width": "fill_container",
+              "height": 44,
+              "fill": "#FFFFFF",
+              "cornerRadius": 999,
+              "stroke": "#EBEDF0",
+              "strokeWidth": 1,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "kt143",
+                  "name": "vk3-ghost-t",
+                  "fill": "#323233",
+                  "content": "重新拍摄",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf159",
+          "name": "vk3-home",
+          "width": "fill_container",
+          "height": 34,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "rectangle",
+              "cornerRadius": 999,
+              "id": "kr158",
+              "name": "vk3-home-bar",
+              "fill": "#323233",
+              "width": 134,
+              "height": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "kroot208",
+      "x": 1365,
+      "y": 11607,
+      "name": "V2-K4 拍奶粉罐识别",
+      "context": "覆盖 FR-K3 拍奶粉罐识别：奶粉库匹配（中性呈现）、未命中补录队列（照片可选、私有存储）— Taroify: Tag · Button · Checkbox",
+      "clip": true,
+      "width": 375,
+      "height": 812,
+      "fill": "#F7F8FA",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "kf200",
+          "name": "vk4-statusbar",
+          "width": "fill_container",
+          "height": 44,
+          "padding": [
+            12,
+            24,
+            0,
+            24
+          ],
+          "justifyContent": "space_between",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "text",
+              "id": "kt199",
+              "name": "vk4-time",
+              "fill": "#323233",
+              "content": "9:41",
+              "fontFamily": "Inter",
+              "fontSize": 15,
+              "fontWeight": "600"
+            },
+            {
+              "type": "frame",
+              "id": "kf198",
+              "name": "vk4-icons",
+              "gap": 5,
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ki195",
+                  "name": "vk4-signal",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "signal",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "ki196",
+                  "name": "vk4-wifi",
+                  "width": 13,
+                  "height": 13,
+                  "icon": "wifi",
+                  "library": "lucide",
+                  "fill": "#323233"
+                },
+                {
+                  "type": "icon",
+                  "id": "ki197",
+                  "name": "vk4-battery",
+                  "width": 19,
+                  "height": 19,
+                  "icon": "battery-full",
+                  "library": "lucide",
+                  "fill": "#323233"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf205",
+          "name": "vk4-nav",
+          "width": "fill_container",
+          "height": 46,
+          "fill": "#FFFFFF",
+          "stroke": "#EBEDF0",
+          "strokeWidth": {
+            "bottom": 1
+          },
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "kf202",
+              "name": "vk4-navl",
+              "width": 88,
+              "height": 46,
+              "padding": [
+                0,
+                10
+              ],
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "icon",
+                  "id": "ki201",
+                  "name": "vk4-back",
+                  "width": 20,
+                  "height": 20,
+                  "icon": "chevron-left",
+                  "library": "lucide",
+                  "fill": "#323233"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "kt203",
+              "name": "vk4-title",
+              "fill": "#323233",
+              "textGrowth": "fixed-width",
+              "width": "fill_container",
+              "content": "拍罐识别",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 16,
+              "fontWeight": "500"
+            },
+            {
+              "type": "frame",
+              "id": "kf204",
+              "name": "vk4-navr",
+              "width": 88,
+              "height": 46,
+              "padding": [
+                0,
+                10
+              ],
+              "justifyContent": "end",
+              "alignItems": "center"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf161",
+          "name": "vk4-content",
+          "width": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "kf165",
+              "name": "vk4-photo",
+              "width": "fill_container",
+              "height": 140,
+              "fill": "#F2F3F5",
+              "cornerRadius": 8,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kf164",
+                  "name": "vk4-photo-inner",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "icon",
+                      "id": "ki162",
+                      "name": "vk4-photo-ic",
+                      "width": 28,
+                      "height": 28,
+                      "icon": "camera",
+                      "library": "lucide",
+                      "fill": "#C8C9CC"
+                    },
+                    {
+                      "type": "text",
+                      "id": "kt163",
+                      "name": "vk4-photo-hint",
+                      "fill": "#969799",
+                      "content": "对准罐体正面与段位标识",
+                      "fontFamily": "Inter",
+                      "fontSize": 12,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf185",
+              "name": "vk4-hit",
+              "width": 343,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": "#EBEDF0",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 10,
+              "padding": 12,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "kf169",
+                  "name": "vk4-hit-h",
+                  "width": 319,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kf168",
+                      "name": "vk4-hit-title",
+                      "gap": 6,
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "ki166",
+                          "name": "vk4-hit-ic",
+                          "width": 14,
+                          "height": 14,
+                          "icon": "circle-check",
+                          "library": "lucide",
+                          "fill": "#07C160"
+                        },
+                        {
+                          "type": "text",
+                          "id": "kt167",
+                          "name": "vk4-hit-tt",
+                          "fill": "#323233",
+                          "content": "识别结果 · 已匹配奶粉库",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "kt170",
+                  "name": "vk4-hit-name",
+                  "fill": "#323233",
+                  "content": "飞鹤 星飞帆 3 段",
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "frame",
+                  "id": "kf177",
+                  "name": "vk4-hit-tags",
+                  "gap": 6,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kf172",
+                      "name": "vk4-g1-chip",
+                      "height": 24,
+                      "fill": "#FFF1EA",
+                      "cornerRadius": 999,
+                      "padding": [
+                        0,
+                        10
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kt171",
+                          "name": "vk4-g1-chipt",
+                          "fill": "#FF6B35",
+                          "content": "3 段",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf174",
+                      "name": "vk4-g2",
+                      "height": 24,
+                      "fill": "#E8F3FE",
+                      "cornerRadius": 999,
+                      "padding": [
+                        0,
+                        10
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kt173",
+                          "name": "vk4-g2t",
+                          "fill": "#1989FA",
+                          "content": "整蛋白",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf176",
+                      "name": "vk4-g3",
+                      "height": 24,
+                      "fill": "#F2F3F5",
+                      "cornerRadius": 999,
+                      "padding": [
+                        0,
+                        10
+                      ],
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kt175",
+                          "name": "vk4-g3t",
+                          "fill": "#646566",
+                          "content": "国食注字 YP",
+                          "fontFamily": "Inter",
+                          "fontSize": 11,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "kt178",
+                  "name": "vk4-hit-ing",
+                  "fill": "#969799",
+                  "content": "OPO · 乳铁蛋白 · DHA/ARA",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "rectangle",
+                  "id": "kr179",
+                  "name": "vk4-divider",
+                  "fill": "#EBEDF0",
+                  "width": "fill_container",
+                  "height": 1
+                },
+                {
+                  "type": "frame",
+                  "id": "kf184",
+                  "name": "vk4-hit-btns",
+                  "width": 319,
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kf181",
+                      "name": "vk4-detail",
+                      "width": 120,
+                      "height": 32,
+                      "fill": "#FFFFFF",
+                      "cornerRadius": 4,
+                      "stroke": "#EBEDF0",
+                      "strokeWidth": 1,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kt180",
+                          "name": "vk4-detail-t",
+                          "fill": "#323233",
+                          "content": "查看详情",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "frame",
+                      "id": "kf183",
+                      "name": "vk4-plan",
+                      "width": 180,
+                      "height": 32,
+                      "fill": "#FF6B35",
+                      "cornerRadius": 4,
+                      "justifyContent": "center",
+                      "alignItems": "center",
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "kt182",
+                          "name": "vk4-plan-t",
+                          "fill": "#FFFFFF",
+                          "content": "用 TA 创建转奶计划",
+                          "fontFamily": "Inter",
+                          "fontSize": 14,
+                          "fontWeight": "500"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "kf193",
+              "name": "vk4-miss",
+              "width": 343,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": "#EBEDF0",
+              "strokeWidth": 1,
+              "layout": "vertical",
+              "gap": 10,
+              "padding": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "kt186",
+                  "name": "vk4-miss-t",
+                  "fill": "#323233",
+                  "content": "没有匹配到？",
+                  "fontFamily": "Inter",
+                  "fontSize": 13,
+                  "fontWeight": "500"
+                },
+                {
+                  "type": "text",
+                  "id": "kt187",
+                  "name": "vk4-miss-d",
+                  "fill": "#969799",
+                  "textGrowth": "fixed-width",
+                  "width": 319,
+                  "content": "提交给运营补录，收录后即可在奶粉库检索与创建计划",
+                  "fontFamily": "Inter",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                },
+                {
+                  "type": "frame",
+                  "id": "kf190",
+                  "name": "vk4-miss-row",
+                  "gap": 8,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "kf188",
+                      "name": "vk4-cbx",
+                      "width": 14,
+                      "height": 14,
+                      "cornerRadius": 2,
+                      "stroke": "#C8C9CC",
+                      "strokeWidth": 1
+                    },
+                    {
+                      "type": "text",
+                      "id": "kt189",
+                      "name": "vk4-cbx-t",
+                      "fill": "#969799",
+                      "textGrowth": "fixed-width",
+                      "width": 290,
+                      "content": "附上照片帮助补录（私有存储，仅运营可见）",
+                      "fontFamily": "Inter",
+                      "fontSize": 11,
+                      "fontWeight": "normal"
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "kf192",
+                  "name": "vk4-miss-btn",
+                  "width": "fill_container",
+                  "height": 32,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 4,
+                  "stroke": "#576B95",
+                  "strokeWidth": 1,
+                  "justifyContent": "center",
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "kt191",
+                      "name": "vk4-miss-btnt",
+                      "fill": "#576B95",
+                      "content": "提交补录",
+                      "fontFamily": "Inter",
+                      "fontSize": 14,
+                      "fontWeight": "500"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "id": "kt194",
+              "name": "vk4-neutral",
+              "fill": "#969799",
+              "textGrowth": "fixed-width",
+              "width": 343,
+              "content": "数据中性呈现 · 不含推荐与排名",
+              "textAlign": "center",
+              "fontFamily": "Inter",
+              "fontSize": 10,
+              "fontWeight": "normal"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "kf207",
+          "name": "vk4-home",
+          "width": "fill_container",
+          "height": 34,
+          "justifyContent": "center",
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "rectangle",
+              "cornerRadius": 999,
+              "id": "kr206",
+              "name": "vk4-home-bar",
+              "fill": "#323233",
+              "width": 134,
+              "height": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "krl209",
+      "x": 0,
+      "y": 11571,
+      "name": "row-label-ai",
+      "fill": "#323233",
+      "content": "AI 助手",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "kcap210",
+      "x": 0,
+      "y": 12433,
+      "name": "cap-v2-k1",
+      "fill": "#969799",
+      "content": "V2-K1 AI 助手·问答 — 限定域（转奶/奶粉/喂养）· 宝宝上下文 · 动作入口 · AI 标识(FR-K5)",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "text",
+      "id": "kcap211",
+      "x": 455,
+      "y": 12433,
+      "name": "cap-v2-k2",
+      "fill": "#969799",
+      "content": "V2-K2 拍奶瓶记奶 — 识别预填·确认提交(D1) · 低置信度降级手填 · 照片分析即弃(FR-K2)",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "text",
+      "id": "kcap212",
+      "x": 910,
+      "y": 12433,
+      "name": "cap-v2-k3",
+      "fill": "#969799",
+      "content": "V2-K3 便便拍照评估 — 结构化观察·置信度 · 预警由规则引擎判定(E1) · 固定免责声明(FR-K4)",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "text",
+      "id": "kcap213",
+      "x": 1365,
+      "y": 12433,
+      "name": "cap-v2-k4",
+      "fill": "#969799",
+      "content": "V2-K4 拍奶粉罐识别 — 奶粉库匹配·中性呈现 · 未命中补录队列(B4/J6) · 照片可选私有存储(FR-K3)",
       "fontFamily": "Inter",
       "fontSize": 12,
       "fontWeight": "normal"
@@ -25750,6 +28093,135 @@
       "fontFamily": "Inter",
       "fontSize": 12,
       "fontWeight": "normal"
+    },
+    {
+      "type": "text",
+      "id": "spec-r-title",
+      "x": 28,
+      "y": 11548,
+      "name": "spec-r-title",
+      "fill": "#323233",
+      "content": "圆角 & 尺寸（$hd=2）",
+      "fontFamily": "Inter",
+      "fontSize": 14,
+      "fontWeight": "500"
+    },
+    {
+      "type": "text",
+      "id": "caption-8",
+      "x": 28,
+      "y": 11584,
+      "name": "caption-8",
+      "fill": "#969799",
+      "content": "08 设计规范 — 与 @taroify/core/styles/_variables.scss 同名 tokens",
+      "fontFamily": "Inter",
+      "fontSize": 12,
+      "fontWeight": "normal"
+    },
+    {
+      "type": "frame",
+      "id": "spec-radius",
+      "x": 28,
+      "y": 11617,
+      "name": "spec-radius",
+      "gap": 14,
+      "alignItems": "center",
+      "children": [
+        {
+          "type": "rectangle",
+          "cornerRadius": 2,
+          "id": "Rect-45",
+          "name": "spec-r2",
+          "fill": "#F7F8FA",
+          "width": 68,
+          "height": 44,
+          "stroke": "#EBEDF0",
+          "strokeWidth": 1
+        },
+        {
+          "type": "rectangle",
+          "cornerRadius": 4,
+          "id": "Rect-46",
+          "name": "spec-r4",
+          "fill": "#F7F8FA",
+          "width": 68,
+          "height": 44,
+          "stroke": "#EBEDF0",
+          "strokeWidth": 1
+        },
+        {
+          "type": "rectangle",
+          "cornerRadius": 8,
+          "id": "Rect-47",
+          "name": "spec-r8",
+          "fill": "#F7F8FA",
+          "width": 68,
+          "height": 44,
+          "stroke": "#EBEDF0",
+          "strokeWidth": 1
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "spec-rn",
+      "x": 2,
+      "y": 11407,
+      "name": "spec-rn",
+      "layout": "vertical",
+      "gap": 5,
+      "children": [
+        {
+          "type": "text",
+          "id": "spec-rn1",
+          "name": "spec-rn1",
+          "fill": "#969799",
+          "content": "radius-sm 2 · 按钮 / Tag 默认",
+          "fontFamily": "Inter",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "spec-rn2",
+          "name": "spec-rn2",
+          "fill": "#969799",
+          "content": "radius-md 4 · 缩略图 / 提示卡",
+          "fontFamily": "Inter",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "spec-rn3",
+          "name": "spec-rn3",
+          "fill": "#969799",
+          "content": "radius-lg 8 · CellGroup inset 卡片",
+          "fontFamily": "Inter",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "spec-rn4",
+          "name": "spec-rn4",
+          "fill": "#969799",
+          "content": "max 999 · round 按钮 / 搜索框 / 悬浮球",
+          "fontFamily": "Inter",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "spec-rn5",
+          "name": "spec-rn5",
+          "fill": "#969799",
+          "content": "NavBar 46 · Tabbar 50 · Cell 44 · Button 32/44/50 · Popup 圆角 16",
+          "fontFamily": "Inter",
+          "fontSize": 11,
+          "fontWeight": "normal"
+        }
+      ]
     }
   ],
   "variables": {

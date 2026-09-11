@@ -9,6 +9,19 @@
     background: #fff;
     border-radius: 999px;
     font-size: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    Input {
+      flex: 1;
+    }
+  }
+
+  &__scan {
+    flex-shrink: 0;
+    font-size: 24px;
+    color: #ff6b35;
   }
 
   &__label {

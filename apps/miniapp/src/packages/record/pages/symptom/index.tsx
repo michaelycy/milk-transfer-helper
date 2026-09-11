@@ -50,6 +50,19 @@ export default function Symptom() {
     }
   }, [babyId])
 
+  // FR-K4：AI 便便观察回传预填（颜色/性状/备注），保存与预警判定仍走本页链路（FR-E1/E2）
+  useEffect(() => {
+    const handler = (payload: { color?: string | null; texture?: string | null; note?: string }) => {
+      if (payload.color) setColor(payload.color)
+      if (payload.texture) setTexture(payload.texture)
+      if (payload.note) setNote((prev) => prev || `AI 观察：${payload.note}`)
+    }
+    Taro.eventCenter.on('ai:poop-prefill', handler)
+    return () => {
+      Taro.eventCenter.off('ai:poop-prefill', handler)
+    }
+  }, [])
+
   useEffect(() => {
     if (babyId) void load()
   }, [babyId, load])
@@ -112,7 +125,12 @@ export default function Symptom() {
       <View className='symptom__card'>
         <View className='symptom__card-h'>
           <Text className='symptom__card-t'>大便</Text>
-          <Text className='symptom__card-link'>查看图卡 &gt;</Text>
+          <Text
+            className='symptom__card-link'
+            onClick={() => Taro.navigateTo({ url: `/packages/ai/pages/poop/index?babyId=${babyId}` })}
+          >
+            拍照识别 &gt;
+          </Text>
         </View>
         <View className='symptom__row'>
           <Text className='symptom__row-l'>次数</Text>

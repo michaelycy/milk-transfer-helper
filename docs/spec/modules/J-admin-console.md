@@ -6,8 +6,8 @@
 | 所属闭环 | 运营配套（服务 L3 数据底座与 L4 内容闭环，不直接面向用户） |
 | 上游依赖 | B 奶粉库（B1/B2）、C 计划（C2）、G 内容（G1/G2）、H 账户（H4 看板数据） |
 | 下游被依赖 | 无（纯运营侧工具） |
-| 覆盖需求 | FR-J1 ~ FR-J5 |
-| 数据表 | `admins`（新增）；`milk_products` / `plan_templates` / `articles`（RLS 策略扩展，见 03-data-model 与迁移 `20260909120000_admin_console.sql`） |
+| 覆盖需求 | FR-J1 ~ FR-J7 |
+| 数据表 | `admins`（新增）；`milk_products` / `plan_templates` / `articles`（RLS 策略扩展，见 03-data-model 与迁移 `20260909120000_admin_console.sql`）；`ai_configs` / `ai_prompt_templates` / `ai_usage_logs` / `milk_product_submissions` / `ai_providers`（模块 K，见迁移 `20260911120000_ai_assistant.sql` 及其后续增量） |
 | 载体 | `apps/admin`（Vite + React 18 + antd 5 + TanStack Router，独立于小程序构建） |
 | UI 设计文件 | `docs/ui/admin.pen`（规范见 [../ui/ADMIN-DESIGN-GUIDELINES.md](../ui/ADMIN-DESIGN-GUIDELINES.md)，画板对照见 §5） |
 
@@ -57,6 +57,31 @@
   - [ ] `analytics_events` 对客户端保持无 select 权限（03 §2），看板数据只能经该函数获得；
   - [ ] 指标口径与 00-glossary §5 事件清单一致，不另造口径。
 
+### FR-J6 AI 配置管理 `P1`｜依赖：J1、K1｜闭环：L1–L3（AI 能力运营载体）
+- 描述：AI 助手的运营配置页（数据模型见模块 K）：
+  - **场景配置**：四场景（chat/poop/bottle/can）各一行，编辑 provider（自由输入，内置 zhipu/openai 提供默认端点）、模型名、base_url（zhipu/openai 可省略，自定义供应商必填）、temperature、max_tokens、每用户每日限额、启用开关；**表单不出现密钥字段**（密钥仅存后端环境变量，页面展示「密钥由服务端环境变量管理」说明）；
+  - **提示词模板**：按场景维护版本列表（版本号、审核状态、审核时间、启用态）；新建版本（TextArea 编辑 system prompt）默认 `pending`；四场景的**预置草稿同样可编辑**——「依此编辑」以原文案为底稿新建下一版本；审核流转 `pending → approved / rejected`（填写审核备注）；「启用」仅对 approved 版本可用，同场景旧启用版本自动停用；
+  - **补录队列**：`milk_product_submissions` 列表（状态筛选、payload 详情、可选照片查看）；「转奶粉库」按钮预填 FR-J2 新建抽屉并置 `processed`；「忽略」置 `dismissed`；
+  - **用量概览**：近 7 日按场景调用次数/成功率/平均 tokens（读 `ai_usage_logs`）。
+- 验收标准：
+  - [ ] 全部配置读写经 RLS `is_admin()`；非管理员访问该页无数据（沿用 FR-J1 守卫）；
+  - [ ] 密钥字段在页面、请求、存储中均不存在；保存场景配置不触碰密钥；
+  - [ ] `pending / rejected` 版本无法被启用（前端禁用 + 服务端校验双保险）；
+  - [ ] 同场景仅一个启用版本（DB 部分唯一索引强制），启用新版后旧版自动 `enabled=false`；
+  - [ ] 补录「转奶粉库」落地后的 SKU 出现在小程序奶粉库（与 FR-J2 同一通道）。
+
+### FR-J7 模型接入管理 `P1`｜依赖：J1、K6/K8｜闭环：运营配套（模型层载体）
+- 描述：AI 配置页新增「供应商」Tab 与场景配置表单升级：
+  - **供应商注册表**：列表（名称 / base_url / 备注 / 状态）；新建与编辑抽屉（name 唯一、base_url、**API Key 密码态字段：编辑不回显、掩码占位「已配置（****last4）」、留空=不修改、可一键清除**、note）；密钥设置经后端加密落库（`ai_provider_secrets`，AES-256-GCM），清除后回退环境变量密钥；每行「测试」按钮（调 FR-K8 探针，就地展示时延/错误）；停用快捷切换；删除仅对「已停用且无场景引用」开放（有引用时提示先调整场景）；
+  - **场景配置表单升级**：provider 由自由输入改为注册表下拉（仅启用项）；新增备用模型字段（`fallback_provider` 下拉 + `fallback_model`，可空）；表单内「测试」按钮按当前表单值发起探针（无需先保存）；
+  - 用量概览说明补充：看板「调用次数」含 FR-K8 测试调用。
+- 验收标准：
+  - [ ] 注册表 CRUD 全部经 RLS `is_admin()`；密钥编辑不回显（界面仅见掩码），密文经后端加密落库且永不下发浏览器；
+  - [ ] name 重复 / base_url 为空被表单与服务端双重拦截；
+  - [ ] 有场景引用的供应商删除按钮禁用并说明原因；
+  - [ ] 「测试」结果就地展示 ok / latency_ms / error，失败信息不含密钥；
+  - [ ] 场景表单 provider 下拉选项 = 注册表启用项，新增供应商后无需刷新页面即可见。
+
 ## 3. 运营流程要求
 
 - 首个管理员引导：Dashboard 建邮箱用户 → `insert into admins ...`（步骤见迁移文件尾部注释）；
@@ -80,3 +105,5 @@
 | A-05 CSV 导入弹窗 | 拖拽上传、模板下载、逐行错误反馈、导入确认 | J2 |
 | A-06 文章管理 | 状态筛选、列表、编辑抽屉、审核流转按钮 | J3 |
 | A-07 转奶模板 | 列表（版本/默认/启用列）、逐日节奏行编辑器 | J4 |
+| A-08 AI 配置 | Tabs（场景配置/提示词模板/补录队列/用量概览）、场景编辑抽屉、提示词版本列表与审核流转、补录列表 | J6 |
+| A-09 模型接入管理 | 供应商 Tab（注册表列表/编辑抽屉/测试按钮）、场景表单升级态（provider 下拉 + 备用模型 + 测试） | J7 |

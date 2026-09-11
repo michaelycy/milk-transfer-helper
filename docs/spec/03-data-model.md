@@ -21,6 +21,14 @@
 | `symptom_logs` | 每日症状打卡 | baby_id, log_date（**喂养日**，日切点见 00-glossary §2）, stool_count/color/texture, rash, vomit, bloating, crying_level, sleep_quality, note；unique(baby_id, log_date) | D3、E1 |
 | `alerts` | 预警留痕 | baby_id, plan_id?, level, rule_code, payload jsonb（含 skipped 降级原因）, status(new/acked/resolved), acked_at, resolved_at | E1/E2 |
 | `analytics_events` | 埋点事件（FR-H4，指标唯一数据源） | user_id, name, props jsonb, occurred_at；索引 (name, occurred_at)；客户端仅可插入本人事件（无 select 权限，看板走服务端） | H4 |
+| `ai_configs` | AI 场景配置（FR-K1/K7，运营维护，客户端不可直读） | scene（chat/poop/bottle/can，唯一）, provider, model, base_url?（场景级端点覆盖）, temperature, max_tokens, daily_limit_per_user, enabled, **fallback_provider?** **fallback_model?**（备用模型，K7）；**无密钥字段**（密钥仅后端环境变量）；updated_at 触发器 | K1/K7、J6/J7 |
+| `ai_prompt_templates` | AI 提示词模板（版本化，审核流） | scene, version, system_prompt, review_status(pending/approved/rejected), review_note?, reviewed_at?, enabled；部分唯一索引：同场景仅一个 enabled；**服务端仅执行 approved 且 enabled 的版本**（NFR-1） | K1、J6 |
+| `ai_usage_logs` | AI 调用记账 | user_id, scene, success, tokens, **fallback_used**（默认 false，K7）, created_at；索引 (scene, created_at)；客户端无任何权限（后端 service_role 写入，管理端只读）；含 FR-K8 测试调用（J7 口径说明） | K1/K7/K8、J6/J7 |
+| `ai_chat_messages` | 问答会话历史（FR-K5） | user_id, baby_id?, role(user/assistant), content, scene, created_at；own RLS（查/删本人，insert 本人） | K5 |
+| `ai_analyses` | 视觉分析结果（FR-K2/K3/K4，**不存照片**） | user_id, baby_id?, scene, result jsonb, confidence, created_at；own RLS（查/删本人） | K2–K4 |
+| `ai_providers` | 供应商注册表（FR-K6，配置驱动接入的事实源） | name unique, base_url, note, enabled；本表不存密钥（见 ai_provider_secrets）；种子 zhipu（GLM）/deepseek/openai；删除仅限「停用且无场景引用」（密文级联清理） | K6、J7 |
+| `ai_provider_secrets` | 供应商密钥（FR-K6，界面设置、加密落库） | provider_name unique, key_ciphertext（AES-256-GCM，主密钥在环境变量）, key_last4（掩码展示用）, updated_at；**无任何客户端策略/授权**（仅后端 service_role 读写，密文不下发浏览器）；供应商删除级联清理 | K6、J7 |
+| `milk_product_submissions` | 识别/扫码未命中补录队列（FR-K3、FR-B4） | user_id, source(ai_can/barcode), payload jsonb, image_path?（私有桶，用户勾选才上传）, status(pending/processed/dismissed), processed_at?；own insert/select；admin 全量读 + 状态流转 | K3、B4、J6 |
 | `users` / `articles` / `favorites` | 保留现有 | users.openid 启用回填（H1）；articles 增加 review_status（内容审核状态，G1） | H1、G1 |
 
 ## 2. 关键设计约束

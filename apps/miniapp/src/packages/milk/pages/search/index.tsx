@@ -17,7 +17,8 @@ const PROTEINS: Array<[string, string]> = [
 export default function MilkSearch() {
   const router = useRouter()
   const pickMode = router.params.mode === 'pick'
-  const [keyword, setKeyword] = useState('')
+  // FR-K3 拍罐识别带品牌词跳转：以识别品牌预填搜索
+  const [keyword, setKeyword] = useState(router.params.keyword ?? '')
   const [stage, setStage] = useState<number | null>(null)
   const [protein, setProtein] = useState<string | null>(null)
   const [products, setProducts] = useState<MilkProductRow[]>([])
@@ -50,6 +51,9 @@ export default function MilkSearch() {
     <View className='page'>
       <View className='page__search'>
         <Input placeholder='搜索品牌或产品名' value={keyword} onInput={(e) => setKeyword(e.detail.value)} />
+        <Text className='page__scan' onClick={() => Taro.navigateTo({ url: '/packages/ai/pages/can/index' })}>
+          拍罐识别
+        </Text>
       </View>
 
       <Text className='page__label'>段位</Text>

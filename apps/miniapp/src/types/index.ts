@@ -49,3 +49,60 @@ export interface SymptomDraft {
   sleepQuality: 'normal' | 'poor'
   note: string
 }
+
+/** AI 场景状态（FR-K1：入口前置判断，避免无效调用） */
+export interface AiSceneStatus {
+  scene: import('./database').AiScene
+  enabled: boolean
+  daily_limit: number
+  used_today: number
+  remaining: number
+}
+
+/** 便便结构化观察（FR-K4，固定 schema；预警级别由 FR-E1 规则引擎判定） */
+export interface PoopAnalysis {
+  color: string | null
+  texture: string | null
+  abnormal_suspect: boolean
+  note: string
+}
+
+/** 奶瓶识别（FR-K2） */
+export interface BottleAnalysis {
+  volume_ml: number
+}
+
+/** 奶粉罐识别（FR-K3） */
+export interface CanAnalysis {
+  brand: string
+  series: string | null
+  stage: number | null
+}
+
+/** /v1/ai/analyze 统一返回 */
+export interface AiAnalyzeResult {
+  ok: boolean
+  degraded: boolean
+  reason?: string
+  message?: string
+  confidence?: number
+  analysis?: {
+    confidence: number
+    volume_ml?: number
+    color?: string | null
+    texture?: string | null
+    abnormal_suspect?: boolean
+    note?: string
+    brand?: string
+    series?: string | null
+    stage?: number | null
+  }
+  matched?: MilkProductRow[]
+  submission_id?: string
+}
+
+/** 会话消息（页面态） */
+export interface AiChatMessage {
+  role: 'user' | 'assistant'
+  content: string
+}

@@ -22,7 +22,12 @@ import type { UploadProps } from 'antd';
 import { useMemo, useState } from 'react';
 import { PageHeader } from '../../components/page-header';
 import { MilkService } from '../../services/milk.service';
-import { PROTEIN_TYPE_LABEL, PROTEIN_TYPE_OPTIONS, type MilkProductRow, type MilkStatus } from '../../types';
+import {
+  PROTEIN_TYPE_LABEL,
+  PROTEIN_TYPE_OPTIONS,
+  type MilkProductRow,
+  type MilkStatus,
+} from '../../types';
 import { downloadMilkCsvTemplate, parseMilkCsv } from '../../utils/csv';
 
 export const Route = createFileRoute('/_auth/milk')({

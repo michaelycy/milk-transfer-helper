@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthIndexRouteImport } from './routes/_auth/index'
+import { Route as AuthAiRouteImport } from './routes/_auth/ai'
 import { Route as AuthArticlesRouteImport } from './routes/_auth/articles'
 import { Route as AuthMilkRouteImport } from './routes/_auth/milk'
 import { Route as AuthTemplatesRouteImport } from './routes/_auth/templates'
@@ -28,6 +29,11 @@ const LoginRoute = LoginRouteImport.update({
 const AuthIndexRoute = AuthIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthAiRoute = AuthAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthArticlesRoute = AuthArticlesRouteImport.update({
@@ -49,12 +55,14 @@ const AuthTemplatesRoute = AuthTemplatesRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AuthIndexRoute
   '/login': typeof LoginRoute
+  '/ai': typeof AuthAiRoute
   '/articles': typeof AuthArticlesRoute
   '/milk': typeof AuthMilkRoute
   '/templates': typeof AuthTemplatesRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
+  '/ai': typeof AuthAiRoute
   '/articles': typeof AuthArticlesRoute
   '/milk': typeof AuthMilkRoute
   '/templates': typeof AuthTemplatesRoute
@@ -64,6 +72,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
+  '/_auth/ai': typeof AuthAiRoute
   '/_auth/articles': typeof AuthArticlesRoute
   '/_auth/milk': typeof AuthMilkRoute
   '/_auth/templates': typeof AuthTemplatesRoute
@@ -71,13 +80,14 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/articles' | '/milk' | '/templates'
+  fullPaths: '/' | '/login' | '/ai' | '/articles' | '/milk' | '/templates'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/articles' | '/milk' | '/templates' | '/'
+  to: '/login' | '/ai' | '/articles' | '/milk' | '/templates' | '/'
   id:
     | '__root__'
     | '/_auth'
     | '/login'
+    | '/_auth/ai'
     | '/_auth/articles'
     | '/_auth/milk'
     | '/_auth/templates'
@@ -112,6 +122,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/ai': {
+      id: '/_auth/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AuthAiRouteImport
+      parentRoute: typeof AuthRoute
+    }
     '/_auth/articles': {
       id: '/_auth/articles'
       path: '/articles'
@@ -137,6 +154,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthRouteChildren {
+  AuthAiRoute: typeof AuthAiRoute
   AuthArticlesRoute: typeof AuthArticlesRoute
   AuthMilkRoute: typeof AuthMilkRoute
   AuthTemplatesRoute: typeof AuthTemplatesRoute
@@ -144,6 +162,7 @@ interface AuthRouteChildren {
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthAiRoute: AuthAiRoute,
   AuthArticlesRoute: AuthArticlesRoute,
   AuthMilkRoute: AuthMilkRoute,
   AuthTemplatesRoute: AuthTemplatesRoute,

@@ -165,6 +165,17 @@ async function authPost(path: string, body: Record<string, unknown>): Promise<Tr
   return unwrapAuth(await transport(path, body))
 }
 
+/**
+ * AI 网关调用（模块 K，FR-K1）：/v1/ai/*，返回后端信封 {status, data, error}。
+ * 与数据透传同一条传输通道（用户 JWT 随行，服务端完成配额/护栏/降级）。
+ */
+export async function aiRequest(
+  path: string,
+  body: Record<string, unknown>,
+): Promise<TransportResult> {
+  return transport(path, body)
+}
+
 function toApiError(body: unknown, fallbackStatus: number): ApiError {
   if (body && typeof body === 'object') {
     const raw = body as Record<string, unknown>

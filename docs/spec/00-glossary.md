@@ -29,6 +29,15 @@
 | 喂养日 / 顿次 / 同顿匹配 | 见 §2 时间语义 | |
 | 奶量参考 | 按月龄分档的每日总奶量参考区间 | FR-F3，配置化 |
 | 复盘报告 | 计划终态生成的数据总结 | FR-F2，可作为就医沟通材料 |
+| AI 场景 | AI 能力的独立配置单元：`chat` 问答 / `poop` 便便 / `bottle` 奶瓶 / `can` 奶粉罐 | `ai_configs.scene`，场景间模型/提示词/配额互不影响（FR-K1） |
+| AI 网关 | 后端 `app/api/ai.py` 的统一模型调用层 | 密钥唯一驻留地（后端环境变量）；配额、护栏、降级都在此层（FR-K1） |
+| 提示词版本 | 某场景 system prompt 的一次审核单元 | `pending → approved / rejected`；仅 approved 且 enabled 生效（FR-K1/J6） |
+| 结构化观察 | 视觉模型输出的固定 schema 字段（颜色/性状/疑似异常/置信度） | AI 不产出预警级别，级别由 FR-E1 规则引擎裁决（FR-K4） |
+| 分析即弃 | 拍照默认仅 base64 即时分析、完成即弃不落库 | NFR-2 照片最小化；显式勾选保留仅限 FR-K3 补录 |
+| 降级文案 | 模型不可用/超限/出域时的固定引导话术 | 禁止抛裸错误；识别类降级必须回退手填路径（FR-K1） |
+| 供应商注册表 | `ai_providers`：供应商名称与端点的事实源，管理端维护 | 密钥不走注册表，按环境变量约定读取（FR-K6） |
+| 故障转移 | 主模型调用失败时以场景备用模型自动重试一次 | 仅一次重试；不做自动路由/加权 AB（FR-K7） |
+| 密钥加密落库 | 供应商 API Key 以 AES-256-GCM 密文存储（ai_provider_secrets） | 主密钥在环境变量；编辑不回显（仅末 4 位掩码），明文不出后端内存（FR-K6/NFR-2） |
 
 ## 2. 时间与日历语义（最容易出错的一层）
 
@@ -74,7 +83,7 @@
 | 问卷完成率 | `questionnaire_completed / questionnaire_started` | 同名事件 |
 | 推荐采纳率 | 问卷完成后 7 日内 `product_viewed(建议方向)` 或 `plan_created` 的用户占比 | `questionnaire_completed`、`product_viewed`、`plan_created` |
 
-**事件清单**（`analytics_events.name`）：`app_launch(scene, first)`、`plan_created`、`plan_completed`、`plan_terminated`、`plan_rollback_triggered`、`feed_recorded(source, dur_ms)`、`symptom_logged`、`alert_shown(level, rule_code)`、`alert_acked`、`article_read`、`product_viewed`、`product_selected`、`questionnaire_started`、`questionnaire_completed`、`share_card_created`。
+**事件清单**（`analytics_events.name`）：`app_launch(scene, first)`、`plan_created`、`plan_completed`、`plan_terminated`、`plan_rollback_triggered`、`feed_recorded(source, dur_ms)`、`symptom_logged`、`alert_shown(level, rule_code)`、`alert_acked`、`article_read`、`product_viewed`、`product_selected`、`questionnaire_started`、`questionnaire_completed`、`share_card_created`、`ai_used(scene, ok)`。
 
 **规则**：新增指标先补本表与事件清单，再开发；事件属性变更视同口径变更，走 README 变更记录。
 
@@ -83,3 +92,5 @@
 | 版本 | 日期 | 说明 |
 |---|---|---|
 | v2.0-draft3 | 2026-09-09 | 评审修复中建立：收拢领域术语、时间语义（喂养日/顿次/同顿匹配）、状态机（含计划完成判定与预警生命周期）、数据语义约定、指标口径与埋点事件清单 |
+| v2.0-draft5 | 2026-09-11 | 新增模块 K 术语：AI 场景/AI 网关/提示词版本/结构化观察/分析即弃/降级文案；事件清单新增 `ai_used(scene, ok)` |
+| v2.0-draft6 | 2026-09-11 | 新增术语：供应商注册表、故障转移（模块 K 模型接入管理扩展） |

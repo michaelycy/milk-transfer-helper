@@ -19,6 +19,7 @@ export type AnalyticsEvent =
   | 'alert_acked'
   | 'share_card_created'
   | 'baby_created'
+  | 'ai_used'
 
 export function track(name: AnalyticsEvent, props: Record<string, unknown> = {}): void {
   void (async () => {

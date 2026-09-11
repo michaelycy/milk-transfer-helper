@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api import ai as ai_api
 from app.api import auth as auth_api
 from app.api import data as data_api
 
@@ -16,6 +17,7 @@ app.add_middleware(
 
 app.include_router(auth_api.router)
 app.include_router(data_api.router)
+app.include_router(ai_api.router)
 
 
 @app.get("/healthz")

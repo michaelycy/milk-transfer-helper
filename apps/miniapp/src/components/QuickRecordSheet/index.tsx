@@ -161,6 +161,15 @@ export function QuickRecordSheet({ open, plan, onClose, onSaved, onOpenFullForm 
         >
           <Text>{submitting ? '保存中...' : '保存这笔记录'}</Text>
         </View>
+        <Text
+          className='qrs__full-link'
+          onClick={() => {
+            onClose()
+            Taro.navigateTo({ url: '/packages/ai/pages/bottle/index' })
+          }}
+        >
+          📷 拍奶瓶自动识别奶量
+        </Text>
         {onOpenFullForm && (
           <Text className='qrs__full-link' onClick={onOpenFullForm}>
             需要更多信息？填写完整表单
