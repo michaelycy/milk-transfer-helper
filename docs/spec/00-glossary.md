@@ -38,6 +38,15 @@
 | 供应商注册表 | `ai_providers`：供应商名称与端点的事实源，管理端维护 | 密钥不走注册表，按环境变量约定读取（FR-K6） |
 | 故障转移 | 主模型调用失败时以场景备用模型自动重试一次 | 仅一次重试；不做自动路由/加权 AB（FR-K7） |
 | 密钥加密落库 | 供应商 API Key 以 AES-256-GCM 密文存储（ai_provider_secrets） | 主密钥在环境变量；编辑不回显（仅末 4 位掩码），明文不出后端内存（FR-K6/NFR-2） |
+| 管理员角色 | 管理后台固定三角色：`super_admin`（超管）/ `operator`（运营）/ `analyst`（只读分析） | `admins.role`；角色→权限点矩阵固定，不做自定义角色（FR-J8） |
+| 权限点 | 管理后台最小授权单元 | `dashboard:read / milk:write / article:write / template:write / ai:config（场景与提示词）/ ai:key（供应商密钥）/ user:read / admin:manage / audit:read`；DB 端 `has_permission()` 统一裁决，默认拒绝（FR-J8） |
+| 家庭共享 | 多个正式微信账号围绕同一宝宝档案协作（共同记录/查看） | 成员关系表 `baby_members`；RLS 由 own-policy 扩展为成员判定（FR-H3） |
+| 成员角色 | `owner`（档案创建者，每宝宝唯一）/ `editor`（可写）/ `viewer`（只读） | 仅 owner 可管理成员；每宝宝 active 成员 ≤ 5；所有权转移不做（FR-H3） |
+| 邀请 | owner 生成的一次性入群凭证（高熵短码，24h 有效，验证失败限速） | 被邀请人须为正式登录账号（游客不可参与）；接受/过期/撤销后立即失效；状态机见 §3（FR-H3） |
+| 账号注销 | 级联删除 auth 账号与全部业务数据 | 区别于「退出登录」（仅清本机会话）；FR-H2 |
+| 隐私同意留痕 | 登录勾选、建档、绑定手机号等同意行为的记录 | `privacy_consents`：类型 + 协议版本 + 时间，只追加（FR-H2/H5/H6/H7） |
+| 手机号绑定 | 微信快捷授权绑定手机号（账号安全用途，非登录方式切换） | 加密存储 + 哈希指纹唯一，展示一律脱敏（`138****5678`）；不做营销触达（FR-H7） |
+| 双裁决（应用层优先） | 业务权限由后端应用层为主裁决点，数据库 RLS 为过渡期纵深防御，两套口径一致 | NFR-7：C 端流量唯一经过后端 `/v1`，管理端新能力一律走 `/admin` API；迁移自建数据库后可关闭 RLS 而行为不变（FR-H3/J8） |
 
 ## 2. 时间与日历语义（最容易出错的一层）
 
@@ -58,6 +67,9 @@
 | 文章 | `draft / reviewing / approved / offline` | 仅 `approved` 对客户端可见 |
 | 奶粉 SKU | `on / off` | `off` 不再出现在选择器，历史记录引用不受影响 |
 | 预警级别 | `red / yellow / green` | 呈现为红/黄/绿 + 图标 + 文字 |
+| 家庭邀请 | `pending / accepted / expired / revoked` | 24h 过期；接受幂等；撤销后短码立即失效（FR-H3） |
+| 管理员账号 | `active / disabled` | `disabled` 即刻失去全部后台访问（判定随每次请求）；任意时刻 ≥1 个 active 的 `super_admin`（触发器强制，FR-J8/J9） |
+| 管理员角色 | `super_admin / operator / analyst` | 固定枚举；存量白名单行迁移默认 `super_admin`（FR-J8） |
 
 ## 4. 数据语义约定
 
@@ -67,6 +79,9 @@
 - **方向性**：新/旧奶只由计划方向定义（§1）；记录不重复存储"新旧"标记，由 `plan_id + product_id + 当日计划` 推导（FR-D5）。
 - **数据隔离**：所有用户表 `user_id uuid not null default auth.uid()` + own-policy RLS（03-data-model §2）。
 - **中性呈现**：奶粉数据无推荐语、无排名、无优劣结论（产品原则 4 / NFR-1）。
+- **成员可见性**：家庭共享数据的读取 = owner 或成员、写入 = owner/editor；判定统一收敛到数据库端成员判定函数，策略变更迁移必须附带越权回归用例（FR-H3）。
+- **只追加记录**：`admin_audit_logs`、`privacy_consents` 只可写入与受控读取，无 update/delete 授权；审计日志保留 ≥ 180 天（FR-J11/H2）。
+- **敏感个人信息最小出域**：完整手机号不回传客户端（展示一律脱敏）；管理端用户查询不输出明文 openid（FR-H7/J10）。
 
 ## 5. 指标口径（唯一来源；采集依赖 FR-H4）
 
@@ -83,7 +98,7 @@
 | 问卷完成率 | `questionnaire_completed / questionnaire_started` | 同名事件 |
 | 推荐采纳率 | 问卷完成后 7 日内 `product_viewed(建议方向)` 或 `plan_created` 的用户占比 | `questionnaire_completed`、`product_viewed`、`plan_created` |
 
-**事件清单**（`analytics_events.name`）：`app_launch(scene, first)`、`plan_created`、`plan_completed`、`plan_terminated`、`plan_rollback_triggered`、`feed_recorded(source, dur_ms)`、`symptom_logged`、`alert_shown(level, rule_code)`、`alert_acked`、`article_read`、`product_viewed`、`product_selected`、`questionnaire_started`、`questionnaire_completed`、`share_card_created`、`ai_used(scene, ok)`。
+**事件清单**（`analytics_events.name`）：`app_launch(scene, first)`、`plan_created`、`plan_completed`、`plan_terminated`、`plan_rollback_triggered`、`feed_recorded(source, dur_ms)`、`symptom_logged`、`alert_shown(level, rule_code)`、`alert_acked`、`article_read`、`product_viewed`、`product_selected`、`questionnaire_started`、`questionnaire_completed`、`share_card_created`、`ai_used(scene, ok)`、`profile_updated`、`family_invite_created`、`family_invite_accepted`。
 
 **规则**：新增指标先补本表与事件清单，再开发；事件属性变更视同口径变更，走 README 变更记录。
 
@@ -94,3 +109,5 @@
 | v2.0-draft3 | 2026-09-09 | 评审修复中建立：收拢领域术语、时间语义（喂养日/顿次/同顿匹配）、状态机（含计划完成判定与预警生命周期）、数据语义约定、指标口径与埋点事件清单 |
 | v2.0-draft5 | 2026-09-11 | 新增模块 K 术语：AI 场景/AI 网关/提示词版本/结构化观察/分析即弃/降级文案；事件清单新增 `ai_used(scene, ok)` |
 | v2.0-draft6 | 2026-09-11 | 新增术语：供应商注册表、故障转移（模块 K 模型接入管理扩展） |
+| v2.0-draft8 | 2026-09-12 | 新增用户与权限术语：管理员角色/权限点、家庭共享/成员角色/邀请、账号注销/隐私同意留痕/手机号绑定；§3 新增家庭邀请与管理员账号状态机；§4 新增成员可见性/只追加/最小出域约定；§5 事件清单增补 `profile_updated`、`family_invite_created`、`family_invite_accepted` |
+| v2.0-draft9 | 2026-09-12 | 新增术语「双裁决（应用层优先）」：Supabase 定位为过渡形态、后期迁移自建数据库（NFR-7），权限主裁决收敛到后端应用层，RLS 降级为纵深防御 |

@@ -6,7 +6,7 @@
 | 上游文档 | [README.md](README.md) |
 | 关联 | `supabase/migrations/20240523000000_init_schema.sql`（基线）、`.trae/documents/baby-milk-transfer-tech-arch.md`（DDL 细节） |
 
-> 本文档只定义**表级需求与约束**（What），DDL 细节归技术方案（How）。所有用户表遵循：`user_id uuid not null default auth.uid()` + own-policy RLS + 最小 grant（沿用基线迁移的既有模式）。
+> 本文档只定义**表级需求与约束**（What），DDL 细节归技术方案（How）。所有用户表遵循：`user_id uuid not null default auth.uid()` + own-policy RLS + 最小 grant（沿用基线迁移的既有模式）。**v2.0-draft9 起（NFR-7）**：该模式仅适用于过渡期存量；新增表遵循 §2.12 可移植性约束——外键指向 `public.users`、无 `auth.*` 引用、权限主裁决在后端应用层（RLS 仅为纵深防御）。
 
 ## 1. 表需求总览
 
@@ -29,7 +29,13 @@
 | `ai_providers` | 供应商注册表（FR-K6，配置驱动接入的事实源） | name unique, base_url, note, enabled；本表不存密钥（见 ai_provider_secrets）；种子 zhipu（GLM）/deepseek/openai；删除仅限「停用且无场景引用」（密文级联清理） | K6、J7 |
 | `ai_provider_secrets` | 供应商密钥（FR-K6，界面设置、加密落库） | provider_name unique, key_ciphertext（AES-256-GCM，主密钥在环境变量）, key_last4（掩码展示用）, updated_at；**无任何客户端策略/授权**（仅后端 service_role 读写，密文不下发浏览器）；供应商删除级联清理 | K6、J7 |
 | `milk_product_submissions` | 识别/扫码未命中补录队列（FR-K3、FR-B4） | user_id, source(ai_can/barcode), payload jsonb, image_path?（私有桶，用户勾选才上传）, status(pending/processed/dismissed), processed_at?；own insert/select；admin 全量读 + 状态流转 | K3、B4、J6 |
-| `users` / `articles` / `favorites` | 保留现有 | users.openid 启用回填（H1）；articles 增加 review_status（内容审核状态，G1） | H1、G1 |
+| `users` / `articles` / `favorites` | 保留现有 | users：openid 启用回填（H1）、nickname/avatar 激活为真实资料（H6）、phone 以「哈希指纹 + 密文」双字段存储（指纹承担唯一约束，展示一律脱敏，H7）；articles 增加 review_status（内容审核状态，G1） | H1、G1、H6、H7 |
+| `baby_members` | 家庭共享成员关系（H3） | baby_id, user_id, role(owner/editor/viewer), status(active/removed), invited_by?；unique(baby_id, user_id)；每宝宝 owner 唯一（部分唯一索引）、active 成员 ≤ 5（触发器强制）；存量 babies 由迁移自动补 owner 行 | H3 |
+| `family_invites` | 家庭共享邀请凭证（H3） | baby_id, role(editor/viewer), invite_code（唯一高熵短码，**一次性**：接受即失效）, invited_by, accepted_by?, status(pending/accepted/expired/revoked), expires_at（24h）；创建/撤销仅 owner 可为（RLS 判定）；验证失败限速由服务端承担 | H3 |
+| `privacy_consents` | 隐私同意留痕（只追加） | user_id, consent_type(login/baby_profile/phone), policy_version, consented_at；仅 insert（own）+ 可查本人记录，无改/删授权 | H2/H5/H6/H7 |
+| `admins`（扩展） | 管理员白名单升级为角色化（J8） | role(super_admin/operator/analyst，存量行迁移默认 super_admin), status(active/disabled)；触发器强制「任意时刻 ≥1 个 active super_admin」「禁止自我停用/降级」；RLS 维持仅 self 可读（不可枚举他人） | J8/J9 |
+| `admin_audit_logs` | 管理端操作审计（只追加，J11） | actor_user_id, action, target_type?, target_id?, detail jsonb, ip?, created_at；写入仅 DB 触发器与后端 service_role，读取需 `audit:read` 权限点；无 update/delete 授权；保留 ≥ 180 天，到期清理由维护脚本处理 | J11 |
+| `api_logs` | API 运行日志（只追加，J12；技术排障，与 J11 合规审计分表） | request_id, method, path, status, level(info/warn/error), duration_ms, user_id?（→public.users，置空不级联）, message?；中间件异步写入（service_role），无任何客户端策略/授权；保留默认 30 天（API_LOG_RETENTION_DAYS）定时清理；管理端经后端 `/v1/admin/logs` 只读查询；规范见 05-api-guidelines §4 | J12 |
 
 ## 2. 关键设计约束
 
@@ -41,6 +47,10 @@
 6. **"日"的统一边界**：全部日级字段与聚合（`start_date`、`log_date`、图表、规则评估、复盘）按**喂养日**计算，日切点默认 04:00（定义见 [00-glossary.md](00-glossary.md) §2），日切点为配置项。
 7. **派生字段不落库**：`current_day` 等可由 `start_date` + 当前喂养日推导的值不存列（派生优先原则，00-glossary §4）。
 8. **预警生命周期**：`acked_at`/`resolved_at` 随状态机写入（new→acked→resolved，resolved 语义见 00-glossary §3）；预警响应率口径依赖 `acked_at`。
+9. **成员可见性判定（H3）**：家庭共享相关 RLS 统一经数据库端成员判定函数（security definer）实现，业务表读策略 = own OR 成员、写策略 = owner/editor；成员各自的个人数据（收藏/埋点/AI 会话）仍为 own-policy 不共享；跨成员展示记录人身份仅经专用只读通道披露昵称/头像最小字段，不放宽 `users` 表整体读权限；存量 babies 由迁移自动补 owner 成员行，迁移须附越权回归自测用例。
+10. **权限判定函数化（J8）**：管理端 RLS 与后端接口统一走 `has_permission(action)`（security definer，读 `admins.role` + 固定角色权限矩阵）；`is_admin()` 保留为兼容包装，新增策略/接口不得再直调 `is_admin()`。
+11. **只追加与最小出域（J11/H7）**：`admin_audit_logs` / `privacy_consents` 无 update/delete 授权；手机号完整值不出后端（客户端只见脱敏展示），管理端查询不输出明文 openid。
+12. **可移植性（NFR-7，v2.0-draft9）**：后期迁移自建数据库，Supabase 为过渡形态。新增表一律普通 Postgres DDL：不引用 `auth.*`、不用 Supabase 专有能力，新增用户外键一律指向 `public.users`（用户主数据、身份事实源）；业务权限**主裁决在后端应用层**（双裁决口径一致），RLS 降级为纵深防御、可整体关闭而不改变行为；既有 `auth.users` 外键存量保持不动，迁移窗口统一处理。
 
 ## 3. 迁移策略（records → feed_records）
 

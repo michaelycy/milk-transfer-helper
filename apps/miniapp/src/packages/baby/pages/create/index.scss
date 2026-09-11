@@ -1,4 +1,6 @@
 .baby-create {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background: #f7f8fa;
 
@@ -6,7 +8,7 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 24px 40px 0;
+    padding: 16px 40px 0;
   }
 
   &__logo-ic {
@@ -23,24 +25,26 @@
   &__logo-name {
     font-size: 30px;
     font-weight: 600;
+    color: #323233;
   }
 
   &__h {
     display: block;
-    padding: 40px 40px 0;
+    padding: 32px 40px 0;
     font-size: 44px;
     font-weight: 600;
+    color: #323233;
   }
 
   &__sub {
     display: block;
-    padding: 12px 40px 0;
+    padding: 28px 40px 0;
     font-size: 26px;
     color: #969799;
   }
 
   &__form {
-    margin: 32px 40px;
+    margin: 28px 40px 0;
     background: #fff;
     border: 1px solid #ebedf0;
     border-radius: 16px;
@@ -50,7 +54,8 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 28px;
+    min-height: 100px;
+    padding: 0 28px;
   }
 
   &__label {
@@ -59,7 +64,20 @@
     color: #969799;
   }
 
+  &__input {
+    flex: 1;
+    font-size: 28px;
+    color: #323233;
+  }
+
   &__picker {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__picker-v {
     font-size: 28px;
     color: #323233;
 
@@ -68,12 +86,17 @@
     }
   }
 
+  &__chev {
+    font-size: 32px;
+    color: #c8c9cc;
+  }
+
   &__gender {
     padding: 8px 28px;
     font-size: 24px;
     border: 2px solid #ebedf0;
     border-radius: 999px;
-    color: #646566;
+    color: #969799;
 
     &.is-on {
       background: #fff1ea;
@@ -82,26 +105,44 @@
     }
   }
 
+  &__age {
+    margin-left: auto;
+    font-size: 22px;
+    color: #c8c9cc;
+  }
+
   &__hair {
     height: 1px;
     background: #f2f3f5;
   }
 
-  &__age {
-    display: block;
-    padding: 0 40px;
+  &__agewrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 40px 0;
+  }
+
+  &__age-ic {
+    font-size: 28px;
+    color: #c8c9cc;
+  }
+
+  &__age-t {
+    flex: 1;
     font-size: 22px;
+    line-height: 1.6;
     color: #c8c9cc;
   }
 
   &__privacy {
-    margin: 24px 40px;
-    padding: 24px;
+    margin: 28px 40px 0;
+    padding: 24px 28px;
     background: #f7f8fa;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 16px;
   }
 
   &__privacy-row {
@@ -138,7 +179,11 @@
     color: #969799;
   }
 
+  // 画板 v13-done：按钮沉底，留出底部安全区
   &__footer {
-    padding: 0 40px;
+    margin-top: auto;
+    padding: 32px 40px;
+    padding-bottom: calc(32px + constant(safe-area-inset-bottom));
+    padding-bottom: calc(32px + env(safe-area-inset-bottom));
   }
 }

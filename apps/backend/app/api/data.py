@@ -1,12 +1,17 @@
-"""数据接口：白名单表透传 PostgREST（用户 JWT 随行，RLS 生效）。"""
+"""数据网关：白名单表透传 PostgREST（用户 JWT 随行，RLS 生效）。
+
+路径契约（docs/spec/05-api-guidelines.md §2）：表名进路径保证访问日志可区分业务——
+`POST /v1/db/tables/{table}/query|insert|update|delete`、`POST /v1/db/rpc/{fn_name}`。
+"""
 from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel, Field
 
+from app.core.deps import require_jwt
 from app.core.supabase import postgrest
 
-router = APIRouter(prefix="/v1", tags=["data"])
+router = APIRouter(prefix="/v1/db", tags=["data"])
 
 # 表白名单：read / insert / update / delete 四类开关（ articles 等运营表对客户端只读 ）
 TABLE_POLICY: dict[str, dict[str, bool]] = {
@@ -39,7 +44,6 @@ class OrderItem(BaseModel):
 
 
 class QueryBody(BaseModel):
-    table: str
     select: str = "*"
     filters: list[Filter] = []
     order: list[OrderItem] = []
@@ -98,10 +102,12 @@ def _envelope(
     return {"status": status, "data": data, "error": error, "count": count}
 
 
-@router.post("/query")
-async def query(body: QueryBody, jwt: Annotated[str | None, Header(alias="authorization")] = None) -> dict:
-    _require_table(body.table, "read")
-    token = _require_jwt(jwt)
+@router.post("/tables/{table}/query")
+async def query(
+    table: str, body: QueryBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
+) -> dict:
+    _require_table(table, "read")
+    token = require_jwt(jwt)
     params = {"select": body.select, **_filter_params(body.filters)}
     order = _order_param(body.order)
     if order:
@@ -119,7 +125,7 @@ async def query(body: QueryBody, jwt: Annotated[str | None, Header(alias="author
         else "application/json"
     )
     res = await postgrest(
-        "GET", f"/{body.table}", jwt=token, params=params, prefer=prefer, accept=accept
+        "GET", f"/{table}", jwt=token, params=params, prefer=prefer, accept=accept
     )
 
     error = None
@@ -133,10 +139,12 @@ async def query(body: QueryBody, jwt: Annotated[str | None, Header(alias="author
     return _envelope(res.status, data, error, count)
 
 
-@router.post("/insert")
-async def insert(body: MutationBody, jwt: Annotated[str | None, Header(alias="authorization")] = None) -> dict:
-    _require_table(body.table, "insert")
-    token = _require_jwt(jwt)
+@router.post("/tables/{table}/insert")
+async def insert(
+    table: str, body: MutationBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
+) -> dict:
+    _require_table(table, "insert")
+    token = require_jwt(jwt)
     params = {"select": body.select}
     if body.on_conflict:
         params["on_conflict"] = body.on_conflict
@@ -147,7 +155,7 @@ async def insert(body: MutationBody, jwt: Annotated[str | None, Header(alias="au
     )
     res = await postgrest(
         "POST",
-        f"/{body.table}",
+        f"/{table}",
         jwt=token,
         params=params,
         json_body=body.values,
@@ -166,15 +174,17 @@ async def insert(body: MutationBody, jwt: Annotated[str | None, Header(alias="au
     return _envelope(res.status, data, error)
 
 
-@router.post("/update")
-async def update(body: MutationBody, jwt: Annotated[str | None, Header(alias="authorization")] = None) -> dict:
-    _require_table(body.table, "update")
-    token = _require_jwt(jwt)
+@router.post("/tables/{table}/update")
+async def update(
+    table: str, body: MutationBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
+) -> dict:
+    _require_table(table, "update")
+    token = require_jwt(jwt)
     if not body.filters:
         raise HTTPException(status_code=400, detail="update 必须携带过滤条件")
     res = await postgrest(
         "PATCH",
-        f"/{body.table}",
+        f"/{table}",
         jwt=token,
         params=_filter_params(body.filters),
         json_body=body.values,
@@ -188,16 +198,16 @@ async def update(body: MutationBody, jwt: Annotated[str | None, Header(alias="au
     return _envelope(res.status, data, error)
 
 
-@router.post("/delete")
+@router.post("/tables/{table}/delete")
 async def delete_rows(
-    body: QueryBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
+    table: str, body: QueryBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
 ) -> dict:
-    _require_table(body.table, "delete")
-    token = _require_jwt(jwt)
+    _require_table(table, "delete")
+    token = require_jwt(jwt)
     if not body.filters:
         raise HTTPException(status_code=400, detail="delete 必须携带过滤条件")
     res = await postgrest(
-        "DELETE", f"/{body.table}", jwt=token, params=_filter_params(body.filters)
+        "DELETE", f"/{table}", jwt=token, params=_filter_params(body.filters)
     )
     error = _as_error(res.data) if res.status >= 400 else None
     return _envelope(res.status, None, error)
@@ -209,19 +219,11 @@ async def rpc(
 ) -> dict:
     if fn_name not in ALLOWED_RPCS:
         raise HTTPException(status_code=403, detail=f"RPC {fn_name} 不在白名单")
-    token = _require_jwt(jwt)
+    token = require_jwt(jwt)
     res = await postgrest("POST", f"/rpc/{fn_name}", jwt=token, json_body=body.args)
     error = _as_error(res.data) if res.status >= 400 else None
     data = None if res.status >= 400 else res.data
     return _envelope(res.status, data, error)
-
-
-def _require_jwt(authorization: str | None) -> str:
-    """校验并剥掉 Bearer 前缀，返回裸 token（postgrest() 内层会统一再包装）。"""
-    token = (authorization or "").removeprefix("Bearer ").strip()
-    if not token:
-        raise HTTPException(status_code=401, detail="缺少会话凭证")
-    return token
 
 
 def _as_error(data: object) -> dict | None:

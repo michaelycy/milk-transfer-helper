@@ -9,26 +9,25 @@ import datetime as dt
 import time
 from typing import Annotated, Any, Literal
 
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Header
 from pydantic import BaseModel, Field
 
 from app.core import ai_gateway as gw
 from app.core import ai_safety as safety
 from app.core.config import get_settings
+from app.core.deps import current_user, require_admin, require_jwt
 from app.core.secret_box import SecretBox, get_master_secret
 from app.core.supabase import gotrue, postgrest
 
 router = APIRouter(prefix="/v1/ai", tags=["ai"])
+# 管理端专用前缀（NFR-7：管理能力一律走 /v1/admin/**，与 C 端分开鉴权与审计）
+admin_router = APIRouter(prefix="/v1/admin/ai", tags=["ai-admin"])
 
 DISCLAIMER = safety.DISCLAIMER
 
 # 便便观察枚举与 FR-D3 打卡一致（映射即所得，客户端直接预填）
 POOP_COLORS = {"golden", "green", "black", "bloody"}
 POOP_TEXTURES = {"normal", "soft", "watery", "constipated"}
-
-
-class ConfigBody(BaseModel):
-    scene: Literal["chat", "poop", "bottle", "can"]
 
 
 class ChatBody(BaseModel):
@@ -41,21 +40,6 @@ class AnalyzeBody(BaseModel):
     scene: Literal["poop", "bottle", "can"]
     image_base64: str = Field(min_length=32)
     baby_id: str | None = None
-
-
-def _require_jwt(authorization: str | None) -> str:
-    token = (authorization or "").removeprefix("Bearer ").strip()
-    if not token:
-        raise HTTPException(status_code=401, detail="缺少会话凭证")
-    return token
-
-
-async def _current_user(jwt: str) -> str:
-    res = await gotrue("GET", "/user", jwt=jwt)
-    user = res.body.get("id") if res.status < 400 else None
-    if not user:
-        raise HTTPException(status_code=401, detail="会话无效")
-    return str(user)
 
 
 # 配额「今天」按中国时区计算（产品面向国内微信小程序；与喂养日 04:00 切点近似对齐）
@@ -112,24 +96,25 @@ def _interpolate(prompt: str, variables: dict[str, str]) -> str:
 # ---------- 场景可用性（客户端入口前置判断，省一次模型调用） ----------
 
 
-@router.post("/config")
+@router.get("/scenes/{scene}/config")
 async def scene_config(
-    body: ConfigBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
+    scene: Literal["chat", "poop", "bottle", "can"],
+    jwt: Annotated[str | None, Header(alias="authorization")] = None,
 ) -> dict[str, Any]:
-    token = _require_jwt(jwt)
-    user_id = await _current_user(token)
-    config = await gw.fetch_scene_config(body.scene)
+    token = require_jwt(jwt)
+    user_id = await current_user(token)
+    config = await gw.fetch_scene_config(scene)
     enabled = bool(config and config.get("enabled"))
     if enabled:
         provider_row = await gw.fetch_provider(str(config.get("provider", "")))
         if provider_row is not None and not provider_row.get("enabled"):
             enabled = False
     limit = int(config.get("daily_limit_per_user", 0)) if config else 0
-    used = await gw.count_today_usage(user_id, body.scene, _today_start()) if enabled else 0
+    used = await gw.count_today_usage(user_id, scene, _today_start()) if enabled else 0
     return {
         "status": 200,
         "data": {
-            "scene": body.scene,
+            "scene": scene,
             "enabled": enabled,
             "daily_limit": limit,
             "used_today": used,
@@ -202,8 +187,8 @@ async def _build_baby_context(jwt: str, baby_id: str | None) -> tuple[str, dict[
 async def chat(
     body: ChatBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
 ) -> dict[str, Any]:
-    token = _require_jwt(jwt)
-    user_id = await _current_user(token)
+    token = require_jwt(jwt)
+    user_id = await current_user(token)
 
     # 出域问题：不调模型，固定引导（FR-K5 验收）
     if not safety.is_in_domain(body.question):
@@ -281,8 +266,8 @@ def _clamp(value: float, low: float, high: float) -> float:
 async def analyze(
     body: AnalyzeBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
 ) -> dict[str, Any]:
-    token = _require_jwt(jwt)
-    user_id = await _current_user(token)
+    token = require_jwt(jwt)
+    user_id = await current_user(token)
 
     degraded_reply = {
         "poop": "这次没能识别清楚，请按人工方式打卡便便情况；异常或持续异常请及时就医。",
@@ -362,81 +347,16 @@ class TestBody(BaseModel):
     base_url: str | None = Field(default=None, max_length=200)
 
 
-async def _require_admin(jwt: str) -> None:
-    user_id = await _current_user(jwt)
-    service = get_settings().supabase_service_role_key
-    res = await postgrest(
-        "GET", "/admins", jwt=service,
-        params={"user_id": f"eq.{user_id}", "select": "user_id", "limit": "1"},
-    )
-    rows = res.data if isinstance(res.data, list) else []
-    if not rows:
-        raise HTTPException(status_code=403, detail="需要管理员权限")
-
-
 class ProviderKeyBody(BaseModel):
-    provider: str = Field(min_length=1, max_length=30)
     api_key: str | None = Field(default=None, min_length=1, max_length=400)
     clear: bool = False
 
 
-@router.get("/providers/key-status")
-async def provider_key_status(
-    provider: str,
-    jwt: Annotated[str | None, Header(alias="authorization")] = None,
-) -> dict[str, Any]:
-    """密钥配置状态：仅回显 configured + 末 4 位掩码，密文/明文均不出后端（FR-K6/NFR-2）。"""
-    token = _require_jwt(jwt)
-    await _require_admin(token)
-    row = await gw.fetch_provider_secret(provider.strip())
-    return {"status": 200, "data": gw.provider_key_status(row), "error": None}
-
-
-@router.put("/providers/key")
-async def set_provider_key(
-    body: ProviderKeyBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
-) -> dict[str, Any]:
-    """设置/清除供应商密钥：AES-256-GCM 加密落库；响应永不包含明文与密文。"""
-    token = _require_jwt(jwt)
-    await _require_admin(token)
-    master = get_master_secret()
-    if not master or len(master) < 16:
-        raise HTTPException(
-            status_code=400,
-            detail="主密钥未配置（环境变量 AI_KEY_MASTER_SECRET，至少 16 位），无法在界面保存密钥",
-        )
-    name = body.provider.strip()
-    service = get_settings().supabase_service_role_key
-
-    if body.clear:
-        await postgrest(
-            "DELETE", "/ai_provider_secrets", jwt=service,
-            params={"provider_name": f"eq.{name}"},
-        )
-        gw.invalidate_cache()
-        return {"status": 200, "data": {"configured": False, "last4": "", "source": "none"}, "error": None}
-
-    if not body.api_key:
-        raise HTTPException(status_code=400, detail="api_key 为空：留空表示不修改，清除请传 clear=true")
-    key = body.api_key.strip()
-    if len(key) < 8:
-        raise HTTPException(status_code=400, detail="密钥长度过短")
-    cipher = SecretBox(master).encrypt(key)
-    await postgrest(
-        "POST", "/ai_provider_secrets", jwt=service,
-        json_body={"provider_name": name, "key_ciphertext": cipher, "key_last4": key[-4:]},
-        prefer="resolution=merge-duplicates,return=representation",
-    )
-    gw.invalidate_cache()
-    return {"status": 200, "data": {"configured": True, "last4": key[-4:], "source": "database"}, "error": None}
-
-
-@router.post("/test")
-async def test_provider(
+@router.post("/chat")
     body: TestBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
 ) -> dict[str, Any]:
     """FR-K8 连通性自检：最小文本探针（max_tokens ≤ 16），不计用户配额；调用记账 scene='test'。"""
-    token = _require_jwt(jwt)
+    token = require_jwt(jwt)
     await _require_admin(token)
 
     probe = {
@@ -470,7 +390,7 @@ async def test_provider(
             error = {"message": str(exc)}
     latency_ms = int((time.monotonic() - started) * 1000)
 
-    await gw.log_usage(await _current_user(token), "test", success=error is None)
+    await gw.log_usage(await current_user(token), "test", success=error is None)
     return {
         "status": 200,
         "data": {
@@ -489,7 +409,7 @@ async def provider_keys_overview(
     jwt: Annotated[str | None, Header(alias="authorization")] = None,
 ) -> dict[str, Any]:
     """全量密钥配置状态（FR-J7 表格列）：仅 provider + 末 4 位掩码。"""
-    token = _require_jwt(jwt)
+    token = require_jwt(jwt)
     await _require_admin(token)
     res = await postgrest(
         "GET", "/ai_provider_secrets",

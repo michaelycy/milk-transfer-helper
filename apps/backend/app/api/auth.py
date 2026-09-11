@@ -3,14 +3,15 @@
 微信登录移植自 supabase/functions/wechat-login（FR-H1）：
 code2session → 按 openid 找/建正式账号 → 匿名数据无损迁移 → 签发会话。
 """
-from typing import Any
+import hashlib
+from typing import Annotated, Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Header, HTTPException, Query
 
 from app.core.config import get_settings
 from app.core.supabase import gotrue, postgrest, wechat_code2session
 
-router = APIRouter(prefix="/auth", tags=["auth"])
+router = APIRouter(prefix="/v1/auth", tags=["auth"])
 
 
 @router.post("/anonymous")
@@ -34,7 +35,14 @@ async def wechat(payload: dict[str, Any]) -> dict[str, Any]:
     if not openid:
         return {"status": 401, "body": {"error": "wechat auth failed", "detail": wx}}
 
-    # 2. 按 openid 找已有用户；没有则建号 + 迁移匿名数据（幂等）
+    # 2. 按 openid 找已有用户；没有则建号 + 迁移匿名数据（幂等）。
+    #    GoTrue 新版要求用户必须带 email 或 phone：使用确定性 email {openid}@wechat.local；
+    #    会话签发走 password grant（项目开启 Mailer autoconfirm 后 magiclink 不再返回 OTP），
+    #    密码由 openid + service_role 派生、不落任何存储。
+    email = f"{openid}@wechat.local"
+    password = hashlib.sha256(
+        f"wechat-login:{openid}:{settings.supabase_service_role_key}".encode()
+    ).hexdigest()[:32]
     existing = await postgrest(
         "GET",
         "/users",
@@ -49,10 +57,23 @@ async def wechat(payload: dict[str, Any]) -> dict[str, Any]:
             "POST",
             "/admin/users",
             service_role=True,
-            json_body={"user_metadata": {"provider": "wechat", "openid": openid}},
+            json_body={
+                "email": email,
+                "password": password,
+                "email_confirm": True,
+                "user_metadata": {"provider": "wechat", "openid": openid},
+            },
         )
         if created.status >= 400:
-            return {"status": 500, "body": {"error": created.body.get("message", "create failed")}}
+            body = created.body if isinstance(created.body, dict) else {}
+            msg = str(body.get("msg") or body.get("message") or body.get("error") or "")
+            # 幂等恢复：auth 用户已存在（此前建号成功但 users 行缺失）→ 明确报错便于排查
+            if created.status == 422 and ("already" in msg or "registered" in msg or "exists" in msg):
+                return {
+                    "status": 500,
+                    "body": {"error": "create failed", "detail": "user exists but users row missing"},
+                }
+            return {"status": 500, "body": {"error": "create failed", "detail": body}}
         user_id = str(created.body["id"])
         await postgrest(
             "POST",
@@ -74,24 +95,28 @@ async def wechat(payload: dict[str, Any]) -> dict[str, Any]:
                 "DELETE", f"/admin/users/{anonymous_user_id}", service_role=True
             )
 
-    # 3. magiclink 签发会话（与 Edge Function 同款机制）
-    email = f"{user_id}@wechat.local"
-    link = await gotrue(
+    # 3. password grant 签发会话；失败时重置派生密码后自愈重试一次
+    grant = await gotrue(
         "POST",
-        "/admin/generate_link",
-        service_role=True,
-        json_body={"type": "magiclink", "email": email},
+        "/token?grant_type=password",
+        json_body={"email": email, "password": password},
     )
-    if link.status >= 400 or not link.body.get("properties"):
-        return {"status": 500, "body": {"error": "sign-in failed"}}
-    hashed_token = link.body["properties"]["hashed_token"]
-    verify = await gotrue(
-        "POST", "/verify", json_body={"type": "magiclink", "email": email, "token": hashed_token}
-    )
-    session = verify.body.get("session") or verify.body
-    if verify.status >= 400 or not session.get("access_token"):
-        return {"status": 500, "body": {"error": "session failed"}}
-    return {"status": 200, "body": {"session": session}}
+    if grant.status >= 400 and user_id:
+        await gotrue(
+            "PUT",
+            f"/admin/users/{user_id}",
+            service_role=True,
+            json_body={"password": password},
+        )
+        grant = await gotrue(
+            "POST",
+            "/token?grant_type=password",
+            json_body={"email": email, "password": password},
+        )
+    if grant.status >= 400:
+        body = grant.body if isinstance(grant.body, dict) else {}
+        return {"status": 500, "body": {"error": "session failed", "detail": body}}
+    return {"status": 200, "body": {"session": grant.body}}
 
 
 @router.post("/refresh")
@@ -109,6 +134,19 @@ async def logout(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 @router.get("/me")
-async def me(jwt: str) -> dict[str, Any]:
-    res = await gotrue("GET", "/user", jwt=jwt)
-    return {"status": res.status, "body": res.body}
+async def me(
+    jwt_header: Annotated[str | None, Header(alias="authorization")] = None,
+    jwt_query: Annotated[str | None, Query(alias="jwt")] = None,
+) -> dict[str, Any]:
+    """校验会话并返回用户对象（小程序 setSession 专用：JWT 走 Authorization 头）。
+
+    兼容旧 ?jwt= 查询参数；会话无效时透传 GoTrue 状态码（401 等），不以 200 信封返回。
+    响应体为 GoTrue 用户对象本身（调用方直接当作 user 使用）。
+    """
+    token = (jwt_header or "").removeprefix("Bearer ").strip() or (jwt_query or "").strip()
+    if not token:
+        raise HTTPException(status_code=401, detail="缺少会话凭证")
+    res = await gotrue("GET", "/user", jwt=token)
+    if res.status >= 400:
+        raise HTTPException(status_code=res.status, detail=res.body)
+    return res.body

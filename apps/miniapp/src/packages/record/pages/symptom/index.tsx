@@ -9,6 +9,7 @@ import { track } from '../../../../services/analytics.service'
 import { evaluateSymptoms } from '../../../../utils/rules'
 import { toFeedDay } from '../../../../utils/plan'
 import { formatDate } from '../../../../utils/date'
+import './index.scss'
 
 const TEXTURES = ['normal', 'soft', 'watery', 'constipated']
 const TEXTURE_LABELS: Record<string, string> = { normal: '正常', soft: '稀软', watery: '稀水样', constipated: '便秘' }

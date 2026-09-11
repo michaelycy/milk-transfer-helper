@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { Input, Picker, Text, View } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { Button } from '@taroify/core'
+import { ArrowDown, CalendarOutlined } from '@taroify/icons'
 import { BabyService } from '../../../../services/baby.service'
 import { track } from '../../../../services/analytics.service'
 import { useBaby } from '../../../../store/baby'
 import { calcAge } from '../../../../utils/baby'
+import './index.scss'
 
 /** 宝宝建档（FR-A1 / V2-13）：昵称/出生日期/性别 + 隐私单独同意（不收集照片） */
 export default function BabyCreate() {
@@ -61,7 +63,9 @@ export default function BabyCreate() {
         <View className='baby-create__row'>
           <Text className='baby-create__label'>昵称</Text>
           <Input
+            className='baby-create__input'
             placeholder='宝宝昵称'
+            placeholderStyle='color: #C8C9CC'
             value={nickname}
             onInput={(e) => setNickname(e.detail.value)}
           />
@@ -70,9 +74,12 @@ export default function BabyCreate() {
         <View className='baby-create__row'>
           <Text className='baby-create__label'>出生日期</Text>
           <Picker mode='date' value={birthDate} onChange={(e) => setBirthDate(e.detail.value)}>
-            <Text className={`baby-create__picker ${birthDate ? '' : 'is-placeholder'}`}>
-              {birthDate || '请选择'}
-            </Text>
+            <View className='baby-create__picker'>
+              <Text className={`baby-create__picker-v ${birthDate ? '' : 'is-placeholder'}`}>
+                {birthDate || '请选择'}
+              </Text>
+              <ArrowDown className='baby-create__chev' />
+            </View>
           </Picker>
         </View>
         <View className='baby-create__hair' />
@@ -90,10 +97,16 @@ export default function BabyCreate() {
           >
             <Text>女宝</Text>
           </View>
+          {ageText && <Text className='baby-create__age'>{ageText}</Text>}
         </View>
       </View>
 
-      {ageText && <Text className='baby-create__age'>月龄：{ageText}（自动计算）</Text>}
+      <View className='baby-create__agewrap'>
+        <CalendarOutlined className='baby-create__age-ic' />
+        <Text className='baby-create__age-t'>
+          月龄由出生日期自动计算，用于段位提示与奶量参考
+        </Text>
+      </View>
 
       <View className='baby-create__privacy'>
         <View className='baby-create__privacy-row' onClick={() => setAgreed(!agreed)}>
@@ -108,7 +121,14 @@ export default function BabyCreate() {
       </View>
 
       <View className='baby-create__footer'>
-        <Button color='primary' shape='round' block loading={saving} onClick={() => void submit()}>
+        <Button
+          color='primary'
+          shape='round'
+          size='large'
+          block
+          loading={saving}
+          onClick={() => void submit()}
+        >
           完成建档
         </Button>
       </View>

@@ -87,7 +87,7 @@ async def gotrue(
 
 async def wechat_code2session(code: str) -> dict:
     settings = get_settings()
-    async with httpx.AsyncClient(timeout=10.0) as client:
+    async with httpx.AsyncClient(timeout=10.0, transport=_transport) as client:
         res = await client.get(
             "https://api.weixin.qq.com/sns/jscode2session",
             params={

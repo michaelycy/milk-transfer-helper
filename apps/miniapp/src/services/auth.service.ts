@@ -43,7 +43,15 @@ export async function loginAnonymous(): Promise<void> {
  */
 export async function loginWechat(): Promise<void> {
   const { code } = await Taro.login()
-  const { data, error } = await supabase.functions.invoke('wechat-login', { body: { code } })
+  // FR-H1：游客升级微信登录时携带匿名用户 id，后端将游客数据无损合并到正式账号
+  let anonymousUserId: string | undefined
+  if (getAuthMode() === 'guest') {
+    const { data } = await supabase.auth.getSession()
+    anonymousUserId = data.session?.user?.id || undefined
+  }
+  const { data, error } = await supabase.functions.invoke('wechat-login', {
+    body: { code, anonymousUserId },
+  })
   if (error) throw new Error(error.message || '微信登录暂不可用')
 
   const payload = data as {

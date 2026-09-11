@@ -43,6 +43,11 @@ class Settings(BaseSettings):
         "babies",
     ]
 
+    # API 运行日志（FR-J12，规范见 docs/spec/05-api-guidelines.md §4）
+    api_log_enabled: bool = True
+    # 保留天数：超期由启动与周期任务清理
+    api_log_retention_days: int = 30
+
 
 @lru_cache
 def get_settings() -> Settings:

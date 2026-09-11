@@ -2,18 +2,20 @@
 
 | 元素 | 内容 |
 |---|---|
-| 文档状态 | 草案（代码骨架已先行，按本 spec 对齐验收） |
+| 文档状态 | 草案（已评审：FR-J8~J11；FR-J1~J7 草案，代码骨架已先行，按本 spec 对齐验收；FR-J12 开发中，v2.0-draft11 立项） |
 | 所属闭环 | 运营配套（服务 L3 数据底座与 L4 内容闭环，不直接面向用户） |
 | 上游依赖 | B 奶粉库（B1/B2）、C 计划（C2）、G 内容（G1/G2）、H 账户（H4 看板数据） |
 | 下游被依赖 | 无（纯运营侧工具） |
-| 覆盖需求 | FR-J1 ~ FR-J7 |
-| 数据表 | `admins`（新增）；`milk_products` / `plan_templates` / `articles`（RLS 策略扩展，见 03-data-model 与迁移 `20260909120000_admin_console.sql`）；`ai_configs` / `ai_prompt_templates` / `ai_usage_logs` / `milk_product_submissions` / `ai_providers`（模块 K，见迁移 `20260911120000_ai_assistant.sql` 及其后续增量） |
+| 覆盖需求 | FR-J1 ~ FR-J12 |
+| 数据表 | `admins`（新增；v2.0-draft8 起角色化扩展 role/status）；`milk_products` / `plan_templates` / `articles`（RLS 策略扩展，见 03-data-model 与迁移 `20260909120000_admin_console.sql`）；`ai_configs` / `ai_prompt_templates` / `ai_usage_logs` / `milk_product_submissions` / `ai_providers`（模块 K，见迁移 `20260911120000_ai_assistant.sql` 及其后续增量）；`admin_audit_logs`（FR-J11，v2.0-draft8 增量迁移）；`api_logs`（FR-J12，v2.0-draft11 增量迁移） |
 | 载体 | `apps/admin`（Vite + React 18 + antd 5 + TanStack Router，独立于小程序构建） |
 | UI 设计文件 | `docs/ui/admin.pen`（规范见 [../ui/ADMIN-DESIGN-GUIDELINES.md](../ui/ADMIN-DESIGN-GUIDELINES.md)，画板对照见 §5） |
 
 ## 1. 模块定位
 
-为运营侧提供奶粉库、文章审核、转奶模板的图形化维护界面与数据看板，取代「Supabase 表编辑」最小方案（B1 §3 / G1 §3 的载体升级）。**安全模型延续主应用哲学**：浏览器端只持有 anon key，管理身份 = Supabase Auth 邮箱账号 + `admins` 表白名单，写权限完全由数据库端 RLS（`is_admin()`）裁决；`service_role` 仅存在于 `admin-stats` Edge Function 服务端，永不下发到浏览器。
+为运营侧提供奶粉库、文章审核、转奶模板的图形化维护界面与数据看板，取代「Supabase 表编辑」最小方案（B1 §3 / G1 §3 的载体升级）。**安全模型延续主应用哲学**：浏览器端只持有 anon key，管理身份 = Supabase Auth 邮箱账号 + `admins` 表角色（v2.0-draft8 起由二元白名单升级为固定三角色权限矩阵，见 FR-J8），写权限完全由数据库端 RLS（权限判定函数 `has_permission()`，`is_admin()` 保留为兼容包装）裁决；`service_role` 仅存在于服务端（admin-stats Edge Function 与 FastAPI 后端），永不下发到浏览器。
+
+**平台迁移约束（v2.0-draft9，NFR-7）**：后期将迁移至自建数据库与自建认证，Supabase 为过渡形态，PostgREST + RLS 直连是过渡期载体。新增管理能力（FR-J9/J10/J11）一律以后端 `/admin` API 承载（服务端裁决），不再新增直连 PostgREST 的页面与策略依赖；存量 J2–J5 直连路径维持现状，迁移窗口统一收口为后端 API（绞杀者模式，避免双线重构）。
 
 中立性约束（产品原则 4）在管理端同样生效：奶粉库表单与列表不提供任何推荐位、排序权重字段；文章审核只做合规流转，不做流量运营工具。
 
@@ -82,15 +84,79 @@
   - [ ] 「测试」结果就地展示 ok / latency_ms / error，失败信息不含密钥；
   - [ ] 场景表单 provider 下拉选项 = 注册表启用项，新增供应商后无需刷新页面即可见。
 
+### FR-J8 管理员角色与权限（RBAC） `P1`｜依赖：J1｜闭环：运营配套
+> v2.0-draft8 立项：AI 密钥界面化（FR-J7）与管理员规模扩大后，二元白名单不再够用（原 §4「明确不做」裁定作废）。
+
+- 描述：`admins` 由白名单升级为**固定三角色权限模型**：
+  - **角色**：`super_admin`（全部权限）/ `operator`（内容与 AI 配置运营）/ `analyst`（只读分析 + 审计监督）；存量白名单行迁移默认 `super_admin`，无感升级；
+  - **权限点与角色矩阵**（术语见 00-glossary §1；**默认拒绝：未授予的权限点一律拒绝**）。密钥管理独立为 `ai:key` 并仅授予 super_admin（职责分离：运营账号失陷不等于模型密钥失陷）：
+
+    | 权限点 | super_admin | operator | analyst |
+    |---|---|---|---|
+    | dashboard:read | ✓ | ✓ | ✓ |
+    | milk:write | ✓ | ✓ | ✗ |
+    | article:write | ✓ | ✓ | ✗ |
+    | template:write | ✓ | ✓ | ✗ |
+    | ai:config（场景与提示词配置） | ✓ | ✓ | ✗ |
+    | ai:key（供应商密钥设置/清除） | ✓ | ✗ | ✗ |
+    | user:read | ✓ | ✗ | ✗ |
+    | admin:manage | ✓ | ✗ | ✗ |
+    | audit:read | ✓ | ✗ | ✓ |
+
+    矩阵以 DB 函数为**唯一裁决事实源**；shared 包常量仅供前端渲染，以一致性测试锁定两处相同（README §2.5 职责边界）；
+  - **裁决分层（应用层优先，NFR-7 双裁决）**：权限点的**主裁决点在后端**——FastAPI 统一鉴权依赖（`require_user` 解析用户身份、`require_admin(permission)` 权限点校验）替换现有散落的 `_require_admin()` 手写判定；一切以 service_role 短路 RLS 的管理接口必须先过该依赖；过渡期 RLS 以 `has_permission(action)`（security definer）同步裁决作为纵深防御，`is_admin()` 保留为兼容包装（新增策略/接口禁止直调）；`admins.status='disabled'` 即刻失去一切访问（判定随每次请求，不等 token 过期）；
+  - **前端按权限渲染**：登录后经权限查询接口获取本人权限点（接口契约定义在后端、不依赖 PostgREST 特性；过渡期允许以 RPC 承载实现），驱动侧栏菜单、路由守卫与按钮可见性；无权限路由显示 403 页。
+- 验收标准：
+  - [ ] operator 对 admin:manage / user:read / audit:read / ai:key 相关接口与页面均被拒（接口 403 + 页面无入口双侧验证）；
+  - [ ] 供应商 API Key 的设置/清除仅 super_admin 可操作（FR-J7 界面按 ai:key 控权）；
+  - [ ] analyst 全站只读：写操作按钮不可见，直连写接口被拒；
+  - [ ] `disabled` 管理员的下一次请求即被拒；
+  - [ ] DB 触发器保证「任意时刻 ≥1 个 active super_admin」「不可自我停用/降级」；
+  - [ ] 后端不存在绕过统一鉴权依赖的管理接口（code review 清单逐项核对）；
+  - [ ] 存量管理员（默认 super_admin）迁移后功能无回退（FR-J1~J7 全部验收点复测通过）。
+
+### FR-J9 管理员账号管理 `P1`｜依赖：J8｜闭环：运营配套
+- 描述：`admin:manage` 权限（仅 super_admin）专属页：管理员列表（邮箱、角色、状态、加入时间）、**邮箱邀请加入**（经后端以 service_role 发送 Supabase 邀请邮件；SMTP 未配置时明确引导 Dashboard 手工建号后纯建行）、角色调整、停用/启用、移除；被邀请邮箱已存在 auth 账号时直接建行不再发信。
+- 验收标准：
+  - [ ] 仅 `admin:manage` 可见可操作；operator/analyst 访问该路由展示 403；
+  - [ ] 角色调整/停用/移除后，目标账号下一次请求即按新权限生效；
+  - [ ] 最后一个 active super_admin 的停用/降级/移除按钮禁用（前端）且触发器兜底（后端）；
+  - [ ] 邀请邮件发送失败有明确提示与重试入口；全程动作写入审计（FR-J11）。
+
+### FR-J10 用户查询（管理端） `P2`｜依赖：J8｜闭环：运营配套（L3 数据底座消费端）
+- 描述：C 端用户的**只读**查询页（`user:read` 仅授予 super_admin，PIPL 最小必要）：按 openid（精确）或注册时间段检索；列表与详情仅呈现统计画像——注册时间、最近活跃（`analytics_events` 最近事件时间）、宝宝数、累计记录/计划数、AI 用量；openid 脱敏展示。数据经后端 `require_admin('user:read')` 接口以 service_role 聚合返回，**不给浏览器直连表能力**（`users` RLS 不开 admin 全量读，与 admin-stats 同模式）。每次查询写审计（FR-J11）。
+- 验收标准：
+  - [ ] 非 `user:read` 身份调用接口 403；接口出参不含完整手机号与明文 openid；
+  - [ ] 接口无导出能力，强制分页且有单页上限，不支持全量遍历拉取（防批量出域）；
+  - [ ] 不提供以用户身份修改业务数据的能力；不展示用户业务明细（喂养记录内容/照片）；
+  - [ ] 每次查询在 `admin_audit_logs` 留痕（查询条件 + 操作者）。
+
+### FR-J11 操作审计日志 `P2`｜依赖：J8｜闭环：运营配套（合规，NFR-2）
+- 描述：管理端敏感操作全量留痕至 `admin_audit_logs`，**双通道写入**：DB 触发器（`admins` 变更、供应商密钥设置/清除、提示词审核流转）+ 后端统一鉴权依赖层（CSV 导入、用户查询、管理员管理动作）；**登录/会话事件不自建**——管理端登录走浏览器直连 GoTrue，以 Supabase Auth 日志为准。管理页只读查询（按操作者/动作/时间筛选，`audit:read` 可见，授予 analyst 以形成对 super_admin 的监督）。留痕字段：操作者、动作、目标、详情 jsonb、时间、IP（可得时）；保留 ≥ 180 天（合规留痕下限），到期清理由维护脚本处理，不提供界面删除。
+- 验收标准：
+  - [ ] 上列动作逐项操作后均可查到对应审计行（验收时按清单核对）；
+  - [ ] 审计表无 update/delete 授权（任何角色含 super_admin 均不可改删）；
+  - [ ] 审计查询页仅 `audit:read` 可见；详情不含密钥明文（密钥动作仅记 last4）。
+
+### FR-J12 API 运行日志与排查查询 `P1`｜依赖：J1（管理员身份）｜闭环：运营配套（NFR-5 可维护性、NFR-7）
+> v2.0-draft11 立项：后端请求量随 AI 网关上线增长，缺请求级运行日志时线上问题只能靠猜；与 FR-J11 边界见 [05-api-guidelines.md](../05-api-guidelines.md) §4（J11 = 合规审计「管理员做了什么」，J12 = 技术排障「接口运行得怎么样」）。
+- 描述：后端为**每个 API 请求**生成 `request_id`（UUID，随响应头 `X-Request-Id` 返回）并异步写入 `api_logs`（request_id/method/path/status/level/duration_ms/user_id/message）；`level` 按状态码映射（4xx=warn、5xx 或异常=error，其余 info）。管理后台新增「运行日志」只读查询页：按时间范围、级别、路径（模糊）、request_id 精确检索，分页浏览（走后端 `/v1/admin/logs`，`/v1/admin/**` 管理端专用前缀，服务端裁决管理员身份）。**隐私红线**：不记录请求/响应体与 authorization 头；保留期默认 30 天由后端定时清理。
+- 验收标准：
+  - [ ] 任意请求响应携带 `X-Request-Id`，同值可在日志页检索到对应行（request_id 关联闭环）；
+  - [ ] 5xx 与异常请求 level=error 且 message 含异常摘要；日志写入失败不影响业务请求（降级仅 stderr 告警）；
+  - [ ] 非管理员调用 `/v1/admin/logs` 返回 403；接口不提供删除/导出能力；
+  - [ ] 日志页支持 时间/级别/路径/request_id 组合筛选与分页；`/healthz` 与 CORS 预检不产生日志；
+  - [ ] 超过保留期的日志被定时任务清理；`api_logs` 无任何客户端策略与授权（仅 service_role）。
+
 ## 3. 运营流程要求
 
-- 首个管理员引导：Dashboard 建邮箱用户 → `insert into admins ...`（步骤见迁移文件尾部注释）；
+- 首个管理员引导：Dashboard 建邮箱用户 → `insert into admins ... (role='super_admin')`（步骤见迁移文件尾部注释）；此后管理员的邀请、角色调整与停用一律走 FR-J9 管理页，不再手工改表；
 - 内容发布流程（对应 G1 §3）：管理端撰写/编辑 → 顾问审核（医学正确性）→ 法务口径检查 → 置为 approved 可见。管理端提供状态流转能力，审核动作本身仍由人在流程中完成；
 - 奶粉库批量更新以 CSV 导入为主通道，单条编辑用于纠错与上下架。
 
 ## 4. 明确不做（防蔓延）
 
-用户/角色体系（单表白名单够用）、富文本编辑器（正文为纯文本 TextArea）、预警阈值配置页（配置表未落库）、条码补录队列（FR-B4 属 M4）、多语言/多租户。
+~~用户/角色体系（单表白名单够用）~~ **已立项为 FR-J8/J9（v2.0-draft8，原裁定作废）**：AI 密钥界面化与管理员规模扩大后二元白名单不再够用；仍不做——自定义角色与按钮级 ACL（固定三角色 + 9 个权限点够用）、管理员自助注册（入组只走 FR-J9 邀请）、以用户身份修改 C 端业务数据、展示 C 端用户业务明细（喂养记录内容/照片，PIPL 最小必要）、富文本编辑器（正文为纯文本 TextArea）、预警阈值配置页（配置表未落库）、条码补录队列（FR-B4 属 M4）、多语言/多租户。
 
 ## 5. UI 画板对照（docs/ui/admin.pen）
 
@@ -107,3 +173,6 @@
 | A-07 转奶模板 | 列表（版本/默认/启用列）、逐日节奏行编辑器 | J4 |
 | A-08 AI 配置 | Tabs（场景配置/提示词模板/补录队列/用量概览）、场景编辑抽屉、提示词版本列表与审核流转、补录列表 | J6 |
 | A-09 模型接入管理 | 供应商 Tab（注册表列表/编辑抽屉/测试按钮）、场景表单升级态（provider 下拉 + 备用模型 + 测试） | J7 |
+| A-10 管理员管理 | 管理员列表（角色/状态）、邮箱邀请、角色调整、停用/移除（未生成，M5 设计阶段补齐） | J9 |
+| A-11 用户查询 | 检索、脱敏列表、统计画像详情（未生成，M5 设计阶段补齐） | J10 |
+| A-12 审计日志 | 操作者/动作/时间筛选列表与详情（未生成，M5 设计阶段补齐） | J11 |
