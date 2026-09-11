@@ -18,6 +18,7 @@ def _env_and_transport(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("SUPABASE_URL", "https://stub.supabase.co")
     monkeypatch.setenv("SUPABASE_ANON_KEY", "anon-key")
     monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "service-key")
+    monkeypatch.setenv("API_LOG_ENABLED", "false")
     get_settings.cache_clear()
 
     def handler(request: httpx.Request) -> httpx.Response:
@@ -51,9 +52,8 @@ def test_healthz() -> None:
 
 def test_query_passthrough_with_filters_and_count() -> None:
     res = client.post(
-        "/v1/query",
+        "/v1/db/tables/feed_records/query",
         json={
-            "table": "feed_records",
             "select": "*",
             "filters": [{"op": "eq", "col": "baby_id", "value": "b1"}],
             "order": [{"col": "feed_time", "ascending": False}],
@@ -73,22 +73,22 @@ def test_query_passthrough_with_filters_and_count() -> None:
 
 def test_query_rejects_unknown_table() -> None:
     res = client.post(
-        "/v1/query",
-        json={"table": "secrets", "filters": []},
+        "/v1/db/tables/secrets/query",
+        json={"filters": []},
         headers={"authorization": f"Bearer {JWT}"},
     )
     assert res.status_code == 403
 
 
 def test_query_requires_jwt() -> None:
-    res = client.post("/v1/query", json={"table": "babies", "filters": []})
+    res = client.post("/v1/db/tables/babies/query", json={"filters": []})
     assert res.status_code == 401
 
 
 def test_insert_maps_single_row() -> None:
     res = client.post(
-        "/v1/insert",
-        json={"table": "babies", "values": {"nickname": "宝宝"}, "single": "one"},
+        "/v1/db/tables/babies/insert",
+        json={"values": {"nickname": "宝宝"}, "single": "one"},
         headers={"authorization": f"Bearer {JWT}"},
     )
     assert res.status_code == 200
@@ -99,7 +99,7 @@ def test_insert_maps_single_row() -> None:
 
 def test_rpc_whitelist() -> None:
     res = client.post(
-        "/v1/rpc/get_record_stats",
+        "/v1/db/rpc/get_record_stats",
         json={"args": {}},
         headers={"authorization": f"Bearer {JWT}"},
     )
@@ -109,7 +109,7 @@ def test_rpc_whitelist() -> None:
 
 def test_rpc_rejects_unknown_function() -> None:
     res = client.post(
-        "/v1/rpc/dangerous_fn",
+        "/v1/db/rpc/dangerous_fn",
         json={"args": {}},
         headers={"authorization": f"Bearer {JWT}"},
     )

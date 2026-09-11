@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { callBackendApi } from '../lib/backend';
 import type {
   AiConfigPatch,
   AiConfigRow,
@@ -141,7 +142,7 @@ export const AiProviderService = {
   },
 
   /**
-   * 连通性探针（FR-K8）：走后端 /v1/ai/test（GoTrue JWT + admins 白名单双校验）。
+   * 连通性探针（FR-K8）：走后端 /v1/admin/ai/providers/probe（GoTrue JWT + admins 白名单双校验）。
    * 后端地址与小程序共用 TARO_APP_API_BASE_URL 对应的 VITE_API_BASE_URL。
    */
   async probe(input: {
@@ -149,13 +150,13 @@ export const AiProviderService = {
     model: string;
     base_url?: string | null;
   }): Promise<AiProbeResult> {
-    return AiProviderService.callBackend<AiProbeResult>('/v1/ai/test', input);
+    return callBackendApi<AiProbeResult>('/v1/admin/ai/providers/probe', input);
   },
 
   /** 全量密钥状态（表格列展示）：provider + 末 4 位掩码 */
   async keysOverview(): Promise<{ provider: string; last4: string }[]> {
-    return AiProviderService.callBackend<{ provider: string; last4: string }[]>(
-      '/v1/ai/providers/keys',
+    return callBackendApi<{ provider: string; last4: string }[]>(
+      '/v1/admin/ai/providers/keys',
       undefined,
       'GET',
     );
@@ -163,8 +164,8 @@ export const AiProviderService = {
 
   /** 密钥状态（FR-K6）：仅 configured + 末 4 位掩码；明文/密文均不出后端 */
   async keyStatus(provider: string): Promise<AiKeyStatus> {
-    return AiProviderService.callBackend<AiKeyStatus>(
-      `/v1/ai/providers/key-status?provider=${encodeURIComponent(provider)}`,
+    return callBackendApi<AiKeyStatus>(
+      `/v1/admin/ai/providers/${encodeURIComponent(provider)}/key-status`,
       undefined,
       'GET',
     );
@@ -172,45 +173,19 @@ export const AiProviderService = {
 
   /** 设置密钥（AES-256-GCM 加密落库）；编辑界面留空即不调用本方法 */
   async setProviderKey(provider: string, apiKey: string): Promise<AiKeyStatus> {
-    return AiProviderService.callBackend<AiKeyStatus>(
-      '/v1/ai/providers/key',
-      { provider, api_key: apiKey },
+    return callBackendApi<AiKeyStatus>(
+      `/v1/admin/ai/providers/${encodeURIComponent(provider)}/key`,
+      { api_key: apiKey },
       'PUT',
     );
   },
 
   /** 清除已存密钥（清除后回退环境变量密钥路径） */
   async clearProviderKey(provider: string): Promise<AiKeyStatus> {
-    return AiProviderService.callBackend<AiKeyStatus>(
-      '/v1/ai/providers/key',
-      { provider, clear: true },
+    return callBackendApi<AiKeyStatus>(
+      `/v1/admin/ai/providers/${encodeURIComponent(provider)}/key`,
+      { clear: true },
       'PUT',
     );
-  },
-
-  async callBackend<T>(
-    path: string,
-    body?: Record<string, unknown>,
-    method: 'POST' | 'PUT' | 'GET' = 'POST',
-  ): Promise<T> {
-    const { data } = await supabase.auth.getSession();
-    const token = data.session?.access_token;
-    if (!token) throw new Error('会话已过期，请重新登录');
-    const base = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
-    const res = await fetch(`${base}${path}`, {
-      method,
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: method === 'GET' ? undefined : JSON.stringify(body ?? {}),
-    });
-    if (res.status === 401 || res.status === 403) throw new Error('需要管理员权限');
-    const payload = (await res.json()) as {
-      status: number;
-      data: T;
-      error?: { message: string } | null;
-    };
-    if (res.status >= 400 || payload.status >= 400) {
-      throw new Error(payload.error?.message || `后端请求失败（HTTP ${res.status}）`);
-    }
-    return payload.data;
   },
 };

@@ -1,7 +1,7 @@
 """统一鉴权依赖：JWT 校验 / 当前用户 / 管理员判定（客户端与管理端端点共用）。"""
 from typing import Any
 
-from fastapi import Header, HTTPException
+from fastapi import HTTPException
 
 from app.core.config import get_settings
 from app.core.supabase import gotrue, postgrest
@@ -55,5 +55,5 @@ def jwt_sub(token: str) -> str | None:
         claims: dict[str, Any] = json.loads(base64.urlsafe_b64decode(payload))
         sub = claims.get("sub")
         return str(sub) if sub else None
-    except Exception:
+    except Exception:  # noqa: BLE001 —— 归因失败静默返回，绝不影响主流程
         return None

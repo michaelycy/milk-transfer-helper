@@ -28,6 +28,7 @@ def _env_and_transports(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "service-key")
     monkeypatch.setenv("AI_ZHIPU_API_KEY", "zhipu-key")
     monkeypatch.setenv("AI_KEY_MASTER_SECRET", "unit-test-master-secret-32")
+    monkeypatch.setenv("API_LOG_ENABLED", "false")
     get_settings.cache_clear()
     STATE.clear()
     STATE.update({
@@ -135,6 +136,10 @@ def post(path: str, body: dict) -> httpx.Response:
     return client.post(path, json=body, headers={"authorization": f"Bearer {JWT}"})
 
 
+def get(path: str) -> httpx.Response:
+    return client.get(path, headers={"authorization": f"Bearer {JWT}"})
+
+
 # ---------- 纯函数护栏（NFR-1） ----------
 
 
@@ -170,7 +175,7 @@ def test_normal_answer_passes_guard() -> None:
 
 def test_scene_config_enabled_with_quota() -> None:
     STATE["usage_count"] = 1
-    res = post("/v1/ai/config", {"scene": "chat"})
+    res = get("/v1/ai/scenes/chat/config")
     data = res.json()["data"]
     assert data["enabled"] is True
     assert data["daily_limit"] == 2
@@ -180,14 +185,14 @@ def test_scene_config_enabled_with_quota() -> None:
 
 def test_scene_config_disabled() -> None:
     STATE["config"] = None
-    res = post("/v1/ai/config", {"scene": "can"})
+    res = get("/v1/ai/scenes/can/config")
     data = res.json()["data"]
     assert data["enabled"] is False
     assert data["remaining"] == 0
 
 
 def test_config_requires_jwt() -> None:
-    res = client.post("/v1/ai/config", json={"scene": "chat"})
+    res = client.get("/v1/ai/scenes/chat/config")
     assert res.status_code == 401
 
 
@@ -414,14 +419,14 @@ def test_fallback_both_fail_degrades(monkeypatch: pytest.MonkeyPatch) -> None:
 
 
 def test_connectivity_probe_requires_admin() -> None:
-    res = post("/v1/ai/test", {"provider": "zhipu", "model": "glm-4-flash"})
+    res = post("/v1/admin/ai/providers/probe", {"provider": "zhipu", "model": "glm-4-flash"})
     assert res.status_code == 403
 
 
 def test_connectivity_probe_ok() -> None:
     STATE["is_admin"] = True
     STATE["probe_request"] = True
-    res = post("/v1/ai/test", {"provider": "zhipu", "model": "glm-4-flash"})
+    res = post("/v1/admin/ai/providers/probe", {"provider": "zhipu", "model": "glm-4-flash"})
     data = res.json()["data"]
     assert data["ok"] is True
     assert isinstance(data["latency_ms"], int)
@@ -432,7 +437,7 @@ def test_connectivity_probe_ok() -> None:
 def test_connectivity_probe_reports_error_without_secret() -> None:
     STATE["is_admin"] = True
     STATE["model_text"] = None  # 上游 500
-    res = post("/v1/ai/test", {"provider": "zhipu", "model": "glm-4-flash"})
+    res = post("/v1/admin/ai/providers/probe", {"provider": "zhipu", "model": "glm-4-flash"})
     data = res.json()["data"]
     assert data["ok"] is False
     assert "HTTP 500" in data["error"]["message"]
@@ -458,8 +463,8 @@ def test_builtin_deepseek_endpoint_resolution(monkeypatch: pytest.MonkeyPatch) -
 
 def test_provider_key_set_requires_admin() -> None:
     res = client.put(
-        "/v1/ai/providers/key",
-        json={"provider": "zhipu", "api_key": "sk-abc12345"},
+        "/v1/admin/ai/providers/zhipu/key",
+        json={"api_key": "sk-abc12345"},
         headers={"authorization": f"Bearer {JWT}"},
     )
     assert res.status_code == 403
@@ -469,8 +474,8 @@ def test_provider_key_set_and_status_roundtrip() -> None:
     """FR-K6/NFR-2：界面密钥加密落库；状态只回显掩码；响应不含明文与密文。"""
     STATE["is_admin"] = True
     res = client.put(
-        "/v1/ai/providers/key",
-        json={"provider": "zhipu", "api_key": "sk-live-abcd9876"},
+        "/v1/admin/ai/providers/zhipu/key",
+        json={"api_key": "sk-live-abcd9876"},
         headers={"authorization": f"Bearer {JWT}"},
     )
     assert res.status_code == 200
@@ -482,11 +487,7 @@ def test_provider_key_set_and_status_roundtrip() -> None:
     assert "sk-live-abcd9876" not in stored["key_ciphertext"]
     assert stored["key_last4"] == "9876"
 
-    status = client.get(
-        "/v1/ai/providers/key-status",
-        params={"provider": "zhipu"},
-        headers={"authorization": f"Bearer {JWT}"},
-    )
+    status = get("/v1/admin/ai/providers/zhipu/key-status")
     body = status.json()
     assert body["data"] == {"configured": True, "last4": "9876", "source": "database"}
     assert "sk-live-abcd9876" not in status.text
@@ -496,20 +497,20 @@ def test_provider_key_set_and_status_roundtrip() -> None:
 def test_provider_key_empty_means_no_change_clear_explicit() -> None:
     STATE["is_admin"] = True
     res = client.put(
-        "/v1/ai/providers/key",
-        json={"provider": "zhipu"},
+        "/v1/admin/ai/providers/zhipu/key",
+        json={},
         headers={"authorization": f"Bearer {JWT}"},
     )
     assert res.status_code == 400
     res = client.put(
-        "/v1/ai/providers/key",
-        json={"provider": "zhipu", "api_key": "sk-live-abcd9876"},
+        "/v1/admin/ai/providers/zhipu/key",
+        json={"api_key": "sk-live-abcd9876"},
         headers={"authorization": f"Bearer {JWT}"},
     )
     assert res.status_code == 200
     res = client.put(
-        "/v1/ai/providers/key",
-        json={"provider": "zhipu", "clear": True},
+        "/v1/admin/ai/providers/zhipu/key",
+        json={"clear": True},
         headers={"authorization": f"Bearer {JWT}"},
     )
     assert res.status_code == 200
@@ -551,7 +552,7 @@ def test_probe_star_model_treats_model_not_found_as_reachable() -> None:
     STATE["is_admin"] = True
     STATE["probe_request"] = True
     STATE["upstream_status"] = 400
-    res = post("/v1/ai/test", {"provider": "zhipu", "model": "*", "base_url": "https://open.bigmodel.cn/api/paas/v4"})
+    res = post("/v1/admin/ai/providers/probe", {"provider": "zhipu", "model": "*", "base_url": "https://open.bigmodel.cn/api/paas/v4"})
     data = res.json()["data"]
     assert data["ok"] is True
     assert "可达" in (data["note"] or "")
@@ -562,7 +563,7 @@ def test_probe_star_model_auth_failure_still_fails() -> None:
     STATE["is_admin"] = True
     STATE["probe_request"] = True
     STATE["upstream_status"] = 401
-    res = post("/v1/ai/test", {"provider": "zhipu", "model": "*"})
+    res = post("/v1/admin/ai/providers/probe", {"provider": "zhipu", "model": "*"})
     data = res.json()["data"]
     assert data["ok"] is False
     assert "HTTP 401" in data["error"]["message"]
@@ -570,7 +571,7 @@ def test_probe_star_model_auth_failure_still_fails() -> None:
 
 def test_provider_keys_overview_requires_admin() -> None:
     res = client.get(
-        "/v1/ai/providers/keys",
+        "/v1/admin/ai/providers/keys",
         headers={"authorization": f"Bearer {JWT}"},
     )
     assert res.status_code == 403
@@ -582,7 +583,7 @@ def test_provider_keys_overview_lists_masked_only() -> None:
         {"provider_name": "zhipu", "key_ciphertext": "v1.x.y", "key_last4": "9876"},
     ]
     res = client.get(
-        "/v1/ai/providers/keys",
+        "/v1/admin/ai/providers/keys",
         headers={"authorization": f"Bearer {JWT}"},
     )
     data = res.json()["data"]

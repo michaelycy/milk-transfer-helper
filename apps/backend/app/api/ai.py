@@ -9,7 +9,7 @@ import datetime as dt
 import time
 from typing import Annotated, Any, Literal
 
-from fastapi import APIRouter, Header
+from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel, Field
 
 from app.core import ai_gateway as gw
@@ -17,7 +17,7 @@ from app.core import ai_safety as safety
 from app.core.config import get_settings
 from app.core.deps import current_user, require_admin, require_jwt
 from app.core.secret_box import SecretBox, get_master_secret
-from app.core.supabase import gotrue, postgrest
+from app.core.supabase import postgrest
 
 router = APIRouter(prefix="/v1/ai", tags=["ai"])
 # 管理端专用前缀（NFR-7：管理能力一律走 /v1/admin/**，与 C 端分开鉴权与审计）
@@ -352,12 +352,66 @@ class ProviderKeyBody(BaseModel):
     clear: bool = False
 
 
-@router.post("/chat")
+@admin_router.get("/providers/{provider}/key-status")
+async def provider_key_status(
+    provider: str,
+    jwt: Annotated[str | None, Header(alias="authorization")] = None,
+) -> dict[str, Any]:
+    """密钥配置状态：仅回显 configured + 末 4 位掩码，密文/明文均不出后端（FR-K6/NFR-2）。"""
+    token = require_jwt(jwt)
+    await require_admin(token)
+    row = await gw.fetch_provider_secret(provider.strip())
+    return {"status": 200, "data": gw.provider_key_status(row), "error": None}
+
+
+@admin_router.put("/providers/{provider}/key")
+async def set_provider_key(
+    provider: str,
+    body: ProviderKeyBody,
+    jwt: Annotated[str | None, Header(alias="authorization")] = None,
+) -> dict[str, Any]:
+    """设置/清除供应商密钥：AES-256-GCM 加密落库；响应永不包含明文与密文。"""
+    token = require_jwt(jwt)
+    await require_admin(token)
+    master = get_master_secret()
+    if not master or len(master) < 16:
+        raise HTTPException(
+            status_code=400,
+            detail="主密钥未配置（环境变量 AI_KEY_MASTER_SECRET，至少 16 位），无法在界面保存密钥",
+        )
+    name = provider.strip()
+    service = get_settings().supabase_service_role_key
+
+    if body.clear:
+        await postgrest(
+            "DELETE", "/ai_provider_secrets", jwt=service,
+            params={"provider_name": f"eq.{name}"},
+        )
+        gw.invalidate_cache()
+        return {"status": 200, "data": {"configured": False, "last4": "", "source": "none"}, "error": None}
+
+    if not body.api_key:
+        raise HTTPException(status_code=400, detail="api_key 为空：留空表示不修改，清除请传 clear=true")
+    key = body.api_key.strip()
+    if len(key) < 8:
+        raise HTTPException(status_code=400, detail="密钥长度过短")
+    cipher = SecretBox(master).encrypt(key)
+    await postgrest(
+        "POST", "/ai_provider_secrets", jwt=service,
+        json_body={"provider_name": name, "key_ciphertext": cipher, "key_last4": key[-4:]},
+        prefer="resolution=merge-duplicates,return=representation",
+    )
+    gw.invalidate_cache()
+    return {"status": 200, "data": {"configured": True, "last4": key[-4:], "source": "database"}, "error": None}
+
+
+@admin_router.post("/providers/probe")
+async def probe_provider(
     body: TestBody, jwt: Annotated[str | None, Header(alias="authorization")] = None
 ) -> dict[str, Any]:
     """FR-K8 连通性自检：最小文本探针（max_tokens ≤ 16），不计用户配额；调用记账 scene='test'。"""
     token = require_jwt(jwt)
-    await _require_admin(token)
+    await require_admin(token)
 
     probe = {
         "provider": body.provider.strip(),
@@ -404,13 +458,13 @@ class ProviderKeyBody(BaseModel):
     }
 
 
-@router.get("/providers/keys")
+@admin_router.get("/providers/keys")
 async def provider_keys_overview(
     jwt: Annotated[str | None, Header(alias="authorization")] = None,
 ) -> dict[str, Any]:
     """全量密钥配置状态（FR-J7 表格列）：仅 provider + 末 4 位掩码。"""
     token = require_jwt(jwt)
-    await _require_admin(token)
+    await require_admin(token)
     res = await postgrest(
         "GET", "/ai_provider_secrets",
         jwt=get_settings().supabase_service_role_key,

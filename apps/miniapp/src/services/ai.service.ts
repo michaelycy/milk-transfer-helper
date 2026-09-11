@@ -15,9 +15,13 @@ interface ApiEnvelope<T> {
   error: { message: string } | null
 }
 
-async function call<T>(path: string, body: Record<string, unknown>): Promise<T> {
+async function call<T>(
+  path: string,
+  body?: Record<string, unknown>,
+  method: 'GET' | 'POST' = 'POST',
+): Promise<T> {
   await ensureSession()
-  const res = await aiRequest(`/v1/ai/${path}`, body)
+  const res = await aiRequest(`/v1/ai/${path}`, body, method)
   const payload = res.body as unknown as ApiEnvelope<T>
   if (res.status >= 400 || !payload || payload.status >= 400) {
     throw new Error(payload?.error?.message || `AI 服务不可用（HTTP ${res.status}）`)
@@ -26,9 +30,9 @@ async function call<T>(path: string, body: Record<string, unknown>): Promise<T> 
 }
 
 export const AiService = {
-  /** 场景可用性查询（入口前置判断，避免无效拍照） */
+  /** 场景可用性查询（入口前置判断，避免无效拍照）：读接口走 GET，scene 进路径 */
   async sceneConfig(scene: AiSceneStatus['scene']): Promise<AiSceneStatus> {
-    return call<AiSceneStatus>('config', { scene })
+    return call<AiSceneStatus>(`scenes/${scene}/config`, undefined, 'GET')
   },
 
   /** 限定域问答（FR-K5）；返回降级文案而非抛错 */

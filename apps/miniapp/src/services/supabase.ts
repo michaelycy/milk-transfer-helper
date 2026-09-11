@@ -4,7 +4,8 @@ import type { Database } from '../types/database'
 /**
  * Supabase REST 薄客户端（方案 D）：
  * 服务层调用面与 supabase-js 保持同形（from/rpc/auth/functions），
- * 底层改为 Taro.request 调用自建 FastAPI（/v1/*、/auth/*）。
+ * 底层改为 Taro.request 调用自建 FastAPI（/v1/auth/*、/v1/db/*、/v1/ai/*，
+ * 路径契约见 docs/spec/05-api-guidelines.md）。
  *
  * 网络栈：Taro.request + JSON，无任何浏览器全局依赖。
  * 会话：access/refresh token 持久化于 Taro 存储，过期自动刷新。
@@ -132,12 +133,13 @@ async function transport(
   path: string,
   body: Record<string, unknown>,
   bearerToken?: string,
+  method: 'GET' | 'POST' = 'POST',
 ): Promise<TransportResult> {
   const token = bearerToken ?? loadSession()?.access_token
   const res = await httpRequest({
     url: `${API_BASE}${path}`,
-    method: 'POST',
-    data: body,
+    method,
+    data: method === 'GET' ? undefined : body,
     header: {
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -149,7 +151,7 @@ async function transport(
   }
 }
 
-/** /auth/* 接口返回 {status, body} 信封：拆出内层 body 与真实状态码 */
+/** /v1/auth/* 接口返回 {status, body} 信封：拆出内层 body 与真实状态码 */
 function unwrapAuth(res: TransportResult): TransportResult {
   const data = res.body as { status?: unknown; body?: unknown }
   if (data && typeof data === 'object' && 'status' in data && 'body' in data) {
@@ -168,12 +170,14 @@ async function authPost(path: string, body: Record<string, unknown>): Promise<Tr
 /**
  * AI 网关调用（模块 K，FR-K1）：/v1/ai/*，返回后端信封 {status, data, error}。
  * 与数据透传同一条传输通道（用户 JWT 随行，服务端完成配额/护栏/降级）。
+ * 读接口（场景配置）走 GET，其余默认 POST。
  */
 export async function aiRequest(
   path: string,
-  body: Record<string, unknown>,
+  body?: Record<string, unknown>,
+  method: 'GET' | 'POST' = 'POST',
 ): Promise<TransportResult> {
-  return transport(path, body)
+  return transport(path, body ?? {}, undefined, method)
 }
 
 function toApiError(body: unknown, fallbackStatus: number): ApiError {
@@ -443,12 +447,12 @@ async function execBuilder(state: BuilderState): Promise<ApiResult<ApiRow | ApiR
     return { data: null, error: { message: '未登录' } }
   }
 
-  let path = '/v1/query'
+  // 路径契约（docs/spec/05-api-guidelines.md）：表名进路径，保证服务端访问日志可区分业务
+  let path = `/v1/db/tables/${state.table}/query`
   let payload: Record<string, unknown>
 
   if (state.mode === 'select') {
     payload = {
-      table: state.table,
       select: state.selectExpr,
       filters: state.filters,
       order: state.orders,
@@ -458,19 +462,18 @@ async function execBuilder(state: BuilderState): Promise<ApiResult<ApiRow | ApiR
       count: state.countExact || undefined,
     }
   } else if (state.mode === 'insert') {
-    path = '/v1/insert'
+    path = `/v1/db/tables/${state.table}/insert`
     payload = {
-      table: state.table,
       values: state.values,
       select: state.selectExpr,
       on_conflict: state.onConflict ?? undefined,
     }
   } else if (state.mode === 'update') {
-    path = '/v1/update'
-    payload = { table: state.table, values: state.values, filters: state.filters }
+    path = `/v1/db/tables/${state.table}/update`
+    payload = { values: state.values, filters: state.filters }
   } else {
-    path = '/v1/delete'
-    payload = { table: state.table, filters: state.filters }
+    path = `/v1/db/tables/${state.table}/delete`
+    payload = { filters: state.filters }
   }
 
   // 压缩 undefined 字段
@@ -503,7 +506,7 @@ function from<Table extends keyof Tables & string>(
 async function rpc(fnName: string, args: Record<string, unknown> = {}): Promise<ApiResult<unknown>> {
   const session = await getValidSession()
   if (!session) return { data: null, error: { message: '未登录' } }
-  const res = await transport(`/v1/rpc/${fnName}`, { args }, session.access_token)
+  const res = await transport(`/v1/db/rpc/${fnName}`, { args }, session.access_token)
   return {
     data: (res.body.data ?? null) as unknown,
     error: errorOf(res),
@@ -511,7 +514,7 @@ async function rpc(fnName: string, args: Record<string, unknown> = {}): Promise<
 }
 
 async function refreshSession(session: ApiSession): Promise<ApiResult<ApiSession | null>> {
-  const res = await authPost('/auth/refresh', {
+  const res = await authPost('/v1/auth/refresh', {
     refresh_token: session.refresh_token,
   })
   const body = res.body
@@ -537,7 +540,7 @@ async function refreshSession(session: ApiSession): Promise<ApiResult<ApiSession
 
 const auth = {
   async signInAnonymously(): Promise<ApiResult<{ user: { id: string } | null }>> {
-    const res = await authPost('/auth/anonymous', {})
+    const res = await authPost('/v1/auth/anonymous', {})
     const body = res.body
     if (res.status >= 400) {
       return { data: { user: null }, error: toApiError(body, res.status) }
@@ -569,7 +572,7 @@ const auth = {
   }): Promise<ApiResult<null>> {
     // 校验并取回用户信息
     const res = await httpRequest({
-      url: `${API_BASE}/auth/me`,
+      url: `${API_BASE}/v1/auth/me`,
       method: 'GET',
       data: {},
       header: {
@@ -595,7 +598,7 @@ const auth = {
     const session = loadSession()
     if (session?.access_token) {
       try {
-        await authPost('/auth/logout', { access_token: session.access_token })
+        await authPost('/v1/auth/logout', { access_token: session.access_token })
       } catch {
         // 登出尽力而为：本地会话必然清除
       }
@@ -611,7 +614,7 @@ const functions = {
     options?: { body?: Record<string, unknown> },
   ): Promise<ApiResult<Record<string, unknown> | null>> {
     if (name === 'wechat-login') {
-      const res = await authPost('/auth/wechat', options?.body ?? {})
+      const res = await authPost('/v1/auth/wechat', options?.body ?? {})
       if (res.status >= 400 || res.body.error) {
         return { data: null, error: { message: String(res.body.error ?? '微信登录失败') } }
       }

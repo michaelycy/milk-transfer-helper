@@ -1,4 +1,4 @@
-"""微信登录（FR-H1 / /auth/wechat）测试：GoTrue 新版要求用户带 email/phone 的回归覆盖。"""
+"""微信登录（FR-H1 / /v1/auth/wechat）测试：GoTrue 新版要求用户带 email/phone 的回归覆盖。"""
 import httpx
 import pytest
 from fastapi.testclient import TestClient
@@ -23,6 +23,7 @@ def _env_and_transport(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("SUPABASE_SERVICE_ROLE_KEY", "service-key")
     monkeypatch.setenv("WECHAT_APPID", "wx-app")
     monkeypatch.setenv("WECHAT_SECRET", "wx-secret")
+    monkeypatch.setenv("API_LOG_ENABLED", "false")
     get_settings.cache_clear()
     STATE.clear()
     STATE.update({
@@ -79,7 +80,7 @@ client = TestClient(app)
 
 
 def wechat(body: dict) -> httpx.Response:
-    return client.post("/auth/wechat", json=body)
+    return client.post("/v1/auth/wechat", json=body)
 
 
 def test_wechat_login_happy_path_creates_user_with_email() -> None:
@@ -150,22 +151,22 @@ def json_dumps(v) -> str:
 
 def test_auth_me_with_authorization_header() -> None:
     """JWT 走 Authorization 头；响应体为用户对象本身（setSession 直接消费）。"""
-    res = client.get("/auth/me", headers={"authorization": f"Bearer {JWT}"})
+    res = client.get("/v1/auth/me", headers={"authorization": f"Bearer {JWT}"})
     assert res.status_code == 200
     assert res.json()["id"] == USER_ID
 
 
 def test_auth_me_missing_token_401() -> None:
-    res = client.get("/auth/me")
+    res = client.get("/v1/auth/me")
     assert res.status_code == 401
 
 
 def test_auth_me_invalid_token_passthrough_401() -> None:
-    res = client.get("/auth/me", headers={"authorization": "Bearer bad-token"})
+    res = client.get("/v1/auth/me", headers={"authorization": "Bearer bad-token"})
     assert res.status_code == 401
 
 
 def test_auth_me_jwt_query_param_compat() -> None:
-    res = client.get("/auth/me", params={"jwt": JWT})
+    res = client.get("/v1/auth/me", params={"jwt": JWT})
     assert res.status_code == 200
     assert res.json()["id"] == USER_ID

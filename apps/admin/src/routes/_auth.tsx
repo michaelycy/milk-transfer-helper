@@ -8,6 +8,7 @@ import {
 import { Button, Layout, Menu, Typography, App } from 'antd';
 import {
   DashboardOutlined,
+  FileSearchOutlined,
   FileTextOutlined,
   RobotOutlined,
   ScheduleOutlined,
@@ -35,6 +36,7 @@ const MENU_ITEMS = [
   { key: '/articles', icon: <FileTextOutlined />, label: '文章管理' },
   { key: '/templates', icon: <ScheduleOutlined />, label: '转奶模板' },
   { key: '/ai', icon: <RobotOutlined />, label: 'AI 配置' },
+  { key: '/logs', icon: <FileSearchOutlined />, label: '运行日志' },
 ];
 
 function AuthLayout() {

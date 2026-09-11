@@ -63,7 +63,7 @@ async def write_log(row: dict[str, object]) -> None:
         )
         if res.status >= 400:
             logger.warning("api_logs 写入被拒 HTTP %s: %s", res.status, res.data)
-    except Exception:  # noqa: BLE001 —— 日志通道必须零抛出
+    except Exception:
         logger.exception("api_logs 写入失败")
 
 
@@ -81,7 +81,7 @@ async def purge_expired() -> None:
     """删除早于保留期（API_LOG_RETENTION_DAYS，默认 30 天）的日志行。"""
     import datetime as dt
 
-    cutoff = dt.datetime.now(dt.timezone.utc) - dt.timedelta(
+    cutoff = dt.datetime.now(dt.UTC) - dt.timedelta(
         days=int(get_settings().api_log_retention_days)
     )
     res = await postgrest(
@@ -108,7 +108,7 @@ class ApiLogMiddleware(BaseHTTPMiddleware):
         failure: str | None = None
         try:
             response = await call_next(request)
-        except Exception as exc:  # noqa: BLE001 —— 记录后原样上抛交给 ServerErrorMiddleware
+        except Exception as exc:
             failure = f"{type(exc).__name__}: {exc}"
             await write_log(
                 build_log_row(

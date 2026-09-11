@@ -78,3 +78,33 @@ export interface AiKeyStatus {
   last4: string;
   source: 'database' | 'none';
 }
+
+/** API 运行日志行（FR-J12，api_logs 表；经后端 /v1/admin/logs 只读查询） */
+export interface ApiLogRow {
+  request_id: string;
+  method: string;
+  path: string;
+  status: number;
+  level: 'info' | 'warn' | 'error';
+  duration_ms: number | null;
+  user_id: string | null;
+  message: string | null;
+  created_at: string | null;
+}
+
+/** 运行日志查询条件（时间用 ISO 字符串；path 为模糊包含匹配） */
+export interface ApiLogQuery {
+  level?: ApiLogRow['level'];
+  path?: string;
+  request_id?: string;
+  since?: string;
+  until?: string;
+  limit?: number;
+  offset?: number;
+}
+
+/** 分页查询结果：rows + 总数（count 用于分页器） */
+export interface ApiLogPage {
+  rows: ApiLogRow[];
+  count: number;
+}
