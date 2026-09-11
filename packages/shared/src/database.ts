@@ -13,6 +13,8 @@ export interface Database {
           openid: string | null
           nickname: string | null
           avatar: string | null
+          phone_hash: string | null
+          phone_cipher: string | null
           created_at: string
         }
         Insert: {
@@ -673,6 +675,129 @@ export interface Database {
           id?: string
           status?: 'pending' | 'processed' | 'dismissed'
           processed_at?: string | null
+        }
+        Relationships: []
+      }
+      baby_members: {
+        Row: {
+          id: string
+          baby_id: string
+          user_id: string
+          role: 'owner' | 'editor' | 'viewer'
+          status: 'active' | 'removed'
+          invited_by: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          baby_id: string
+          user_id: string
+          role?: 'owner' | 'editor' | 'viewer'
+          status?: 'active' | 'removed'
+          invited_by?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          baby_id?: string
+          user_id?: string
+          role?: 'owner' | 'editor' | 'viewer'
+          status?: 'active' | 'removed'
+          invited_by?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      family_invites: {
+        Row: {
+          id: string
+          baby_id: string
+          role: 'editor' | 'viewer'
+          invite_code: string
+          invited_by: string
+          accepted_by: string | null
+          status: 'pending' | 'accepted' | 'expired' | 'revoked'
+          expires_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          baby_id: string
+          role: 'editor' | 'viewer'
+          invite_code: string
+          invited_by?: string
+          accepted_by?: string | null
+          status?: 'pending' | 'accepted' | 'expired' | 'revoked'
+          expires_at: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          baby_id?: string
+          role?: 'editor' | 'viewer'
+          invite_code?: string
+          invited_by?: string
+          accepted_by?: string | null
+          status?: 'pending' | 'accepted' | 'expired' | 'revoked'
+          expires_at?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
+      privacy_consents: {
+        Row: {
+          id: string
+          user_id: string
+          consent_type: 'login' | 'baby_profile' | 'phone'
+          policy_version: string
+          consented_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string
+          consent_type: 'login' | 'baby_profile' | 'phone'
+          policy_version: string
+          consented_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          consent_type?: 'login' | 'baby_profile' | 'phone'
+          policy_version?: string
+          consented_at?: string
+        }
+        Relationships: []
+      }
+      admin_audit_logs: {
+        Row: {
+          id: string
+          actor_user_id: string
+          action: string
+          target_type: string | null
+          target_id: string | null
+          detail: Record<string, unknown> | null
+          ip: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          actor_user_id: string
+          action: string
+          target_type?: string | null
+          target_id?: string | null
+          detail?: Record<string, unknown> | null
+          ip?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          actor_user_id?: string
+          action?: string
+          target_type?: string | null
+          target_id?: string | null
+          detail?: Record<string, unknown> | null
+          ip?: string | null
+          created_at?: string
         }
         Relationships: []
       }

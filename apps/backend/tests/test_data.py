@@ -97,6 +97,36 @@ def test_insert_maps_single_row() -> None:
     assert body["error"] is None
 
 
+def test_insert_privacy_consent_append_only() -> None:
+    """隐私同意留痕（H2/H7）：登录/绑定手机号走网关留痕，只追加、无改删。"""
+    res = client.post(
+        "/v1/db/tables/privacy_consents/insert",
+        json={"values": {"consent_type": "login", "policy_version": "2026-09"}},
+        headers={"authorization": f"Bearer {JWT}"},
+    )
+    assert res.status_code == 200
+    body = res.json()
+    assert body["status"] == 200
+    assert body["error"] is None
+
+    res = client.post(
+        "/v1/db/tables/privacy_consents/update",
+        json={
+            "values": {"policy_version": "2027-01"},
+            "filters": [{"op": "eq", "col": "consent_type", "value": "login"}],
+        },
+        headers={"authorization": f"Bearer {JWT}"},
+    )
+    assert res.status_code == 403
+
+    res = client.post(
+        "/v1/db/tables/privacy_consents/delete",
+        json={"filters": [{"op": "eq", "col": "consent_type", "value": "login"}]},
+        headers={"authorization": f"Bearer {JWT}"},
+    )
+    assert res.status_code == 403
+
+
 def test_rpc_whitelist() -> None:
     res = client.post(
         "/v1/db/rpc/get_record_stats",

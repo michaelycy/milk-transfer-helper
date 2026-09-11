@@ -170,7 +170,7 @@ function LogsPage() {
           placeholder="按路径包含检索（如 /v1/db/tables）"
           value={path}
           onChange={(e) => setPath(e.target.value)}
-          onPressEnter={resetPage((v: string) => setPath(v))}
+          onPressEnter={() => setPage(1)}
           onBlur={(e) => resetPage(setPath)(e.target.value)}
           style={{ width: 280 }}
         />
@@ -179,7 +179,7 @@ function LogsPage() {
           placeholder="Request ID 精确检索"
           value={requestId}
           onChange={(e) => setRequestId(e.target.value)}
-          onPressEnter={resetPage((v: string) => setRequestId(v))}
+          onPressEnter={() => setPage(1)}
           onBlur={(e) => resetPage(setRequestId)(e.target.value)}
           style={{ width: 280 }}
         />

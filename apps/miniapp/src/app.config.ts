@@ -37,6 +37,18 @@ export default defineAppConfig({
       pages: ['pages/detail/index'],
     },
     {
+      root: 'packages/user',
+      pages: [
+        'pages/settings/index',
+        'pages/favorites/index',
+        'pages/about/index',
+        'pages/privacy/index',
+        'pages/security/index',
+        'pages/family/index',
+        'pages/family-accept/index',
+      ],
+    },
+    {
       root: 'packages/ai',
       pages: [
         'pages/chat/index',

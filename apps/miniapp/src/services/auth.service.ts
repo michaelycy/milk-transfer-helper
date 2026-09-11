@@ -73,6 +73,13 @@ export async function loginWechat(): Promise<void> {
   })
   if (sessionError) throw sessionError
   setAuthMode('wechat')
+  // 登录同意留痕（FR-H2/H5/H6）：fire-and-forget，失败不影响登录主流程
+  void supabase
+    .from('privacy_consents')
+    .insert({ consent_type: 'login', policy_version: '2026-09' })
+    .then(({ error: consentError }) => {
+      if (consentError) console.warn('登录同意留痕失败', consentError.message)
+    })
 }
 
 /** 退出登录（FR-H2）：清除本地登录态标记并注销会话 */

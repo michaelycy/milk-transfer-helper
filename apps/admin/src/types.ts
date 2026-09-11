@@ -108,3 +108,92 @@ export interface ApiLogPage {
   rows: ApiLogRow[];
   count: number;
 }
+
+
+// ---------- 用户与权限（FR-J8~J11，v2.0-draft10） ----------
+export interface AdminMe {
+  user_id: string;
+  email: string | null;
+  role: 'super_admin' | 'operator' | 'analyst';
+  permissions: string[];
+}
+
+export interface AdminRow {
+  user_id: string;
+  email: string;
+  role: 'super_admin' | 'operator' | 'analyst';
+  status: 'active' | 'disabled';
+  created_at: string;
+}
+
+export interface AdminInviteBody {
+  email: string;
+  role: 'super_admin' | 'operator' | 'analyst';
+}
+
+export interface AdminPatchBody {
+  role?: 'super_admin' | 'operator' | 'analyst';
+  status?: 'active' | 'disabled';
+}
+
+export interface AdminUserQuery {
+  openid?: string;
+  since?: string;
+  until?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export interface AdminUserRow {
+  id: string;
+  openid_masked: string | null;
+  nickname: string | null;
+  created_at: string | null;
+  baby_count: number;
+  record_count: number;
+  plan_count: number;
+}
+
+export interface AdminUserPage {
+  status: number;
+  data: AdminUserRow[] | null;
+  error: { message: string } | null;
+  count: number | null;
+}
+
+export interface AdminUserProfile {
+  id: string;
+  openid_masked: string | null;
+  nickname: string | null;
+  created_at: string | null;
+  phone_bound: boolean;
+  record_count: number;
+  last_active: string | null;
+}
+
+export interface AuditLogQuery {
+  action?: string;
+  actor?: string;
+  since?: string;
+  until?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export interface AuditLogRow {
+  id: number;
+  actor_user_id: string;
+  action: string;
+  target_type: string | null;
+  target_id: string | null;
+  detail: Record<string, unknown> | null;
+  ip: string | null;
+  created_at: string;
+}
+
+export interface AuditLogPage {
+  status: number;
+  data: AuditLogRow[] | null;
+  error: { message: string } | null;
+  count: number | null;
+}

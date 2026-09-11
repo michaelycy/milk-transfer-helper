@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Text, View } from '@tarojs/components'
+import { Image, Text, View } from '@tarojs/components'
 
 import Taro, { useDidShow } from '@tarojs/taro'
 import { Avatar, Cell } from '@taroify/core'
 import { LoginGate } from '../../components/LoginGate'
 import { useAuth } from '../../store/auth'
 import { RecordService } from '../../services/record.service'
+import { UsersService, type UserProfile } from '../../services/users.service'
 import { toastError } from '../../utils/error'
 import type { RecordStats } from '../../types'
 import './index.scss'
@@ -19,6 +20,7 @@ export default function Profile() {
   
   const { authed, isWechat, logout } = useAuth()
   const [stats, setStats] = useState<RecordStats>({ total: 0, days: 0 })
+  const [profile, setProfile] = useState<UserProfile | null>(null)
 
   useEffect(() => {
     if (!authed) return
@@ -31,11 +33,19 @@ export default function Profile() {
         if (!cancelled) toastError(error, '获取统计失败')
       }
     }
+    // 真实资料（FR-H6）：微信账号读 users 行；游客显示游客标识
+    if (isWechat) {
+      void UsersService.getProfile()
+        .then((p) => {
+          if (!cancelled) setProfile(p)
+        })
+        .catch(() => undefined)
+    }
     void fetchStats()
     return () => {
       cancelled = true
     }
-  }, [authed])
+  }, [authed, isWechat])
 
   const handleLogout = () => {
     void Taro.showModal({
@@ -52,11 +62,15 @@ export default function Profile() {
     <LoginGate>
       <View className='profile-page'>
         <View className='user-card'>
-          <Avatar shape='circle' size='large'>
-            用户
-          </Avatar>
+          {profile?.avatar ? (
+            <Image className='avatar-img' src={profile.avatar} mode='aspectFill' />
+          ) : (
+            <Avatar shape='circle' size='large'>
+              {profile?.nickname?.slice(0, 1) || (isWechat ? '用' : '客')}
+            </Avatar>
+          )}
           <View className='user-info'>
-            <Text className='nickname'>普通用户</Text>
+            <Text className='nickname'>{isWechat ? profile?.nickname || '未设置昵称' : '游客'}</Text>
             <Text className='user-mode'>{isWechat ? '微信登录 · 数据云端同步' : '游客模式 · 数据仅本设备'}</Text>
           </View>
         </View>
@@ -86,9 +100,30 @@ export default function Profile() {
               clickable
               onClick={() => Taro.navigateTo({ url: '/packages/ai/pages/chat/index' })}
             />
-            <Cell title='我的收藏' isLink clickable />
-            <Cell title='关于我们' isLink clickable />
-            <Cell title='设置' isLink clickable />
+            <Cell
+              title='家庭共享'
+              isLink
+              clickable
+              onClick={() => Taro.navigateTo({ url: '/packages/user/pages/family/index' })}
+            />
+            <Cell
+              title='我的收藏'
+              isLink
+              clickable
+              onClick={() => Taro.navigateTo({ url: '/packages/user/pages/favorites/index' })}
+            />
+            <Cell
+              title='设置'
+              isLink
+              clickable
+              onClick={() => Taro.navigateTo({ url: '/packages/user/pages/settings/index' })}
+            />
+            <Cell
+              title='关于我们'
+              isLink
+              clickable
+              onClick={() => Taro.navigateTo({ url: '/packages/user/pages/about/index' })}
+            />
           </Cell.Group>
         </View>
 

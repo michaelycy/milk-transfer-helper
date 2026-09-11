@@ -7,8 +7,8 @@ import { supabase } from './supabase';
  */
 export async function callBackendApi<T>(
   path: string,
-  body?: Record<string, unknown>,
-  method: 'POST' | 'PUT' | 'GET' = 'POST',
+  body?: object,
+  method: 'POST' | 'PUT' | 'GET' | 'DELETE' = 'POST',
 ): Promise<T> {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
@@ -19,7 +19,8 @@ export async function callBackendApi<T>(
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
     body: method === 'GET' ? undefined : JSON.stringify(body ?? {}),
   });
-  if (res.status === 401 || res.status === 403) throw new Error('需要管理员权限');
+  if (res.status === 401) throw new Error('会话已过期，请重新登录');
+  if (res.status === 403) throw new Error('需要管理员权限');
   const payload = (await res.json()) as {
     status: number;
     data: T;

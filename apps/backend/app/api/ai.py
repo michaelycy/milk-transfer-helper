@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field
 from app.core import ai_gateway as gw
 from app.core import ai_safety as safety
 from app.core.config import get_settings
-from app.core.deps import current_user, require_admin, require_jwt
+from app.core.deps import current_user, require_admin_permission, require_jwt
 from app.core.secret_box import SecretBox, get_master_secret
 from app.core.supabase import postgrest
 
@@ -359,7 +359,7 @@ async def provider_key_status(
 ) -> dict[str, Any]:
     """密钥配置状态：仅回显 configured + 末 4 位掩码，密文/明文均不出后端（FR-K6/NFR-2）。"""
     token = require_jwt(jwt)
-    await require_admin(token)
+    await require_admin_permission(token, "ai:key")
     row = await gw.fetch_provider_secret(provider.strip())
     return {"status": 200, "data": gw.provider_key_status(row), "error": None}
 
@@ -372,7 +372,7 @@ async def set_provider_key(
 ) -> dict[str, Any]:
     """设置/清除供应商密钥：AES-256-GCM 加密落库；响应永不包含明文与密文。"""
     token = require_jwt(jwt)
-    await require_admin(token)
+    _, _role = await require_admin_permission(token, "ai:key")
     master = get_master_secret()
     if not master or len(master) < 16:
         raise HTTPException(
@@ -411,7 +411,7 @@ async def probe_provider(
 ) -> dict[str, Any]:
     """FR-K8 连通性自检：最小文本探针（max_tokens ≤ 16），不计用户配额；调用记账 scene='test'。"""
     token = require_jwt(jwt)
-    await require_admin(token)
+    await require_admin_permission(token, "ai:config")
 
     probe = {
         "provider": body.provider.strip(),
@@ -464,7 +464,7 @@ async def provider_keys_overview(
 ) -> dict[str, Any]:
     """全量密钥配置状态（FR-J7 表格列）：仅 provider + 末 4 位掩码。"""
     token = require_jwt(jwt)
-    await require_admin(token)
+    await require_admin_permission(token, "ai:key")
     res = await postgrest(
         "GET", "/ai_provider_secrets",
         jwt=get_settings().supabase_service_role_key,

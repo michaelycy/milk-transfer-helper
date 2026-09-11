@@ -79,7 +79,8 @@ def _env_and_transports(monkeypatch: pytest.MonkeyPatch):
             rows = [r for r in STATE["providers"] if r.get("name") == name] if name else STATE["providers"]
             return httpx.Response(200, json=rows)
         if path == "/rest/v1/admins" and request.method == "GET":
-            return httpx.Response(200, json=[{"user_id": USER_ID}] if STATE["is_admin"] else [])
+            return httpx.Response(200, json=[{"user_id": USER_ID, "email": "admin@example.com", "role": "super_admin", "status": "active"}]
+            if STATE["is_admin"] else [])
         if path == "/rest/v1/ai_provider_secrets" and request.method == "GET":
             name = str(request.url.params.get("provider_name", "")).removeprefix("eq.")
             rows = [r for r in STATE["secrets"] if r.get("provider_name") == name] if name else STATE["secrets"]

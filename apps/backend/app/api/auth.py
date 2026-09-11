@@ -1,17 +1,59 @@
-"""鉴权接口：匿名登录 / 微信登录 / 刷新 / 登出 / 当前用户。
+"""鉴权与账户接口：匿名登录 / 微信登录 / 刷新 / 登出 / 当前用户 / 资料 / 手机号（H6/H7）。
 
 微信登录移植自 supabase/functions/wechat-login（FR-H1）：
 code2session → 按 openid 找/建正式账号 → 匿名数据无损迁移 → 签发会话。
 """
 import hashlib
+import time
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Header, HTTPException, Query
+from pydantic import BaseModel, Field
 
 from app.core.config import get_settings
+from app.core.secret_box import SecretBox
 from app.core.supabase import gotrue, postgrest, wechat_code2session
 
 router = APIRouter(prefix="/v1/auth", tags=["auth"])
+
+_wx_token_cache: tuple[str, float] = ("", 0.0)
+PHONE_CONSENT_VERSION = "2026-09"
+
+
+class ProfileBody(BaseModel):
+    nickname: str | None = Field(default=None, min_length=1, max_length=20)
+    avatar_url: str | None = Field(default=None, max_length=500)
+
+
+class PhoneBindBody(BaseModel):
+    phone_code: str = Field(min_length=1, max_length=64)
+    consent_version: str = PHONE_CONSENT_VERSION
+
+
+async def _wx_access_token() -> str:
+    """小程序接口调用凭证（稳定 token），进程内缓存至过期前 5 分钟。"""
+    global _wx_token_cache
+    token, expires_at = _wx_token_cache
+    if token and time.monotonic() < expires_at:
+        return token
+    import httpx
+
+    settings = get_settings()
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        res = await client.get(
+            "https://api.weixin.qq.com/cgi-bin/token",
+            params={
+                "grant_type": "client_credential",
+                "appid": settings.wechat_appid,
+                "secret": settings.wechat_secret,
+            },
+        )
+    body = res.json()
+    token = str(body.get("access_token") or "")
+    if not token:
+        raise HTTPException(status_code=502, detail=f"获取微信凭证失败：{body.get('errmsg')}")
+    _wx_token_cache = (token, time.monotonic() + int(body.get("expires_in", 7200)) - 300)
+    return token
 
 
 @router.post("/anonymous")
@@ -150,3 +192,207 @@ async def me(
     if res.status >= 400:
         raise HTTPException(status_code=res.status, detail=res.body)
     return res.body
+
+
+@router.patch("/profile")
+async def update_profile(
+    body: ProfileBody,
+    jwt_header: Annotated[str | None, Header(alias="authorization")] = None,
+) -> dict[str, Any]:
+    """用户资料（FR-H6）：昵称 ≤ 20 字、头像 URL；仅本人。"""
+    token = require_jwt_token(jwt_header)
+    uid = await _current(token)
+    patch: dict[str, Any] = {}
+    if body.nickname is not None:
+        patch["nickname"] = body.nickname.strip()
+    if body.avatar_url is not None:
+        patch["avatar"] = body.avatar_url
+    if not patch:
+        return {"status": 200, "body": {"updated": False}}
+    settings = get_settings()
+    res = await postgrest(
+        "PATCH", "/users", jwt=settings.supabase_service_role_key,
+        params={"id": f"eq.{uid}"}, json_body=patch, prefer="return=representation",
+    )
+    rows = res.data if isinstance(res.data, list) else []
+    if res.status >= 400 or not rows:
+        raise HTTPException(status_code=502, detail="资料更新失败")
+    row = rows[0]
+    return {"status": 200, "body": {"nickname": row.get("nickname"), "avatar": row.get("avatar")}}
+
+
+def require_jwt_token(authorization: str | None) -> str:
+    from app.core.deps import require_jwt
+
+    return require_jwt(authorization)
+
+
+async def _current(token: str) -> str:
+    from app.core.deps import current_user
+
+    return await current_user(token)
+
+
+@router.post("/phone/bind")
+async def bind_phone(
+    body: PhoneBindBody,
+    jwt_header: Annotated[str | None, Header(alias="authorization")] = None,
+) -> dict[str, Any]:
+    """手机号绑定（FR-H7）：微信快捷授权 code 换号 → 哈希指纹唯一 + AES-GCM 密文存储。
+
+    完整手机号不出后端；响应仅含脱敏展示。绑定行为与单独同意分别留痕。
+    """
+    token = require_jwt_token(jwt_header)
+    uid = await _current(token)
+    settings = get_settings()
+
+    access = await _wx_access_token()
+    import httpx
+
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        res = await client.post(
+            "https://api.weixin.qq.com/wxa/business/getuserphonenumber",
+            params={"access_token": access},
+            json={"code": body.phone_code},
+        )
+    info = (res.json() or {}).get("phone_info") or {}
+    phone = str(info.get("purePhoneNumber") or "")
+    if not phone:
+        raise HTTPException(status_code=400, detail="手机号授权无效或已过期")
+
+    phone_hash = hashlib.sha256(phone.encode()).hexdigest()
+    conflict = await postgrest(
+        "GET", "/users", jwt=settings.supabase_service_role_key,
+        params={"phone_hash": f"eq.{phone_hash}", "select": "id", "limit": "1"},
+    )
+    crows = conflict.data if isinstance(conflict.data, list) else []
+    if crows and str(crows[0]["id"]) != uid:
+        raise HTTPException(status_code=409, detail="该手机号已绑定其他账号")
+
+    master = settings.ai_key_master_secret  # 与供应商密钥共用主密钥（NFR-2：密文+指纹）
+    if not master or len(master) < 16:
+        raise HTTPException(status_code=400, detail="主密钥未配置，暂不能绑定手机号")
+    cipher = SecretBox(master).encrypt(phone)
+    await postgrest(
+        "PATCH", "/users", jwt=settings.supabase_service_role_key,
+        params={"id": f"eq.{uid}"},
+        json_body={"phone_hash": phone_hash, "phone_cipher": cipher},
+    )
+    # 单独同意留痕（FR-H2/H7）
+    await postgrest(
+        "POST", "/privacy_consents", jwt=token,
+        json_body={"consent_type": "phone", "policy_version": body.consent_version},
+    )
+    return {"status": 200, "body": {"phone_masked": phone[:3] + "****" + phone[-4:]}}
+
+
+@router.post("/phone/unbind")
+async def unbind_phone(
+    jwt_header: Annotated[str | None, Header(alias="authorization")] = None,
+) -> dict[str, Any]:
+    """解绑手机号：指纹与密文同步清除（FR-H7）。"""
+    token = require_jwt_token(jwt_header)
+    uid = await _current(token)
+    await postgrest(
+        "PATCH", "/users", jwt=get_settings().supabase_service_role_key,
+        params={"id": f"eq.{uid}"}, json_body={"phone_hash": None, "phone_cipher": None},
+    )
+    return {"status": 200, "body": {"unbound": True}}
+
+
+@router.get("/profile")
+async def get_profile(
+    jwt_header: Annotated[str | None, Header(alias="authorization")] = None,
+) -> dict[str, Any]:
+    """用户资料（FR-H6/H7）：users 行 + 手机号脱敏展示（密文解密不出后端）。"""
+    token = require_jwt_token(jwt_header)
+    uid = await _current(token)
+    settings = get_settings()
+    res = await postgrest(
+        "GET", "/users", jwt=settings.supabase_service_role_key,
+        params={"id": f"eq.{uid}", "select": "id,nickname,avatar,phone_cipher,created_at", "limit": "1"},
+    )
+    rows = res.data if isinstance(res.data, list) else []
+    if not rows:
+        return {"status": 200, "body": {"nickname": None, "avatar": None, "phone_masked": None}}
+    row = rows[0]
+    phone_masked = None
+    cipher = row.get("phone_cipher")
+    if cipher:
+        from app.core.secret_box import try_decrypt_stored
+
+        plain = try_decrypt_stored(str(cipher))
+        if plain:
+            phone_masked = plain[:3] + "****" + plain[-4:]
+    return {
+        "status": 200,
+        "body": {
+            "id": str(row.get("id")),
+            "nickname": row.get("nickname"),
+            "avatar": row.get("avatar"),
+            "phone_masked": phone_masked,
+            "created_at": row.get("created_at"),
+        },
+    }
+
+
+@router.post("/deactivate")
+async def deactivate_account(
+    payload: dict[str, Any],
+    jwt_header: Annotated[str | None, Header(alias="authorization")] = None,
+) -> dict[str, Any]:
+    """账号注销（FR-H2）：级联删除 auth 账号与全部业务数据；二次确认在客户端完成。"""
+    if not payload.get("confirm"):
+        raise HTTPException(status_code=400, detail="缺少确认参数")
+    token = require_jwt_token(jwt_header)
+    uid = await _current(token)
+    res = await gotrue("DELETE", f"/admin/users/{uid}", service_role=True)
+    if res.status >= 400:
+        raise HTTPException(status_code=502, detail="注销失败，请稍后重试")
+    return {"status": 200, "body": {"deleted": True}}
+
+
+@router.post("/avatar")
+async def upload_avatar(
+    payload: dict[str, Any],
+    jwt_header: Annotated[str | None, Header(alias="authorization")] = None,
+) -> dict[str, Any]:
+    """头像上传（FR-H6）：base64 数据 → avatars 桶（路径含 user_id，公开读、本人写）。"""
+    import base64
+
+    token = require_jwt_token(jwt_header)
+    uid = await _current(token)
+    data_url = str(payload.get("data") or "")
+    if not data_url.startswith("data:image/"):
+        raise HTTPException(status_code=400, detail="仅支持图片数据")
+    try:
+        b64 = data_url.split(",", 1)[1]
+        raw = base64.b64decode(b64)
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="图片数据无效") from exc
+    if len(raw) > 2 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="图片超过 2MB，请压缩后重试")
+    import httpx
+
+    settings = get_settings()
+    path = f"avatars/{uid}/avatar.png"
+    url = f"{settings.supabase_url}/storage/v1/object/{path}"
+    async with httpx.AsyncClient(timeout=20.0) as client:
+        up = await client.post(
+            url,
+            headers={
+                "apikey": settings.supabase_service_role_key,
+                "Authorization": f"Bearer {settings.supabase_service_role_key}",
+                "Content-Type": "image/png",
+                "x-upsert": "true",
+            },
+            content=raw,
+        )
+    if up.status_code >= 400:
+        raise HTTPException(status_code=502, detail="头像上传失败")
+    public_url = f"{settings.supabase_url}/storage/v1/object/public/{path}"
+    await postgrest(
+        "PATCH", "/users", jwt=settings.supabase_service_role_key,
+        params={"id": f"eq.{uid}"}, json_body={"avatar": public_url},
+    )
+    return {"status": 200, "body": {"avatar": public_url}}

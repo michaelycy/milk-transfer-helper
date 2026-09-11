@@ -5,6 +5,7 @@ import {
   useLocation,
   useNavigate,
 } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
 import { Button, Layout, Menu, Typography, App } from 'antd';
 import {
   DashboardOutlined,
@@ -14,8 +15,13 @@ import {
   ScheduleOutlined,
   ShopOutlined,
   LogoutOutlined,
+  SafetyOutlined,
+  TeamOutlined,
+  HistoryOutlined,
 } from '@ant-design/icons';
 import { AuthService } from '../services/auth.service';
+import { AdminService } from '../services/admin.service';
+import { PermissionContext, type AdminMe } from '../lib/permissions';
 
 /** 登录守卫 + 后台框架布局（无会话或非管理员一律重定向 /login） */
 export const Route = createFileRoute('/_auth')({
@@ -30,19 +36,34 @@ export const Route = createFileRoute('/_auth')({
   component: AuthLayout,
 });
 
-const MENU_ITEMS = [
-  { key: '/', icon: <DashboardOutlined />, label: '数据看板' },
-  { key: '/milk', icon: <ShopOutlined />, label: '奶粉库' },
-  { key: '/articles', icon: <FileTextOutlined />, label: '文章管理' },
-  { key: '/templates', icon: <ScheduleOutlined />, label: '转奶模板' },
-  { key: '/ai', icon: <RobotOutlined />, label: 'AI 配置' },
-  { key: '/logs', icon: <FileSearchOutlined />, label: '运行日志' },
+// 菜单 → 权限点（FR-J8）：按登录管理员权限过滤渲染；无权限路由由页面级守卫兜底
+const MENU_ITEMS: { key: string; icon: React.ReactNode; label: string; permission?: string }[] = [
+  { key: '/', icon: <DashboardOutlined />, label: '数据看板', permission: 'dashboard:read' },
+  { key: '/milk', icon: <ShopOutlined />, label: '奶粉库', permission: 'milk:write' },
+  { key: '/articles', icon: <FileTextOutlined />, label: '文章管理', permission: 'article:write' },
+  { key: '/templates', icon: <ScheduleOutlined />, label: '转奶模板', permission: 'template:write' },
+  { key: '/ai', icon: <RobotOutlined />, label: 'AI 配置', permission: 'ai:config' },
+  { key: '/logs', icon: <FileSearchOutlined />, label: '运行日志', permission: 'dashboard:read' },
+  { key: '/admins', icon: <SafetyOutlined />, label: '管理员管理', permission: 'admin:manage' },
+  { key: '/users', icon: <TeamOutlined />, label: '用户查询', permission: 'user:read' },
+  { key: '/audit', icon: <HistoryOutlined />, label: '审计日志', permission: 'audit:read' },
 ];
 
 function AuthLayout() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { message } = App.useApp();
+  const [me, setMe] = useState<AdminMe | null>(null);
+
+  useEffect(() => {
+    AdminService.me()
+      .then(setMe)
+      .catch(() => setMe(null));
+  }, []);
+
+  const items = MENU_ITEMS.filter(
+    (item) => !item.permission || (me?.permissions ?? []).includes(item.permission),
+  );
 
   const logout = async () => {
     await AuthService.signOut();
@@ -51,6 +72,7 @@ function AuthLayout() {
   };
 
   return (
+    <PermissionContext.Provider value={me}>
     <Layout style={{ minHeight: '100vh' }}>
       <Layout.Sider theme="dark" width={200}>
         {/* logo 区（对应画板 A-02 侧栏 logo-row） */}
@@ -86,7 +108,7 @@ function AuthLayout() {
           theme="dark"
           mode="inline"
           selectedKeys={[pathname]}
-          items={MENU_ITEMS}
+          items={items}
           onClick={({ key }) => navigate({ to: key })}
         />
       </Layout.Sider>
@@ -97,9 +119,16 @@ function AuthLayout() {
             display: 'flex',
             justifyContent: 'flex-end',
             alignItems: 'center',
+            gap: 16,
             paddingInline: 24,
           }}
         >
+          {me && (
+            <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+              {me.email} ·{' '}
+              {{ super_admin: '超级管理员', operator: '运营', analyst: '分析师' }[me.role]}
+            </Typography.Text>
+          )}
           <Button type="text" icon={<LogoutOutlined />} onClick={logout}>
             退出登录
           </Button>
@@ -109,5 +138,6 @@ function AuthLayout() {
         </Layout.Content>
       </Layout>
     </Layout>
+    </PermissionContext.Provider>
   );
 }

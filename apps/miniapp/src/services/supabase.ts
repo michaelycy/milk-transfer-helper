@@ -115,7 +115,7 @@ interface TaroResponseLike {
 
 async function httpRequest(options: {
   url: string
-  method: 'GET' | 'POST'
+  method: 'GET' | 'POST' | 'PATCH' | 'DELETE'
   data?: Record<string, unknown>
   header?: Record<string, string>
 }): Promise<TaroResponseLike> {
@@ -133,7 +133,7 @@ async function transport(
   path: string,
   body: Record<string, unknown>,
   bearerToken?: string,
-  method: 'GET' | 'POST' = 'POST',
+  method: 'GET' | 'POST' | 'PATCH' | 'DELETE' = 'POST',
 ): Promise<TransportResult> {
   const token = bearerToken ?? loadSession()?.access_token
   const res = await httpRequest({
@@ -175,7 +175,7 @@ async function authPost(path: string, body: Record<string, unknown>): Promise<Tr
 export async function aiRequest(
   path: string,
   body?: Record<string, unknown>,
-  method: 'GET' | 'POST' = 'POST',
+  method: 'GET' | 'POST' | 'PATCH' | 'DELETE' = 'POST',
 ): Promise<TransportResult> {
   return transport(path, body ?? {}, undefined, method)
 }

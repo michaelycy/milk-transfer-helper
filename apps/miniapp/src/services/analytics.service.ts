@@ -20,6 +20,9 @@ export type AnalyticsEvent =
   | 'share_card_created'
   | 'baby_created'
   | 'ai_used'
+  | 'profile_updated'
+  | 'family_invite_created'
+  | 'family_invite_accepted'
 
 export function track(name: AnalyticsEvent, props: Record<string, unknown> = {}): void {
   void (async () => {

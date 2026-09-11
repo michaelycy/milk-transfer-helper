@@ -57,7 +57,8 @@ def _env_and_transport(monkeypatch: pytest.MonkeyPatch):
         if path == "/auth/v1/user":
             return httpx.Response(200, json={"id": USER_ID})
         if path == "/rest/v1/admins" and request.method == "GET":
-            return httpx.Response(200, json=[{"user_id": USER_ID}] if STATE["is_admin"] else [])
+            return httpx.Response(200, json=[{"user_id": USER_ID, "email": "admin@example.com", "role": "super_admin", "status": "active"}]
+            if STATE["is_admin"] else [])
         if path == "/rest/v1/api_logs" and request.method == "POST":
             STATE["logged_rows"].append(json.loads(request.content.decode()))
             return httpx.Response(201)

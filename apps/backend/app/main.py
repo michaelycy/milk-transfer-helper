@@ -9,6 +9,7 @@ from app.api import admin as admin_api
 from app.api import ai as ai_api
 from app.api import auth as auth_api
 from app.api import data as data_api
+from app.api import family as family_api
 from app.core.api_log import ApiLogMiddleware, logger, purge_expired
 
 _retention_task: asyncio.Task | None = None
@@ -50,6 +51,7 @@ app.include_router(data_api.router)
 app.include_router(ai_api.router)
 app.include_router(ai_api.admin_router)
 app.include_router(admin_api.router)
+app.include_router(family_api.router)
 
 
 @app.get("/healthz")

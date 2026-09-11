@@ -26,10 +26,23 @@ TABLE_POLICY: dict[str, dict[str, bool]] = {
     "milk_products": {"read": True, "insert": False, "update": False, "delete": False},
     "plan_templates": {"read": True, "insert": False, "update": False, "delete": False},
     "analytics_events": {"read": False, "insert": True, "update": False, "delete": False},
+    # 隐私同意留痕（H2/H5/H6/H7）：只追加，update/delete 不开放（与迁移授权一致）
+    "privacy_consents": {"read": True, "insert": True, "update": False, "delete": False},
 }
 
 ALLOWED_OPS = {"eq", "neq", "gt", "gte", "lt", "lte", "like", "ilike", "in", "is", "or"}
-ALLOWED_RPCS = {"get_record_stats", "increment_read_count"}
+ALLOWED_RPCS = {"get_record_stats", "increment_read_count", "is_baby_member"}
+
+# 家庭共享（FR-H3）：宝宝域表的写权限在应用层主裁决（NFR-7 双裁决，RLS 为纵深防御）
+# 表 → (定位宝宝的列, 最小角色)；babies 本身写 = owner，其余写 = editor
+BABY_SCOPED_WRITE: dict[str, tuple[str, str]] = {
+    "babies": ("id", "owner"),
+    "feed_records": ("baby_id", "editor"),
+    "symptom_logs": ("baby_id", "editor"),
+    "weight_logs": ("baby_id", "editor"),
+    "transfer_plans": ("baby_id", "editor"),
+    "alerts": ("baby_id", "editor"),
+}
 
 
 class Filter(BaseModel):
@@ -67,6 +80,38 @@ def _require_table(table: str, action: "Literal['read', 'insert', 'update', 'del
     policy = TABLE_POLICY.get(table)
     if not policy or not policy.get(action):
         raise HTTPException(status_code=403, detail=f"table {table} 不允许 {action} 操作")
+
+
+async def _enforce_baby_scoped_write(
+    table: str, token: str, filters: list[Filter] | None, values: dict[str, Any] | None
+) -> None:
+    """宝宝域表写操作的应用层裁决（FR-H3）：owner/editor 经 is_baby_member 判定。
+
+    babies 插入无需检查（user_id 由 auth.uid() 默认，触发器自动建 owner 成员行）。
+    缺少宝宝定位条件时直接拒绝——不允许无 baby 边界的共享数据写操作。
+    """
+    spec = BABY_SCOPED_WRITE.get(table)
+    if not spec:
+        return
+    baby_col, min_role = spec
+    baby_id = ""
+    if table == "babies" and filters is None:
+        return  # 新建档案：own-policy + babies_bootstrap_owner 触发器覆盖，无需检查
+    for f in filters or []:
+        if f.col == baby_col and f.op == "eq":
+            baby_id = f.value
+            break
+    if not baby_id and values and table != "babies":
+        baby_id = str(values.get(baby_col) or "")
+    if not baby_id:
+        raise HTTPException(status_code=400, detail=f"{table} 写操作必须携带 {baby_col} 条件")
+    res = await postgrest(
+        "POST", "/rpc/is_baby_member", jwt=token,
+        json_body={"target_baby": baby_id, "min_role": min_role},
+    )
+    allowed = res.data is True if res.status < 400 else None
+    if not allowed:
+        raise HTTPException(status_code=403, detail="无该宝宝的写入权限")
 
 
 def _filter_params(filters: list[Filter]) -> dict[str, str]:
@@ -145,6 +190,8 @@ async def insert(
 ) -> dict:
     _require_table(table, "insert")
     token = require_jwt(jwt)
+    if table in BABY_SCOPED_WRITE and table != "babies":
+        await _enforce_baby_scoped_write(table, token, None, body.values)
     params = {"select": body.select}
     if body.on_conflict:
         params["on_conflict"] = body.on_conflict
@@ -182,6 +229,7 @@ async def update(
     token = require_jwt(jwt)
     if not body.filters:
         raise HTTPException(status_code=400, detail="update 必须携带过滤条件")
+    await _enforce_baby_scoped_write(table, token, body.filters, body.values)
     res = await postgrest(
         "PATCH",
         f"/{table}",
@@ -206,6 +254,7 @@ async def delete_rows(
     token = require_jwt(jwt)
     if not body.filters:
         raise HTTPException(status_code=400, detail="delete 必须携带过滤条件")
+    await _enforce_baby_scoped_write(table, token, body.filters, None)
     res = await postgrest(
         "DELETE", f"/{table}", jwt=token, params=_filter_params(body.filters)
     )

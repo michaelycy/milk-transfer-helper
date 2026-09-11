@@ -41,6 +41,8 @@ class Settings(BaseSettings):
         "favorites",
         "weight_logs",
         "babies",
+        "baby_members",
+        "family_invites",
     ]
 
     # API 运行日志（FR-J12，规范见 docs/spec/05-api-guidelines.md §4）
