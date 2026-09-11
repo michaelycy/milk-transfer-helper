@@ -109,7 +109,7 @@ async def me(
     jwt: Annotated[str | None, Header(alias="authorization")] = None,
 ) -> dict[str, Any]:
     token = require_jwt(jwt)
-    user_id = await require_admin_permission(token, "dashboard:read")
+    user_id, _role = await require_admin_permission(token, "dashboard:read")
     row = await admin_role_of(user_id)
     role = str((row or {}).get("role") or "")
     return {

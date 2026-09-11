@@ -61,7 +61,8 @@ export const ArticleService = {
       .select('id, created_at, article:articles(*)')
       .order('created_at', { ascending: false })
     if (error) throw error
-    return (data ?? []) as FavoriteItem[]
+    // select 别名嵌入的类型由 PostgREST 运行时决定，客户端泛型不感知，需断言
+    return (data ?? []) as unknown as FavoriteItem[]
   },
 
   async addFavorite(articleId: string): Promise<void> {

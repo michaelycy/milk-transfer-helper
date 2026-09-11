@@ -4,6 +4,7 @@ import Taro, { useRouter } from '@tarojs/taro'
 import { Button } from '@taroify/core'
 import { useAuth } from '../../../../store/auth'
 import { FamilyService, type AcceptResult } from '../../../../services/family.service'
+import { track } from '../../../../services/analytics.service'
 import '../shared.scss'
 
 /** 邀请接受页（FR-H3）：经分享卡片携带短码进入；游客需先升级微信登录 */
@@ -17,7 +18,11 @@ export default function FamilyAccept() {
   useEffect(() => {
     if (!code || !isWechat) return
     void FamilyService.acceptInvite(code)
-      .then(setResult)
+      .then((res) => {
+        // 接受成功才计事件；幂等重复接受（already）同样视为一次成功加入
+        if (!res.already) track('family_invite_accepted', { role: res.role })
+        setResult(res)
+      })
       .catch((e) => setError((e as Error).message))
   }, [code, isWechat])
 

@@ -1,80 +1,80 @@
-import { useEffect, useState } from 'react'
-import { Button, Cell, Input } from '@tarojs/components'
-import Taro from '@tarojs/taro'
-import { Avatar } from '@taroify/core'
-import { useAuth } from '../../../../store/auth'
-import { UsersService, type UserProfile } from '../../../../services/users.service'
-import { track } from '../../../../services/analytics.service'
-import { toastError } from '../../../../utils/error'
-import '../shared.scss'
+import { useEffect, useState } from 'react';
+import { Image, Input, Text, View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { Button, Cell } from '@taroify/core';
+import { useAuth } from '../../../../store/auth';
+import { UsersService, type UserProfile } from '../../../../services/users.service';
+import { track } from '../../../../services/analytics.service';
+import { toastError } from '../../../../utils/error';
+import '../shared.scss';
 
-const NICKNAME_MAX = 20
+const NICKNAME_MAX = 20;
 
 /** 设置（FR-H6/V2-18）：资料编辑（头像昵称填写能力）+ 隐私中心/账号安全/关于聚合 + 退出登录 */
 export default function Settings() {
-  const { isWechat, logout } = useAuth()
-  const [profile, setProfile] = useState<UserProfile | null>(null)
-  const [nickname, setNickname] = useState('')
-  const [savingAvatar, setSavingAvatar] = useState(false)
+  const { isWechat, logout } = useAuth();
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [nickname, setNickname] = useState('');
+  const [savingAvatar, setSavingAvatar] = useState(false);
 
   useEffect(() => {
-    if (!isWechat) return
-    let cancelled = false
+    if (!isWechat) return;
+    let cancelled = false;
     void UsersService.getProfile()
       .then((p) => {
-        if (cancelled) return
-        setProfile(p)
-        setNickname(p?.nickname ?? '')
+        if (cancelled) return;
+        setProfile(p);
+        setNickname(p?.nickname ?? '');
       })
-      .catch(() => undefined)
+      .catch(() => undefined);
     return () => {
-      cancelled = true
-    }
-  }, [isWechat])
+      cancelled = true;
+    };
+  }, [isWechat]);
 
   /** 微信官方头像填写能力：临时文件 → base64 → 后端上传并落库；失败保留原头像 */
   const handleChooseAvatar = (e: { detail: { avatarUrl?: string } }) => {
-    const tempPath = e.detail.avatarUrl
-    if (!tempPath || savingAvatar) return
+    const tempPath = e.detail.avatarUrl;
+    if (!tempPath || savingAvatar) return;
     if (process.env.TARO_ENV !== 'weapp') {
-      Taro.showToast({ title: '请在微信小程序内更换头像', icon: 'none' })
-      return
+      Taro.showToast({ title: '请在微信小程序内更换头像', icon: 'none' });
+      return;
     }
-    setSavingAvatar(true)
+    setSavingAvatar(true);
     try {
-      const base64 = Taro.getFileSystemManager().readFileSync(tempPath, 'base64') as string
+      const base64 = Taro.getFileSystemManager().readFileSync(tempPath, 'base64') as string;
       void UsersService.uploadAvatar(base64)
         .then((url) => {
-          setProfile((prev) => (prev ? { ...prev, avatar: url } : prev))
-          Taro.showToast({ title: '头像已更新', icon: 'success' })
-          track('profile_updated', { field: 'avatar' })
+          setProfile((prev) => (prev ? { ...prev, avatar: url } : prev));
+          Taro.showToast({ title: '头像已更新', icon: 'success' });
+          track('profile_updated', { field: 'avatar' });
         })
         .catch((err) => toastError(err, '头像上传失败，已保留原头像'))
-        .finally(() => setSavingAvatar(false))
+        .finally(() => setSavingAvatar(false));
     } catch (error) {
-      setSavingAvatar(false)
-      toastError(error, '读取图片失败')
+      setSavingAvatar(false);
+      toastError(error, '读取图片失败');
     }
-  }
+  };
 
   const saveNickname = () => {
-    const next = nickname.trim()
-    if (!profile || next === (profile.nickname ?? '')) return
+    const next = nickname.trim();
+    if (!profile || next === (profile.nickname ?? '')) return;
     if (!next) {
-      setNickname(profile.nickname ?? '')
-      return
+      setNickname(profile.nickname ?? '');
+      return;
     }
     void UsersService.updateNickname(next)
       .then(() => {
-        setProfile((prev) => (prev ? { ...prev, nickname: next } : prev))
-        Taro.showToast({ title: '昵称已保存', icon: 'success' })
-        track('profile_updated', { field: 'nickname' })
+        setProfile((prev) => (prev ? { ...prev, nickname: next } : prev));
+        Taro.showToast({ title: '昵称已保存', icon: 'success' });
+        track('profile_updated', { field: 'nickname' });
       })
       .catch((err) => {
-        toastError(err, '昵称保存失败')
-        setNickname(profile.nickname ?? '')
-      })
-  }
+        toastError(err, '昵称保存失败');
+        setNickname(profile.nickname ?? '');
+      });
+  };
 
   const handleLogout = () => {
     void Taro.showModal({
@@ -82,11 +82,11 @@ export default function Settings() {
       content: '退出后将返回登录页；游客模式的数据仅保存在本设备。',
       confirmColor: '#FF6B35',
       success: (res) => {
-        if (!res.confirm) return
-        void logout().then(() => Taro.reLaunch({ url: '/pages/login/index' }))
+        if (!res.confirm) return;
+        void logout().then(() => Taro.reLaunch({ url: '/pages/login/index' }));
       },
-    })
-  }
+    });
+  };
 
   return (
     <View className='user-page'>
@@ -98,19 +98,19 @@ export default function Settings() {
         <View className='avatar-wrap'>
           {isWechat ? (
             <Button
-              className='native-btn avatar-btn'
+              className='avatar-btn'
               openType='chooseAvatar'
               disabled={savingAvatar}
               onChooseAvatar={handleChooseAvatar}
             >
               {profile?.avatar ? (
-                <image className='avatar-img' src={profile.avatar} mode='aspectFill' />
+                <Image className='avatar-img' src={profile.avatar} mode='aspectFill' />
               ) : (
-                <text className='avatar-placeholder'>{profile?.nickname?.slice(0, 1) || '用'}</text>
+                <Text className='avatar-placeholder'>{profile?.nickname?.slice(0, 1) || '用'}</Text>
               )}
             </Button>
           ) : (
-            <text className='avatar-placeholder'>客</text>
+            <Text className='avatar-placeholder'>客</Text>
           )}
         </View>
         <View className='profile-col'>
@@ -180,5 +180,5 @@ export default function Settings() {
 
       <Text className='foot-hint'>头像与昵称遵循微信官方填写能力，无强制授权弹窗</Text>
     </View>
-  )
+  );
 }
